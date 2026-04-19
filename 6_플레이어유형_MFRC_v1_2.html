@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이보릿리커버리 · 플레이어 유형 · 윤희서 #21</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --card: #FFFFFF; --ink: #1A1A1A; --mid: #6B6B6B;
+    --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+  }
+  html, body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 13px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* SIDEBAR v1.2 */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: #EFECE4; border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 22px 20px; border-bottom: 1px solid var(--rule); }
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sidebar-role { padding: 12px 22px; border-bottom: 1px solid var(--rule); }
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+  .sidebar-nav { flex: 1; padding: 14px 0; overflow-y: auto; }
+  .nav-section { padding: 18px 22px 8px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: var(--light); text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; padding: 9px 22px; font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; transition: all 0.15s; letter-spacing: -0.01em; }
+  .nav-item:hover { color: var(--ink); background: var(--bg-subtle); }
+  .nav-item.active { color: var(--ink); background: var(--bg); border-left-color: var(--ink); font-weight: 700; }
+  .nav-num { font-family: var(--font-mono); font-size: 10px; color: var(--light); margin-right: 10px; letter-spacing: 0.05em; min-width: 16px; }
+  .nav-item.active .nav-num { color: var(--ink); font-weight: 700; }
+  .nav-sub { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-left: auto; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sidebar-footer { padding: 18px 22px 20px; border-top: 1px solid var(--rule); background: var(--bg-subtle); }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
+
+  /* MAIN */
+  .main { margin-left: 240px; min-height: 100vh; }
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245, 243, 238, 0.88); backdrop-filter: saturate(180%) blur(16px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); }
+  .breadcrumb .current { font-family: var(--font-sans); text-transform: none; letter-spacing: -0.01em; font-size: 13px; font-weight: 700; color: var(--ink); margin-left: 4px; }
+  .breadcrumb .sep { color: var(--light); margin: 0 8px; }
+  .topbar-right { display: flex; align-items: center; gap: 14px; }
+  .version-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); }
+  .device-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--ink); background: var(--bg); }
+
+  /* HERO */
+  .hero { padding: 24px 36px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 18px; background: var(--card); }
+  .hero-av { width: 60px; height: 60px; background: var(--ink); color: var(--card); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; font-size: 24px; letter-spacing: -1px; }
+  .hero-name { font-family: var(--font-sans); font-size: 22px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+  .hero-captain { display: inline-block; margin-left: 8px; padding: 2px 8px; background: var(--ink); color: var(--card); font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; vertical-align: 4px; }
+  .hero-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--mid); margin-top: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .hero-right { margin-left: auto; text-align: right; }
+  .hero-triage { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 12px; display: inline-block; border: 1px solid var(--ink); color: var(--ink); background: var(--bg); }
+  .hero-sub { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 6px; letter-spacing: 0.05em; }
+
+  /* CONTENT */
+  .content { padding: 24px 36px 48px; max-width: 1400px; }
+
+  /* v1.1 Info Strip */
+  .v11-strip { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; padding: 11px 18px; background: var(--card); border: 1px solid var(--ink); margin-bottom: 20px; }
+  .v11-strip-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 4px 10px; background: var(--ink); color: var(--card); }
+  .v11-strip-body { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.55; letter-spacing: -0.01em; }
+  .v11-strip-body strong { font-weight: 700; }
+  .v11-strip-body .k { font-family: var(--font-mono); font-size: 10.5px; background: var(--bg); padding: 1px 5px; border: 1px solid var(--rule); }
+
+  /* Card · Section */
+  .card { background: var(--card); border: 1px solid var(--rule); margin-bottom: 20px; }
+  .card-h { padding: 18px 22px 14px; border-bottom: 1px solid var(--rule); }
+  .card-t { font-family: var(--font-sans); font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+  .card-st { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 5px; letter-spacing: 0.05em; line-height: 1.5; }
+  .cb { padding: 18px 22px 22px; }
+
+  /* Score pair */
+  .score-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+  .score-card { padding: 20px 22px; background: var(--card); border: 1px solid var(--rule); border-top: 3px solid; position: relative; }
+  .score-card.current { border-top-color: var(--ink); }
+  .score-card.potential { border-top-color: var(--forest); }
+  .sc-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px; }
+  .sc-pos { font-family: var(--font-sans); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  .sc-pos.ink { color: var(--ink); }
+  .sc-pos.forest { color: var(--forest); }
+  .sc-score-block { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+  .sc-score { font-family: var(--font-display); font-size: 56px; font-weight: 900; letter-spacing: -3px; line-height: 1; }
+  .sc-score.ink { color: var(--ink); }
+  .sc-score.forest { color: var(--forest); }
+  .sc-score-max { font-family: var(--font-mono); font-size: 14px; color: var(--light); font-weight: 700; letter-spacing: 0.05em; }
+  .sc-detail { font-family: var(--font-sans); font-size: 11.5px; color: var(--ink); line-height: 1.6; letter-spacing: -0.01em; }
+  .sc-detail strong { font-weight: 700; }
+
+  /* Score bars · 포지션별 */
+  .sbar-title { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--mid); letter-spacing: 0.15em; text-transform: uppercase; margin: 12px 0 10px; padding-bottom: 5px; border-bottom: 1px solid var(--rule); }
+  .sbar-title:first-child { margin-top: 0; }
+  .sbar-row { display: grid; grid-template-columns: 200px 1fr 70px; gap: 12px; align-items: center; padding: 7px 0; }
+  .sbar-row.with-tag { grid-template-columns: 180px 1fr 70px 72px; }
+  .sbar-label { font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; line-height: 1.3; }
+  .sbar-label strong { font-weight: 800; }
+  .sbar-label.forest { color: var(--forest); font-weight: 800; }
+  .sbar-label.ink { color: var(--ink); font-weight: 800; }
+  .sbar-weight { font-family: var(--font-mono); font-size: 9px; color: var(--mid); letter-spacing: 0.05em; display: block; margin-top: 2px; }
+  .sbar-track { position: relative; height: 14px; background: var(--bg); border: 1px solid var(--rule); }
+  .sbar-fill { height: 100%; }
+  .sbar-fill.forest { background: var(--forest); }
+  .sbar-fill.amber { background: var(--amber); }
+  .sbar-fill.red { background: var(--red); }
+  .sbar-fill.ink { background: var(--ink); }
+  .sbar-fill.mid { background: var(--light); }
+  .sbar-val { font-family: var(--font-mono); font-size: 13px; font-weight: 700; text-align: right; letter-spacing: 0.02em; }
+  .sbar-val.forest { color: var(--forest); }
+  .sbar-val.amber { color: var(--amber); }
+  .sbar-val.ink { color: var(--ink); }
+  .sbar-val.mid { color: var(--mid); }
+  .sbar-tag { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 7px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid; text-align: center; }
+  .sbar-tag.kpow { color: var(--ink); border-color: var(--ink); background: var(--bg); }
+  .sbar-tag.ktdm { color: var(--forest); border-color: var(--forest); background: var(--forest-dim); }
+  .sbar-tag.deltas { color: var(--amber); border-color: var(--amber); background: var(--amber-dim); }
+
+  /* Position marker */
+  .sbar-track.marked { position: relative; }
+  .sbar-track .marker { position: absolute; top: -3px; width: 2px; height: 20px; background: var(--ink); }
+
+  /* Pos items (MF 추가 항목 + FB 추가 항목) */
+  .pos-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+  .pi { padding: 11px 14px; background: var(--bg); border: 1px solid var(--rule); border-left: 2px solid var(--forest); }
+  .pi-name { font-family: var(--font-sans); font-size: 11.5px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 4px; }
+  .pi-val { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--forest); letter-spacing: 0.02em; margin-bottom: 4px; }
+  .pi-bar { height: 4px; background: var(--card); border: 1px solid var(--rule); position: relative; }
+  .pi-fill { height: 100%; }
+  .pi-fill.forest { background: var(--forest); }
+  .pi-fill.amber { background: var(--amber); }
+
+  /* Calc box */
+  .calc-box { padding: 12px 16px; background: var(--bg); border-left: 2px solid var(--ink); font-family: var(--font-sans); font-size: 11.5px; color: var(--ink); line-height: 1.7; letter-spacing: -0.01em; margin-top: 14px; }
+  .calc-box strong { font-weight: 700; }
+  .calc-box em { font-family: var(--font-serif); font-style: italic; color: var(--mid); }
+  .calc-box .meta { font-family: var(--font-mono); font-size: 10px; color: var(--mid); letter-spacing: 0.05em; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--rule); display: block; }
+
+  /* Bridge Box */
+  .bridge-box { padding: 16px 20px; background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--ink); margin-bottom: 20px; }
+  .bridge-title { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--ink); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 10px; }
+  .bridge-body { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.7; letter-spacing: -0.01em; }
+  .bridge-body .tag { display: inline-block; font-family: var(--font-sans); font-size: 12px; font-weight: 700; margin-right: 4px; }
+  .bridge-body .tag.forest { color: var(--forest); }
+  .bridge-body .tag.amber { color: var(--amber); }
+  .bridge-body strong { font-weight: 700; }
+  .bridge-body em { font-family: var(--font-serif); font-style: italic; color: var(--mid); }
+
+  /* AT Comment */
+  .at-comment-card { background: var(--card); border: 1px solid var(--rule); padding: 24px 28px; margin-bottom: 18px; }
+  .at-bridge { background: var(--bg); border-left: 2px solid var(--ink); padding: 14px 18px; margin-bottom: 22px; }
+  .at-bridge-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+  .at-bridge-body { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.7; letter-spacing: -0.01em; }
+  .at-bridge-body .tag { display: inline; font-family: var(--font-sans); font-size: 12px; font-weight: 700; margin-right: 2px; }
+  .at-bridge-body .tag.forest { color: var(--forest); }
+  .at-bridge-body strong { font-weight: 700; }
+  .at-bridge-body em { font-family: var(--font-serif); font-style: italic; color: var(--mid); }
+
+  .at-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+  .at-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.2em; text-transform: uppercase; background: var(--ink); color: var(--card); }
+  .at-title { font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .at-cert { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); letter-spacing: 0.04em; margin-left: auto; }
+  .at-section-title { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin: 18px 0 10px; padding-top: 14px; border-top: 1px solid var(--rule); }
+  .at-section-title:first-of-type { margin-top: 4px; padding-top: 0; border-top: none; }
+  .at-item { display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 7px 0; align-items: baseline; }
+  .at-item-num { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--light); letter-spacing: 0.05em; }
+  .at-item-num.forest { color: var(--forest); }
+  .at-item-num.amber { color: var(--amber); }
+  .at-item strong { font-weight: 700; font-size: 12.5px; color: var(--ink); display: block; margin-bottom: 2px; letter-spacing: -0.01em; }
+  .at-item em { font-family: var(--font-serif); font-style: italic; font-size: 11.5px; color: var(--mid); letter-spacing: 0; }
+  .basis { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 1px 6px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--rule); color: var(--mid); margin: 0 2px; }
+  .at-sig { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule); text-align: right; font-family: var(--font-serif); font-style: italic; font-size: 12px; color: var(--mid); letter-spacing: 0.02em; }
+
+  /* Action Buttons */
+  .card-act { display: flex; gap: 6px; padding: 14px 22px; border-top: 1px solid var(--rule); flex-wrap: wrap; background: var(--bg); }
+  .abtn { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border: 1px solid var(--rule); background: var(--card); color: var(--mid); transition: all 0.15s; cursor: pointer; }
+  .abtn:hover { border-color: var(--ink); color: var(--ink); }
+  .abtn.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .abtn.primary:hover { background: var(--mid); border-color: var(--mid); }
+
+  /* Popup */
+  #actionPopup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; background: var(--card); border: 1px solid var(--ink); padding: 28px 32px; min-width: 420px; max-width: 520px; box-shadow: 0 8px 40px rgba(0,0,0,.18); }
+  #actionPopup .close-x { position: absolute; top: 14px; right: 18px; font-family: var(--font-mono); font-size: 16px; cursor: pointer; color: var(--light); font-weight: 300; }
+  #actionIcon { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
+  #actionTitle { font-family: var(--font-sans); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.02em; }
+  #actionBody { font-family: var(--font-sans); font-size: 13px; color: var(--ink); line-height: 1.6; letter-spacing: -0.01em; }
+  #actionBody .info-block { padding: 12px 14px; background: var(--bg); margin: 12px 0 6px; border-left: 2px solid var(--ink); }
+  #actionBody .info-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink); margin-bottom: 6px; }
+  #actionBody .info-list { font-size: 12px; color: var(--ink); line-height: 1.75; letter-spacing: -0.01em; }
+  #actionBody textarea { width: 100%; height: 100px; border: 1px solid var(--rule); padding: 10px; font-family: var(--font-sans); font-size: 13px; color: var(--ink); resize: vertical; outline: none; letter-spacing: -0.01em; }
+  #actionBody .meta-small { font-family: var(--font-mono); font-size: 9.5px; color: var(--light); margin-top: 6px; letter-spacing: 0.06em; }
+  #actionBody .success-box { padding: 22px 16px; background: var(--bg); border-left: 2px solid var(--forest); text-align: center; }
+  #actionBody .success-head { font-family: var(--font-sans); font-size: 14px; font-weight: 700; color: var(--forest); margin-bottom: 6px; letter-spacing: -0.01em; }
+  #actionBody .success-body { font-family: var(--font-mono); font-size: 11px; color: var(--mid); line-height: 1.7; letter-spacing: 0.03em; }
+  #actionFooter { margin-top: 22px; display: flex; gap: 8px; justify-content: flex-end; }
+  #actionFooter button { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px; border: 1px solid; cursor: pointer; }
+  #actionFooter button.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  #actionFooter button.secondary { background: var(--card); color: var(--mid); border-color: var(--rule); }
+  #actionOverlay { display: none; position: fixed; inset: 0; background: rgba(26, 26, 26, 0.4); z-index: 9998; }
+
+  @media print {
+    .sidebar { display: none !important; }
+    .main { margin-left: 0 !important; }
+    .topbar { position: relative !important; }
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sb-ko">마이페이보릿리커버리</div>
+    <div class="sb-sub-line"></div>
+    <div class="sb-program">K리그 유소년<br>측정·분석 시스템</div>
+    <div class="sb-caption">2026 시즌 &nbsp;·&nbsp; v1.1</div>
+  </div>
+  <div class="sidebar-role">
+    <span class="role-badge">Coaching Staff</span>
+    <span class="role-team">신평고등학교 U18</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="홈_코칭스태프_MFRC_v1_2.html" class="nav-item"><span class="nav-num">00</span><span>홈</span></a>
+    <a href="선수목록_MFRC_v1_2.html" class="nav-item"><span class="nav-num">—</span><span>선수 목록</span></a>
+    <a href="1_개인선수대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">01</span><span>개인 선수</span></a>
+    <a href="2_팀대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">02</span><span>팀 대시보드</span></a>
+    <div class="nav-section">Analysis</div>
+    <a href="3_점프착지방향전환_MFRC_v1_2.html" class="nav-item"><span class="nav-num">03</span><span>점프·착지·전환</span><span class="nav-sub">3D-Deltas</span></a>
+    <a href="4_달리기가속감속_MFRC_v1_2.html" class="nav-item"><span class="nav-num">04</span><span>달리기·가감속</span><span class="nav-sub">K-Power</span></a>
+    <a href="근력좌우균형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">05</span><span>근력·균형</span><span class="nav-sub">K-TDM</span></a>
+    <a href="5_부상위험도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">06</span><span>부상 위험도</span><span class="nav-sub">통합</span></a>
+    <a href="6_플레이어유형_MFRC_v1_2.html" class="nav-item active"><span class="nav-num">07</span><span>플레이어 유형</span><span class="nav-sub">통합</span></a>
+    <a href="7_컨디션피로도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">08</span><span>컨디션·피로도</span><span class="nav-sub">K-Grip</span></a>
+    <div class="nav-section">Operations</div>
+    <a href="8_훈련플래너_MFRC_v1_2.html" class="nav-item"><span class="nav-num">09</span><span>훈련 플래너</span></a>
+    <a href="9_월별캘린더_MFRC_v1_2.html" class="nav-item"><span class="nav-num">10</span><span>캘린더</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sb-footer-logo">
+      <svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+      </svg>
+    </div>
+    <div class="sb-copy">© 2026 My Favorite Recovery<br>마이페이보릿리커버리</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">
+      분석 상세 <span class="sep">›</span> 07 플레이어 유형 <span class="sep">›</span> <span class="current">윤희서 #21 · MF · 주장</span>
+    </div>
+    <div class="topbar-right">
+      <span class="device-badge">전 장비 통합 산출</span>
+      <span class="version-badge">Ref DB v1.1</span>
+    </div>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <div class="hero">
+    <div class="hero-av">21</div>
+    <div>
+      <div class="hero-name">윤희서<span class="hero-captain">Captain · C</span></div>
+      <div class="hero-meta">신평고등학교 U18 · MF · CM · 17세10개월 · Post-PHV · 2026.04.28 측정</div>
+    </div>
+    <div class="hero-right">
+      <span class="hero-triage">⊚ 주장 예외 · 우선 4분</span>
+      <div class="hero-sub">Safe 등급 A · 수치 직접 공유 가능</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== v1.1 INFO STRIP ===== -->
+    <div class="v11-strip">
+      <span class="v11-strip-label">v1.1 관리 등급 · Triage</span>
+      <div class="v11-strip-body">
+        <strong>플레이어 유형 · 박스-투-박스 중원형 · CM 최적</strong> · <span class="k">MF 88점</span> 상위 12% · <span class="k">잠재 CDM 85점</span> · <span class="k">잠재 WM 82점</span> · 5 포지션 중 MF 최고 점수 · <strong>F-V 프로파일 Balanced</strong> + Safe A 기준
+      </div>
+    </div>
+
+    <!-- ===== 피지컬 스코어 듀얼 카드 ===== -->
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">피지컬 스코어 · 포지션 적합도</div>
+        <div class="card-st">포지션별 요구 항목 × 가중치 × 개인 점수 · 산출 과정 공개 · <strong>※ 포지션 변경 권고가 아닌 피지컬 데이터 기반 참고 정보</strong></div>
+      </div>
+      <div class="cb">
+
+        <!-- Score pair -->
+        <div class="score-pair">
+          <div class="score-card current">
+            <div class="sc-label">● 현재 포지션 · Current</div>
+            <div class="sc-pos ink">MF · CM · 중앙 미드필더</div>
+            <div class="sc-score-block">
+              <span class="sc-score ink">88</span>
+              <span class="sc-score-max">/ 100</span>
+            </div>
+            <div class="sc-detail"><strong>박스-투-박스 CM 최적 프로파일</strong>. 파워·속도·지구력이 모두 상위권이며 H:Q·ASI 방향전환 안정성도 TARGET. 현 포지션이 본인 피지컬 강점을 가장 잘 발현시키는 역할.</div>
+          </div>
+          <div class="score-card potential">
+            <div class="sc-label">● 잠재 확장 포지션 · Potential</div>
+            <div class="sc-pos forest">CDM · 수비형 미드필더</div>
+            <div class="sc-score-block">
+              <span class="sc-score forest">85</span>
+              <span class="sc-score-max">/ 100</span>
+            </div>
+            <div class="sc-detail">IMTP 몸싸움 버티기와 감속 효율이 뛰어나 <strong>수비 전환 첫 저지선 역할</strong>에 높은 부합도. CM 근간 유지하면서 경기 중 롤 전환 가능 · 감독 전술 유연성 확보.</div>
+          </div>
+        </div>
+
+        <!-- 5개 포지션 바 -->
+        <div class="sbar-title">5 포지션 피지컬 스코어 · 0-100</div>
+        <div class="sbar-row">
+          <div class="sbar-label ink">MF · CM ← 현재<span class="sbar-weight">박스-투-박스 중앙</span></div>
+          <div class="sbar-track"><div class="sbar-fill ink" style="width:88%"></div></div>
+          <div class="sbar-val ink">88</div>
+        </div>
+        <div class="sbar-row">
+          <div class="sbar-label forest">CDM · 잠재<span class="sbar-weight">수비형 미드필더</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:85%"></div></div>
+          <div class="sbar-val forest">85</div>
+        </div>
+        <div class="sbar-row">
+          <div class="sbar-label forest">WM · 잠재<span class="sbar-weight">측면 미드필더</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:82%"></div></div>
+          <div class="sbar-val forest">82</div>
+        </div>
+        <div class="sbar-row">
+          <div class="sbar-label">FB<span class="sbar-weight">풀백</span></div>
+          <div class="sbar-track"><div class="sbar-fill mid" style="width:72%"></div></div>
+          <div class="sbar-val mid">72</div>
+        </div>
+        <div class="sbar-row">
+          <div class="sbar-label">CB<span class="sbar-weight">센터백</span></div>
+          <div class="sbar-track"><div class="sbar-fill mid" style="width:62%"></div></div>
+          <div class="sbar-val mid">62</div>
+        </div>
+        <div class="sbar-row">
+          <div class="sbar-label">FW<span class="sbar-weight">공격수</span></div>
+          <div class="sbar-track"><div class="sbar-fill mid" style="width:58%"></div></div>
+          <div class="sbar-val mid">58</div>
+        </div>
+        <div class="sbar-row">
+          <div class="sbar-label">GK<span class="sbar-weight">골키퍼</span></div>
+          <div class="sbar-track"><div class="sbar-fill mid" style="width:22%"></div></div>
+          <div class="sbar-val mid">22</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MF · CM 산출 내역 ===== -->
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">01 · MF · CM 산출 내역 · 피지컬 스코어 88</div>
+        <div class="card-st">박스-투-박스 CM 요구 항목 × 가중치 × 개인 점수 = 기여도</div>
+      </div>
+      <div class="cb">
+
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">박스-투-박스 지구력<span class="sbar-weight">Weight 25%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:92%"></div></div>
+          <div class="sbar-val forest">92/100</div>
+          <span class="sbar-tag kpow">K-Power</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">반복 가감속 효율<span class="sbar-weight">Weight 20%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:86%"></div></div>
+          <div class="sbar-val forest">86/100</div>
+          <span class="sbar-tag kpow">K-Power</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">방향전환 균형 (505 ASI)<span class="sbar-weight">Weight 20%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:88%"></div></div>
+          <div class="sbar-val forest">88/100</div>
+          <span class="sbar-tag deltas">3D-Deltas</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">점프 파워 · CMJ<span class="sbar-weight">Weight 15%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:84%"></div></div>
+          <div class="sbar-val forest">84/100</div>
+          <span class="sbar-tag deltas">3D-Deltas</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">근력 · 몸싸움 IMTP<span class="sbar-weight">Weight 20%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:82%"></div></div>
+          <div class="sbar-val forest">82/100</div>
+          <span class="sbar-tag ktdm">K-TDM</span>
+        </div>
+
+        <div class="sbar-title">MF · CM 추가 참조 지표 · 박스-투-박스 특화</div>
+        <div class="pos-items">
+          <div class="pi">
+            <div class="pi-name">YoYo IR1 지구력</div>
+            <div class="pi-val">2180m · 상위 22%</div>
+            <div class="pi-bar"><div class="pi-fill forest" style="width:78%"></div></div>
+          </div>
+          <div class="pi">
+            <div class="pi-name">감속 유지율 (반복 5회)</div>
+            <div class="pi-val">72% · 양호</div>
+            <div class="pi-bar"><div class="pi-fill forest" style="width:72%"></div></div>
+          </div>
+          <div class="pi">
+            <div class="pi-name">F-V 프로파일 · Balanced</div>
+            <div class="pi-val">균형형 · 최적 구간</div>
+            <div class="pi-bar"><div class="pi-fill forest" style="width:88%"></div></div>
+          </div>
+          <div class="pi">
+            <div class="pi-name">Turn &amp; Accel</div>
+            <div class="pi-val">1.42s · 중위</div>
+            <div class="pi-bar"><div class="pi-fill amber" style="width:58%"></div></div>
+          </div>
+        </div>
+
+        <div class="calc-box">
+          ● <strong>왜 MF(CM)가 최고점인가</strong> · <em>박스-투-박스 CM은 지구력 + 반복 가감속 + 방향전환 + 파워 + 근력을 모두 요구하는데, 이 선수는 이 5개 영역 전체에서 TARGET 이상.</em> 단일 특기가 아니라 <strong>전 영역 균형형 프로파일</strong>이 CM 역할의 본질과 정확히 맞아떨어짐. Turn &amp; Accel만 중위권이지만 CM에서는 비교적 낮은 가중치.<br>
+          <span class="meta">산출 방법 · 포지션별 가중치 × 개인 점수 = 피지컬 스코어 · 계산 과정 공개 · 검수 AI 초안 → AT 이슬기 검수 → 성균관대 SIS 학술 감수</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CDM 잠재 확장 ===== -->
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">02 · 잠재 확장 · CDM 수비형 미드필더 · 85점</div>
+        <div class="card-st">감독 전술 유연성 확보용 · CM 근간 유지 + 경기 중 롤 전환 가능</div>
+      </div>
+      <div class="cb">
+
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">수비 전환 저지력<span class="sbar-weight">Weight 30%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:88%"></div></div>
+          <div class="sbar-val forest">88/100</div>
+          <span class="sbar-tag deltas">3D-Deltas</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">몸싸움 버티기 · IMTP<span class="sbar-weight">Weight 25%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:82%"></div></div>
+          <div class="sbar-val forest">82/100</div>
+          <span class="sbar-tag ktdm">K-TDM</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">감속 효율 · Peak Deceleration<span class="sbar-weight">Weight 20%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:86%"></div></div>
+          <div class="sbar-val forest">86/100</div>
+          <span class="sbar-tag kpow">K-Power</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">공중볼 경합 · CMJ + 헤딩 범위<span class="sbar-weight">Weight 15%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:84%"></div></div>
+          <div class="sbar-val forest">84/100</div>
+          <span class="sbar-tag deltas">3D-Deltas</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">짧은 거리 첫 스텝<span class="sbar-weight">Weight 10%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:82%"></div></div>
+          <div class="sbar-val forest">82/100</div>
+          <span class="sbar-tag kpow">K-Power</span>
+        </div>
+
+        <div class="calc-box">
+          ● <strong>CDM 확장 가능성</strong> · <em>감속 효율과 IMTP 모두 상위권 + CMJ 84/100 공중볼 경합 우위.</em> 수비형 미드필더 역할에서도 높은 부합도. 감독이 <strong>3선 5중원 포메이션</strong> 채택 시 CM ↔ CDM 롤 전환 가능 · 시즌 중반 부상 공백 대응 옵션.
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== WM 잠재 확장 ===== -->
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">03 · 잠재 확장 · WM 측면 미드필더 · 82점</div>
+        <div class="card-st">직선 속도 + 505 ASI TARGET + 감속 효율 기반 측면 돌파 적합</div>
+      </div>
+      <div class="cb">
+
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">측면 돌파 · 직선 가속<span class="sbar-weight">Weight 25%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:82%"></div></div>
+          <div class="sbar-val forest">82/100</div>
+          <span class="sbar-tag kpow">K-Power</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">탑스피드 · Vmax<span class="sbar-weight">Weight 20%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:78%"></div></div>
+          <div class="sbar-val forest">78/100</div>
+          <span class="sbar-tag kpow">K-Power</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">반복 스프린트 · YoYo IR1<span class="sbar-weight">Weight 20%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:84%"></div></div>
+          <div class="sbar-val forest">84/100</div>
+          <span class="sbar-tag kpow">K-Power</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">재가속 · Turn→Sprint<span class="sbar-weight">Weight 20%</span></div>
+          <div class="sbar-track"><div class="sbar-fill amber" style="width:68%"></div></div>
+          <div class="sbar-val amber">68/100</div>
+          <span class="sbar-tag kpow">K-Power</span>
+        </div>
+        <div class="sbar-row with-tag">
+          <div class="sbar-label">측면 방향전환 균형 · ASI<span class="sbar-weight">Weight 15%</span></div>
+          <div class="sbar-track"><div class="sbar-fill forest" style="width:92%"></div></div>
+          <div class="sbar-val forest">92/100</div>
+          <span class="sbar-tag deltas">3D-Deltas</span>
+        </div>
+
+        <div class="calc-box">
+          ● <strong>WM 활용 시나리오</strong> · <em>505 ASI TARGET과 직선 가속 상위권 + YoYo 지구력이 측면 돌파·복귀 반복 패턴에 적합.</em> Turn &amp; Accel 68점이 유일한 보강 영역. 개선 시 WM 피지컬 스코어 88+ 가능.
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Bridge · 의미 ===== -->
+    <div class="bridge-box">
+      <div class="bridge-title">● 이 스코어가 경기에서 뜻하는 것</div>
+      <div class="bridge-body">
+        <span class="tag forest">●</span> <strong>MF(CM) 88점 · 5 포지션 중 최고</strong> → 현 포지션이 본인 피지컬 강점을 가장 잘 발현 · <em>포지션 변경 불필요.</em><br>
+        <span class="tag forest">●</span> <strong>CDM 85 · WM 82 · 잠재 확장 2개</strong> → 감독 전술 유연성 옵션 · 시즌 중반 부상 공백 대응 카드.<br>
+        <span class="tag forest">●</span> <strong>F-V 프로파일 Balanced</strong> → Force 측·Velocity 측 어느 쪽도 치우치지 않음 · 점진적 향상 최적 구간.<br>
+        <span class="tag amber">▲</span> <strong>유일한 개선 여지 · Turn &amp; Accel 1.42s</strong> → 플라이오메트릭 단거리 드릴 주 2회로 CM 92+ 가능.
+      </div>
+    </div>
+
+    <!-- ===== AT COMMENT ===== -->
+    <div class="at-comment-card">
+
+      <!-- Header -->
+      <div class="at-head">
+        <span class="at-badge">AT Comment</span>
+        <span class="at-title">윤희서 #21 주장 · 플레이어 유형 통합 · Safe A</span>
+        <span class="at-cert">AT 이슬기 검수 · 성균관대 스포츠과학과 감수</span>
+      </div>
+
+      <!-- 해석 -->
+      <div class="at-section-title">해석 · Type Interpretation</div>
+      <div class="at-item">
+        <span class="at-item-num forest">01</span>
+        <span><strong>박스-투-박스 중원형 · Balanced Profile</strong><em>파워 + 속도 + 지구력 + 방향전환 + 근력 5개 영역 모두 TARGET 이상 · 단일 특기가 아닌 전 영역 균형형.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num forest">02</span>
+        <span><strong>MF(CM) 88점 · 현 포지션 최적</strong><em>5개 주요 포지션 중 가장 높은 피지컬 스코어 · 포지션 변경 권고 없음 · 주장 역할과 역학적 부합도 일치.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num forest">03</span>
+        <span><strong>CDM 85 · WM 82 · 이중 잠재 확장</strong><em>감독 전술 유연성 확보 · 부상 공백·전술 변경 대응 카드 · CM 근간은 유지하면서 경기 중 롤 전환.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num forest">04</span>
+        <span><strong>F-V 프로파일 Balanced · 최적 발달 구간</strong><em>Force-dominant도 Velocity-dominant도 아닌 균형형 · 특정 방향 편중 없이 점진 향상 가능.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num amber">05</span>
+        <span><strong>유일한 개선 영역 · Turn &amp; Accel 중위</strong><em>회전 후 재가속 1.42s · 플라이오메트릭 드릴로 상위권 진입 가능 · 개선 시 MF 92+ 달성.</em></span>
+      </div>
+
+      <!-- 포지션별 보완 훈련 -->
+      <div class="at-section-title">포지션별 보완 훈련 · Position-Specific Training</div>
+      <div class="at-item"><span class="at-item-num">01</span><span><strong>MF(CM) 유지 · 이것만 보강하면 최고점</strong> · Turn &amp; Accel 플라이오 드릴 주 2회 · 3세트 × 6회 양측 <span class="basis">K-Power</span></span></div>
+      <div class="at-item"><span class="at-item-num">02</span><span><strong>CDM 롤 대비 · 이것을 추가하면 확장</strong> · 수비 전환 저지 드릴 + IMTP 유지 블록 주 1회 <span class="basis">K-TDM · 3D-Deltas</span></span></div>
+      <div class="at-item"><span class="at-item-num">03</span><span><strong>WM 롤 대비 · 이것을 추가하면 확장</strong> · 측면 돌파 후 크로스 · Turn→Sprint 재가속 드릴 주 1회 <span class="basis">K-Power</span></span></div>
+
+      <!-- 다음 일정 -->
+      <div class="at-section-title">다음 일정 · Schedule</div>
+      <div class="at-item"><span class="at-item-num">—</span><span><strong>Monthly Battery · 2026.05.26</strong> · Turn &amp; Accel 개선 추적 <span class="basis">4주 후</span></span></div>
+      <div class="at-item"><span class="at-item-num">—</span><span><strong>Quarterly Battery · 2026.07.21</strong> · 전 장비 통합 재산출 · 피지컬 스코어 업데이트 <span class="basis">12주 후</span></span></div>
+      <div class="at-item"><span class="at-item-num">—</span><span><strong>포지션 변경 권고 없음</strong> · 현 프로그램 유지 · 주장 역할 MF(CM) 최적 프로파일</span></div>
+
+      <div class="at-sig">— 이슬기 AT &nbsp;·&nbsp; 마이페이보릿리커버리 &nbsp;·&nbsp; 성균관대 스포츠과학과 감수</div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card">
+      <div class="card-act">
+        <button class="abtn primary" onclick="showActionPopup('planner')">→ 훈련 플래너</button>
+        <button class="abtn" onclick="showActionPopup('pdf')">디지털 소장 PDF</button>
+        <button class="abtn" onclick="showActionPopup('memo_at')">AT 메모</button>
+        <button class="abtn" onclick="showActionPopup('memo_coach')">코치 메모</button>
+        <button class="abtn" onclick="showActionPopup('memo_director')">감독 메모</button>
+        <button class="abtn" onclick="showActionPopup('save')">리포트 저장</button>
+        <button class="abtn" onclick="showActionPopup('schedule')">재측정 일정</button>
+        <button class="abtn" onclick="showActionPopup('approve')">코치 승인</button>
+        <button class="abtn" onclick="showActionPopup('upload')">자료 업로드</button>
+        <button class="abtn" onclick="showActionPopup('task')">과제 추가</button>
+        <button class="abtn" onclick="showActionPopup('settings')">설정 변경</button>
+        <button class="abtn" onclick="showActionPopup('parent')">학부모 요약</button>
+        <button class="abtn" onclick="showActionPopup('calendar')">캘린더 등록</button>
+        <button class="abtn" onclick="showActionPopup('memo_add')">메모 추가</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== ACTION POPUP ===== -->
+<div id="actionPopup">
+  <div class="close-x" onclick="closeActionPopup()">✕</div>
+  <div id="actionIcon"></div>
+  <div id="actionTitle"></div>
+  <div id="actionBody"></div>
+  <div id="actionFooter"></div>
+</div>
+<div id="actionOverlay" onclick="closeActionPopup()"></div>
+
+<script>
+var _ac = {
+  planner: {
+    icon: 'Planner',
+    title: '훈련 플래너로 전송 · 유형 기반 훈련',
+    body: '<div>윤희서 #21 주장 박스-투-박스 중원형 보강 플랜 생성</div>'
+      + '<div class="info-block"><div class="info-head">생성될 플랜 · MF(CM) 유지 + 개선 + 확장 대비</div>'
+      + '<div class="info-list">· MF(CM) 유지 · 현 프로그램 유지<br>· Turn &amp; Accel 플라이오 드릴 주 2회 · 개선 타겟<br>· CDM 대비 · IMTP + 수비 전환 블록 주 1회<br>· WM 대비 · Turn→Sprint 재가속 주 1회<br>· Safe A 기준 제한 없음</div></div>',
+    buttons: [['플랜 생성', 'primary'], ['취소', 'secondary']]
+  },
+  pdf: {
+    icon: 'Digital Keepsake',
+    title: '디지털 소장 PDF',
+    body: '<div class="success-box" style="border-left-color:var(--ink);"><div class="success-head" style="color:var(--ink);">플레이어 유형 소장 PDF 준비 완료</div>'
+      + '<div class="success-body">윤희서 #21 · 박스-투-박스 중원형 프로파일<br>MF(CM) 88 + 잠재 CDM 85 + WM 82<br>장기 보관용 A4 4페이지 프로파일</div>'
+      + '<button onclick="closeActionPopup();setTimeout(function(){window.print()},300)" style="margin-top:14px;padding:9px 20px;background:var(--ink);color:var(--card);border:1px solid var(--ink);font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">인쇄 · PDF 저장</button></div>',
+    buttons: [['취소', 'secondary']]
+  },
+  memo_at: {
+    icon: 'AT Memo',
+    title: 'AT 메모 · 윤희서 #21',
+    body: '<div>Athletic Trainer 전문 소견 · 플레이어 유형</div>'
+      + '<textarea>플레이어 유형 박스-투-박스 중원형 · Balanced Profile. MF(CM) 88점 5개 포지션 중 최고 · 포지션 변경 불필요. 5개 영역 (지구력·가감속·방향전환·파워·근력) 모두 TARGET 이상 균형형. 잠재 확장 CDM 85 + WM 82 · 감독 전술 유연성. 유일 개선 영역 Turn &amp; Accel 1.42s 중위 · 플라이오 드릴로 CM 92+ 가능. F-V 프로파일 Balanced 최적 구간.</textarea>'
+      + '<div class="meta-small">이슬기 AT · 2026.04.28</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  memo_coach: {
+    icon: 'Memo',
+    title: '코치 메모',
+    body: '<div>코칭스태프 관찰 기록 · 경기 내 역할</div>'
+      + '<textarea placeholder="경기 중 박스-투-박스 활동량 · 수비 전환 기여도 · 주장 역할..."></textarea>'
+      + '<div class="meta-small">마지막 저장 : —</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  memo_director: {
+    icon: 'Memo',
+    title: '감독 메모 · 전술 유연성',
+    body: '<div>포지션 확장 관련 감독 의견</div>'
+      + '<textarea placeholder="CM ↔ CDM 롤 전환 시점 · WM 활용 시나리오 · 부상 공백 대응 의견..."></textarea>'
+      + '<div class="meta-small">마지막 저장 : —</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  save: {
+    icon: 'Save',
+    title: '리포트 저장',
+    body: '<div class="success-box"><div class="success-head">✓ 플레이어 유형 리포트 저장 완료</div>'
+      + '<div class="success-body">신평고 U18 · 2026 1차 측정 · 윤희서 #21<br>저장 시각 : 2026.04.28 16:15<br>형식 : PDF (A4) · 유형 분석 + 포지션 3종</div></div>',
+    buttons: [['확인', 'primary']]
+  },
+  schedule: {
+    icon: 'Schedule',
+    title: '재측정 일정 · 유형 재산출',
+    body: '<div>플레이어 유형은 Quarterly 주기로 재산출 권장</div>'
+      + '<div class="info-block"><div class="info-head">Monthly · 부분 업데이트</div>'
+      + '<div class="info-list">2026.05.26 · Turn &amp; Accel 개선 추적<br>MF(CM) 점수 업데이트</div></div>'
+      + '<div class="info-block"><div class="info-head">Quarterly · 전 장비 통합 재산출</div>'
+      + '<div class="info-list">2026.07.21 · 5 포지션 피지컬 스코어 재계산<br>F-V 프로파일 재확인</div></div>',
+    buttons: [['등록', 'primary'], ['취소', 'secondary']]
+  },
+  approve: {
+    icon: 'Approve',
+    title: '코치 승인',
+    body: '<div class="success-box"><div class="success-head">✓ 코치 승인 완료</div>'
+      + '<div class="success-body">승인자 : 코칭스태프<br>승인 시각 : 2026.04.29 09:40<br>플레이어 유형 프로파일 공식 적용</div></div>',
+    buttons: [['확인', 'primary']]
+  },
+  upload: {
+    icon: 'Upload',
+    title: '자료 업로드',
+    body: '<div>경기 영상 · 포지션별 장면 모음 업로드</div>'
+      + '<div style="border:1.5px dashed var(--rule);padding:32px;text-align:center;margin-top:10px;">'
+      + '<div style="font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--ink);letter-spacing:0.1em;text-transform:uppercase;">Drop Files Here</div>'
+      + '<div style="font-family:var(--font-sans);font-size:11.5px;color:var(--mid);margin-top:6px;letter-spacing:-0.01em;">MP4 · MOV · PDF · JPG (최대 500MB)</div></div>',
+    buttons: [['업로드', 'primary'], ['취소', 'secondary']]
+  },
+  task: {
+    icon: 'Task',
+    title: '과제 추가',
+    body: '<div>선수 과제 생성</div>'
+      + '<div style="margin-top:12px;"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">과제명</div>'
+      + '<input type="text" style="width:100%;border:1px solid var(--rule);padding:8px 12px;font-family:var(--font-sans);font-size:12.5px;outline:none;" placeholder="예: CDM 롤 영상 일지"></div>'
+      + '<div style="margin-top:10px;"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">기한</div>'
+      + '<input type="date" value="2026-05-26" style="border:1px solid var(--rule);padding:8px 12px;font-family:var(--font-sans);font-size:12.5px;outline:none;"></div>',
+    buttons: [['과제 생성', 'primary'], ['취소', 'secondary']]
+  },
+  settings: {
+    icon: 'Settings',
+    title: '설정 변경',
+    body: '<div style="margin-bottom:14px;"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">비교 대상</div>'
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap;">'
+      + '<span style="font-family:var(--font-mono);font-size:10px;font-weight:700;padding:5px 12px;background:var(--ink);color:var(--card);letter-spacing:0.1em;text-transform:uppercase;">K리그 U18 전체</span>'
+      + '<span style="font-family:var(--font-mono);font-size:10px;font-weight:700;padding:5px 12px;border:1px solid var(--rule);color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">동일 연령대</span>'
+      + '<span style="font-family:var(--font-mono);font-size:10px;font-weight:700;padding:5px 12px;border:1px solid var(--rule);color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">MF 포지션</span>'
+      + '</div></div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  parent: {
+    icon: 'Export',
+    title: '학부모 요약 카드',
+    body: '<div>학부모 전달용 요약 · Safe A 직접 공유 가능</div>'
+      + '<div class="info-block"><div class="info-head">포함 내용</div>'
+      + '<div class="info-list">· 박스-투-박스 중원형 · 균형형 프로파일<br>· MF(CM) 피지컬 스코어 88 · 현 포지션 최적<br>· 잠재 확장 CDM · WM · 전술 유연성<br>· 5개 영역 모두 TARGET 달성<br>· 순위는 포함하지 않음</div></div>',
+    buttons: [['요약 생성', 'primary'], ['취소', 'secondary']]
+  },
+  calendar: {
+    icon: 'Calendar',
+    title: '캘린더 등록',
+    body: '<div class="success-box"><div class="success-head">✓ 캘린더 등록 완료</div>'
+      + '<div class="success-body">Monthly Battery · 2026.05.26<br>Quarterly Battery · 2026.07.21<br>구단 캘린더 반영 완료</div></div>',
+    buttons: [['확인', 'primary']]
+  },
+  memo_add: {
+    icon: 'Memo',
+    title: '메모 추가',
+    body: '<textarea placeholder="메모를 입력하세요..."></textarea>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  }
+};
+
+function showActionPopup(t) {
+  var d = _ac[t]; if (!d) return;
+  document.getElementById('actionIcon').textContent = d.icon;
+  document.getElementById('actionTitle').textContent = d.title;
+  document.getElementById('actionBody').innerHTML = d.body;
+  var f = document.getElementById('actionFooter'); f.innerHTML = '';
+  d.buttons.forEach(function(btn) {
+    var b = document.createElement('button');
+    b.textContent = btn[0];
+    b.className = btn[1];
+    b.onclick = closeActionPopup;
+    f.appendChild(b);
+  });
+  document.getElementById('actionPopup').style.display = 'block';
+  document.getElementById('actionOverlay').style.display = 'block';
+}
+
+function closeActionPopup() {
+  document.getElementById('actionPopup').style.display = 'none';
+  document.getElementById('actionOverlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

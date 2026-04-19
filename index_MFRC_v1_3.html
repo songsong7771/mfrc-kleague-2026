@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이보릿리커버리 · K리그 유소년 2026 피지컬 측정·분석 시스템</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  a { text-decoration: none; color: inherit; }
+
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --card: #FFFFFF;
+    --ink: #1A1A1A; --mid: #6B6B6B; --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A; --forest-light: #B8D4C7;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+    --shadow-card: 0 1px 4px rgba(26,26,26,0.04);
+  }
+
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); min-height: 100vh; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 60px; }
+
+
+  /* ===== MINIMAL HEADER ===== */
+  .minimal-header {
+    background: var(--bg);
+    padding: 70px 60px 40px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .mh-inner { max-width: 1280px; margin: 0 auto; }
+  .mh-brand {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .mh-wordmark { flex-shrink: 0; }
+  .mh-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--mid);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .mh-title {
+    font-family: var(--font-sans);
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .mh-title em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--forest);
+  }
+  .mh-desc {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--mid);
+    max-width: 720px;
+  }
+  .mh-desc strong { color: var(--ink); font-weight: 700; }
+  @media (max-width: 768px) {
+    .minimal-header { padding: 40px 30px 28px; }
+    .mh-title { font-size: 32px; }
+  }
+
+  /* ===== LAYER 1 · HERO (Dark) ===== */
+  .hero { background: var(--ink); color: var(--card); padding: 40px 60px 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -180px; right: -180px; width: 520px; height: 520px; border: 1px solid rgba(184,212,199,0.08); border-radius: 50%; }
+  .hero::after { content: ''; position: absolute; top: -80px; right: -80px; width: 320px; height: 320px; border: 1px solid rgba(184,212,199,0.12); border-radius: 50%; }
+
+  .hero-inner { max-width: 1160px; margin: 0 auto; position: relative; z-index: 2; }
+
+  .hero-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 60px; }
+  .hero-brand { display: flex; align-items: center; gap: 12px; }
+  .hero-brand svg { width: 56px; height: auto; display: block; }
+  .hero-brand-text { font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: 0.25em; color: var(--card); text-transform: uppercase; }
+  .hero-brand-sub { font-family: var(--font-sans); font-size: 10.5px; color: var(--forest-light); margin-top: 2px; letter-spacing: 0.05em; font-weight: 500; }
+
+  .live-badge { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; background: rgba(184,212,199,0.08); border: 1px solid rgba(184,212,199,0.3); font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--forest-light); letter-spacing: 0.12em; text-transform: uppercase; }
+  .live-dot { width: 7px; height: 7px; background: var(--forest-light); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
+
+  .hero-body { max-width: 920px; }
+  .hero-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--forest-light); letter-spacing: 0.3em; margin-bottom: 20px; text-transform: uppercase; }
+  .hero-title { font-family: var(--font-sans); font-size: 60px; font-weight: 800; line-height: 1.05; letter-spacing: -0.045em; margin-bottom: 22px; }
+  .hero-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--forest-light); }
+  .hero-desc { font-family: var(--font-sans); font-size: 18px; font-weight: 400; line-height: 1.6; color: rgba(245,243,238,0.72); max-width: 760px; margin-bottom: 36px; letter-spacing: -0.005em; }
+  .hero-desc strong { color: var(--card); font-weight: 700; }
+
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+  .btn { font-family: var(--font-sans); font-size: 14px; font-weight: 700; padding: 14px 28px; letter-spacing: -0.005em; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary { background: var(--forest-light); color: var(--ink); border: 1px solid var(--forest-light); }
+  .btn-primary:hover { background: var(--card); border-color: var(--card); transform: translateY(-1px); }
+  .btn-secondary { background: transparent; color: var(--card); border: 1px solid rgba(245,243,238,0.3); }
+  .btn-secondary:hover { border-color: var(--forest-light); color: var(--forest-light); }
+  .btn-icon { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; }
+
+  .hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding-top: 28px; border-top: 1px solid rgba(184,212,199,0.15); }
+  .hs-item { padding: 0 24px; border-right: 1px solid rgba(184,212,199,0.12); }
+  .hs-item:first-child { padding-left: 0; }
+  .hs-item:last-child { border-right: none; }
+  .hs-val { font-family: var(--font-display); font-size: 36px; font-weight: 800; color: var(--forest-light); letter-spacing: -0.035em; line-height: 1; }
+  .hs-val .unit { font-family: var(--font-display); font-size: 18px; color: rgba(245,243,238,0.5); font-weight: 500; margin-left: 3px; }
+  .hs-label { font-family: var(--font-mono); font-size: 10px; color: rgba(245,243,238,0.55); font-weight: 700; margin-top: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+
+  /* ===== LAYER 2 · ROLE NAVIGATION ===== */
+  .roles-section { padding: 70px 60px 40px; }
+  .sec-head { text-align: center; margin-bottom: 36px; }
+  .sec-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--forest); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 12px; }
+  .sec-title-main { font-family: var(--font-sans); font-size: 34px; font-weight: 800; letter-spacing: -0.035em; color: var(--ink); line-height: 1.15; }
+  .sec-title-main em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--forest); }
+  .sec-desc-main { font-family: var(--font-sans); font-size: 15px; color: var(--mid); font-weight: 500; margin-top: 10px; letter-spacing: -0.005em; }
+
+  .roles-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 1160px; margin: 0 auto; }
+  .role-card { background: var(--card); border: 1px solid var(--rule); padding: 28px 24px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+  .role-card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(26,26,26,0.08); border-color: var(--forest); }
+  .role-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--forest); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease-out; }
+  .role-card:hover::before { transform: scaleX(1); }
+
+  .role-icon { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; padding: 5px 10px; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid; display: inline-block; margin-bottom: 16px; }
+  .role-card.investor .role-icon { color: var(--red); border-color: var(--red); background: var(--red-dim); }
+  .role-card.federation .role-icon { color: var(--ink); border-color: var(--ink); background: var(--bg-subtle); }
+  .role-card.coach .role-icon { color: var(--forest); border-color: var(--forest); background: var(--forest-dim); }
+  .role-card.parent .role-icon { color: var(--amber); border-color: var(--amber); background: var(--amber-dim); }
+  .role-card.references .role-icon { color: var(--amber); border-color: var(--amber); background: var(--amber-dim); }
+
+  .role-title { font-family: var(--font-sans); font-size: 20px; font-weight: 800; letter-spacing: -0.025em; color: var(--ink); margin-bottom: 8px; }
+  .role-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--forest); }
+  .role-quote { font-family: var(--font-sans); font-size: 13px; font-weight: 400; color: var(--mid); margin-bottom: 16px; line-height: 1.55; letter-spacing: -0.005em; }
+  .role-list { list-style: none; margin-bottom: 18px; }
+  .role-list li { font-family: var(--font-sans); font-size: 12px; color: var(--ink); padding: 5px 0; letter-spacing: -0.005em; display: flex; align-items: center; gap: 8px; }
+  .role-list li::before { content: '●'; font-family: var(--font-mono); font-size: 8px; color: var(--forest); flex-shrink: 0; }
+  .role-cta { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--forest); letter-spacing: 0.1em; text-transform: uppercase; padding-top: 14px; border-top: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; }
+  .role-cta .arrow { font-family: var(--font-mono); font-size: 13px; transition: transform 0.15s; }
+  .role-card:hover .role-cta .arrow { transform: translateX(4px); }
+
+  /* ===== LAYER 3 · LIVE SHOWCASE ===== */
+  .showcase { padding: 60px 60px 80px; background: var(--bg-subtle); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .showcase-inner { max-width: 1160px; margin: 0 auto; }
+
+  .showcase-head { margin-bottom: 40px; }
+  .showcase-meta { display: flex; align-items: center; gap: 14px; margin-top: 16px; flex-wrap: wrap; }
+  .meta-chip { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; padding: 5px 11px; background: var(--card); border: 1px solid var(--rule); color: var(--ink); letter-spacing: 0.08em; text-transform: uppercase; }
+  .meta-chip.forest { background: var(--forest-dim); color: var(--forest); border-color: var(--forest); }
+  .meta-chip.red { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+  .meta-chip.amber { background: var(--amber-dim); color: var(--amber); border-color: var(--amber); }
+
+  .timeline { position: relative; margin-top: 10px; }
+  .timeline::before { content: ''; position: absolute; left: 23px; top: 20px; bottom: 20px; width: 2px; background: var(--rule); }
+
+  .step { display: grid; grid-template-columns: 48px 1fr; gap: 24px; margin-bottom: 28px; align-items: flex-start; position: relative; }
+  .step:last-child { margin-bottom: 0; }
+  .step-num { width: 48px; height: 48px; background: var(--ink); color: var(--card); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: -0.03em; border: 3px solid var(--bg-subtle); z-index: 2; flex-shrink: 0; }
+  .step.done .step-num { background: var(--forest); }
+
+  .step-body { background: var(--card); border: 1px solid var(--rule); padding: 22px 26px; box-shadow: var(--shadow-card); }
+  .step-time { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--forest); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+  .step-title { font-family: var(--font-sans); font-size: 18px; font-weight: 800; letter-spacing: -0.025em; color: var(--ink); margin-bottom: 12px; }
+  .step-desc { font-family: var(--font-sans); font-size: 13px; color: var(--mid); line-height: 1.65; letter-spacing: -0.005em; margin-bottom: 14px; }
+  .step-desc strong { color: var(--ink); font-weight: 700; }
+  .step-desc .highlight-red { color: var(--red); font-weight: 700; }
+  .step-desc .highlight-amber { color: var(--amber); font-weight: 700; }
+  .step-desc .highlight-forest { color: var(--forest); font-weight: 700; }
+
+  .step-stats { display: flex; gap: 18px; padding: 14px 16px; background: var(--bg-subtle); border: 1px solid var(--rule); margin-bottom: 14px; flex-wrap: wrap; }
+  .step-stat { display: flex; flex-direction: column; }
+  .step-stat-val { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--ink); letter-spacing: -0.03em; line-height: 1; }
+  .step-stat-val.red { color: var(--red); }
+  .step-stat-val.amber { color: var(--amber); }
+  .step-stat-val.forest { color: var(--forest); }
+  .step-stat-label { font-family: var(--font-mono); font-size: 9px; color: var(--mid); font-weight: 700; margin-top: 5px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .step-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .step-link { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 6px 12px; border: 1px solid var(--ink); color: var(--ink); letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.15s; }
+  .step-link:hover { background: var(--ink); color: var(--card); }
+  .step-link.forest { border-color: var(--forest); color: var(--forest); }
+  .step-link.forest:hover { background: var(--forest); color: var(--card); }
+
+  /* ===== FULL INDEX (하단) ===== */
+  .full-index { padding: 70px 60px 40px; }
+  .full-head { text-align: center; margin-bottom: 40px; }
+
+  .section-group { margin-bottom: 40px; max-width: 1160px; margin-left: auto; margin-right: auto; }
+  .sec-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1.5px solid var(--ink); }
+  .sec-icon { font-family: var(--font-mono); font-size: 12px; font-weight: 700; padding: 6px 12px; background: var(--ink); color: var(--card); letter-spacing: 0.15em; }
+  .sec-title { font-family: var(--font-sans); font-size: 20px; font-weight: 800; letter-spacing: -0.025em; }
+  .sec-desc { font-family: var(--font-mono); font-size: 10.5px; color: var(--mid); font-weight: 600; margin-left: auto; letter-spacing: 0.05em; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+
+  .card { background: var(--card); border: 1px solid var(--rule); padding: 20px 22px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; display: block; }
+  .card:hover { border-color: var(--forest); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,106,58,0.12); }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--forest); transition: height 0.2s; }
+  .card:hover::before { height: 100%; }
+
+  .card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .card-num { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--ink); min-width: 30px; height: 26px; background: var(--bg-subtle); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0 8px; letter-spacing: 0.05em; }
+  .card-name { font-family: var(--font-sans); font-size: 15px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); flex: 1; }
+  .card-equip { font-family: var(--font-mono); font-size: 9px; color: var(--forest); font-weight: 700; padding: 3px 8px; background: var(--forest-dim); border: 1px solid var(--forest); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+  .card-desc { font-family: var(--font-sans); font-size: 12px; color: var(--mid); font-weight: 500; line-height: 1.6; margin-bottom: 12px; letter-spacing: -0.005em; }
+
+  .card-features { display: flex; flex-wrap: wrap; gap: 4px; }
+  .feat { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.05em; border: 1px solid; text-transform: uppercase; }
+  .feat-ink { background: var(--bg-subtle); color: var(--ink); border-color: var(--rule); }
+  .feat-forest { background: var(--forest-dim); color: var(--forest); border-color: var(--forest); }
+  .feat-amber { background: var(--amber-dim); color: var(--amber); border-color: var(--amber); }
+  .feat-red { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+
+  .card-role { position: absolute; top: 0; right: 0; font-family: var(--font-mono); font-size: 8.5px; font-weight: 700; padding: 4px 10px; letter-spacing: 0.12em; text-transform: uppercase; border-left: 1px solid; border-bottom: 1px solid; }
+  .role-coach-c { background: var(--bg-subtle); color: var(--ink); border-color: var(--rule); }
+  .role-player-c { background: var(--forest-dim); color: var(--forest); border-color: var(--forest); }
+  .role-league-c { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .role-report-c { background: var(--amber-dim); color: var(--amber); border-color: var(--amber); }
+  .role-present-c { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+
+  /* ===== FOOTER ===== */
+  .footer { background: var(--ink); color: var(--card); padding: 48px 60px; border-top: 1px solid var(--rule); }
+  .footer-inner { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .foot-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .foot-brand svg { width: 44px; height: auto; }
+  .foot-brand-text { font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+  .foot-desc { font-family: var(--font-sans); font-size: 12px; color: rgba(245,243,238,0.6); line-height: 1.7; letter-spacing: -0.005em; }
+  .foot-desc strong { color: var(--card); font-weight: 700; }
+  .foot-trust { border-left: 1px solid rgba(184,212,199,0.15); padding-left: 40px; }
+  .foot-trust-title { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--forest-light); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 14px; }
+  .foot-trust-item { font-family: var(--font-sans); font-size: 12px; color: rgba(245,243,238,0.7); padding: 6px 0; letter-spacing: -0.005em; line-height: 1.5; }
+  .foot-trust-item strong { color: var(--card); font-weight: 700; }
+
+  @media print {
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card { box-shadow: none !important; break-inside: avoid; }
+    .hero { background: #1A1A1A !important; }
+  }
+
+  @media (max-width: 960px) {
+    .hero { padding: 30px 30px 60px; }
+    .hero-title { font-size: 40px; }
+    .hero-stats { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .hs-item { border-right: none; padding: 0; }
+    .roles-section, .showcase, .full-index { padding: 50px 30px; }
+    .roles-grid { grid-template-columns: 1fr 1fr; }
+    .footer-inner { grid-template-columns: 1fr; }
+    .foot-trust { border-left: none; border-top: 1px solid rgba(184,212,199,0.15); padding-left: 0; padding-top: 24px; }
+    .sec-title-main { font-size: 26px; }
+    .cards { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .hero-title { font-size: 32px; }
+    .roles-grid { grid-template-columns: 1fr; }
+    .step { grid-template-columns: 36px 1fr; gap: 14px; }
+    .step-num { width: 36px; height: 36px; font-size: 13px; }
+    .timeline::before { left: 17px; }
+  }
+  .hero-brand svg, .foot-brand svg { width: 100%; height: auto; display: block; }
+</style>
+</head>
+<body>
+
+<!-- ============================================== -->
+<!-- MINIMAL BRAND HEADER                           -->
+<!-- ============================================== -->
+<section class="minimal-header">
+  <div class="mh-inner">
+    <div class="mh-brand">
+      <div class="mh-wordmark">
+        <svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none" style="width:220px; height:auto;">
+          <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+        </svg>
+      </div>
+      <div class="mh-tag">● K리그 유소년 2026 · 측정·분석 시스템</div>
+    </div>
+    <div class="mh-title">역할별 <em>대시보드 22개</em></div>
+    <div class="mh-desc">
+      코칭스태프, 코치, AT, 연맹 관계자 등 사용 목적에 따라 설계된 화면을 <strong>카드별로 확인</strong>할 수 있습니다.
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================== -->
+<!-- LAYER 4 · FULL INDEX · 전체 23 카드 (하단)    -->
+<!-- ============================================== -->
+<section class="full-index">
+  
+
+  <!-- 코칭스태프 14 -->
+  <div class="section-group">
+    <div class="sec-header">
+      <div class="sec-icon">● COACH</div>
+      <div class="sec-title">코칭스태프 대시보드</div>
+      <div class="sec-desc">감독 · 코치 · AT가 매일 사용하는 14개 화면</div>
+    </div>
+    <div class="cards">
+
+      <a href="홈_코칭스태프_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">00</div><div class="card-name">홈</div></div>
+        <div class="card-desc">매일 아침 가장 먼저 여는 홈 화면. 오늘 챙겨야 할 선수, 승인 대기 훈련 처방, 일정을 한눈에 봅니다.</div>
+        <div class="card-features"><span class="feat feat-red">■ 최우선 액션</span><span class="feat feat-amber">▲ 주의 선수</span><span class="feat feat-ink">● 승인 대기</span></div>
+      </a>
+
+      <a href="선수목록_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">00a</div><div class="card-name">선수 목록</div></div>
+        <div class="card-desc">전체 선수를 상태 순으로 자동 정렬. 부상 위험 선수부터 상단에 배치되어 빠르게 파악할 수 있습니다.</div>
+        <div class="card-features"><span class="feat feat-red">■ RED 우선</span><span class="feat feat-ink">신호별 필터</span><span class="feat feat-forest">● 고정 푸터</span></div>
+      </a>
+
+      <a href="1_개인선수대시보드_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">01</div><div class="card-name">개인 선수 대시보드</div></div>
+        <div class="card-desc">선수 한 명의 모든 측정 결과. 출전 여부 판단 근거, 포지션 내 순위, 과거 대비 성장 추이까지 통합 확인.</div>
+        <div class="card-features"><span class="feat feat-amber">▲ 출전 참고</span><span class="feat feat-ink">백분위</span><span class="feat feat-ink">Mirwald</span></div>
+      </a>
+
+      <a href="2_팀대시보드_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">02</div><div class="card-name">팀 대시보드</div></div>
+        <div class="card-desc">우리 팀이 다른 팀 대비 어디가 강하고 약한지. 학년별 상태, 재활 중인 선수 목록까지 한 화면에.</div>
+        <div class="card-features"><span class="feat feat-ink">학년별 뷰</span><span class="feat feat-ink">10개 항목</span><span class="feat feat-amber">▲ 주의 선수</span></div>
+      </a>
+
+      <a href="3_점프착지방향전환_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">03</div><div class="card-name">점프·착지·방향전환</div><div class="card-equip">● Kinvent 3D-Deltas</div></div>
+        <div class="card-desc">점프력·착지 안정성·방향전환 능력을 정밀 측정. 부상 위험이 높은 착지 패턴을 자동 탐지합니다.</div>
+        <div class="card-features"><span class="feat feat-ink">3축 분석</span><span class="feat feat-ink">CoP 모션</span><span class="feat feat-red">■ 피로 감소</span></div>
+      </a>
+
+      <a href="4_달리기가속감속_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">04</div><div class="card-name">달리기·가속·감속</div><div class="card-equip">● K-Power · Catapult</div></div>
+        <div class="card-desc">5m·10m·30m 단계별 스피드, 방향 전환, 감속 능력. 경기 중 뛴 거리 데이터와 교차 검증합니다.</div>
+        <div class="card-features"><span class="feat feat-ink">30m 곡선</span><span class="feat feat-amber">▲ 감속 효율</span><span class="feat feat-ink">F-V 프로파일</span></div>
+      </a>
+
+      <a href="근력좌우균형_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">05</div><div class="card-name">근력·좌우 균형</div><div class="card-equip">● K-TDM · Ronfic</div></div>
+        <div class="card-desc">최대 근력·좌우 불균형·가동범위를 통합 분석. 어느 쪽 다리가 약한지 부상 이전에 미리 찾습니다.</div>
+        <div class="card-features"><span class="feat feat-ink">4가지 근력</span><span class="feat feat-ink">Ronfic 편심</span><span class="feat feat-amber">▲ 원인 분류</span></div>
+      </a>
+
+      <a href="5_부상위험도_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">06</div><div class="card-name">부상 위험도</div><div class="card-equip">● Integrated</div></div>
+        <div class="card-desc">7개 주요 부상(햄스트링·ACL·발목 등)의 위험도를 개별 신호등으로. AT 예방 훈련까지 자동 연결.</div>
+        <div class="card-features"><span class="feat feat-red">■ 위험 등급</span><span class="feat feat-amber">▲ 악화 추적</span><span class="feat feat-ink">AT 처방</span></div>
+      </a>
+
+      <a href="6_플레이어유형_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">07</div><div class="card-name">플레이어 유형</div><div class="card-equip">● Integrated</div></div>
+        <div class="card-desc">선수의 피지컬 유형 분류(스피드형/파워형/지구력형 등). 현재 포지션 적합도와 잠재 포지션 제안.</div>
+        <div class="card-features"><span class="feat feat-ink">피지컬 스코어</span><span class="feat feat-ink">포지션 비교</span><span class="feat feat-forest">● 산출 공개</span></div>
+      </a>
+
+      <a href="7_컨디션피로도_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">08</div><div class="card-name">컨디션·피로도</div><div class="card-equip">● K-Grip · Catapult</div></div>
+        <div class="card-desc">오늘 훈련 받아도 되는 선수 판별. 악력·피로 누적·수면 지표로 일일 컨디션을 빠르게 확인.</div>
+        <div class="card-features"><span class="feat feat-ink">악력 좌우</span><span class="feat feat-amber">▲ 피로 패턴</span><span class="feat feat-ink">컨디션 변화</span></div>
+      </a>
+
+      <a href="8_훈련플래너_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">09</div><div class="card-name">훈련 플래너 · 개인 보강</div></div>
+        <div class="card-desc">선수 약점별 개인 보강 훈련 처방. AI 초안 → AT 검수 → 코치 승인으로 당일 내 완성.</div>
+        <div class="card-features"><span class="feat feat-ink">개인 프로그램</span><span class="feat feat-forest">● 4단계 승인</span></div>
+      </a>
+
+      <a href="14_전술훈련설계_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">14</div><div class="card-name">훈련 플래너 · 전술 훈련</div></div>
+        <div class="card-desc">팀 측정 데이터 기반 전술 훈련 설계. 각 훈련마다 왜 필요한지 근거와 주의 선수를 함께 표시.</div>
+        <div class="card-features"><span class="feat feat-ink">5카테고리</span><span class="feat feat-ink">데이터 근거</span><span class="feat feat-amber">▲ 주의 선수</span></div>
+      </a>
+
+      <a href="15_상대전술분석_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">15</div><div class="card-name">훈련 플래너 · 상대 분석</div></div>
+        <div class="card-desc">상대팀 경기 데이터 기반 맞춤 대응 훈련. 선수에게 영상 과제 배포 후 시청 여부까지 추적.</div>
+        <div class="card-features"><span class="feat feat-ink">Catapult 업로드</span><span class="feat feat-ink">선수 과제</span><span class="feat feat-amber">▲ 확인 현황</span></div>
+      </a>
+
+      <a href="9_월별캘린더_MFRC_v1_2.html" class="card">
+        <div class="card-role role-coach-c">● Coach</div>
+        <div class="card-top"><div class="card-num">10</div><div class="card-name">캘린더</div></div>
+        <div class="card-desc">측정·훈련·재측정·경기 일정을 하나의 캘린더에. 재측정 알림이 자동으로 떠서 놓치지 않습니다.</div>
+        <div class="card-features"><span class="feat feat-ink">구단/연맹 토글</span><span class="feat feat-ink">재측정 알림</span></div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- 선수·학부모 2 -->
+  <div class="section-group">
+    <div class="sec-header">
+      <div class="sec-icon">◆ PLAYER</div>
+      <div class="sec-title">선수·학부모</div>
+      <div class="sec-desc">모바일로 확인하는 2개 화면</div>
+    </div>
+    <div class="cards">
+
+      <a href="13_개인결과카드_윤희서_MFRC_v1_2.html" class="card">
+        <div class="card-role role-player-c">◆ Player</div>
+        <div class="card-top"><div class="card-num">13</div><div class="card-name">개인 결과카드 · 윤희서 #21</div></div>
+        <div class="card-desc">선수·학부모에게 전달하는 A4 1장 결과카드. 강점과 개선점을 쉬운 말로. QR 스캔 시 모바일 상세.</div>
+        <div class="card-features"><span class="feat feat-ink">레이더</span><span class="feat feat-forest">● 수치 포함</span><span class="feat feat-ink">QR → 모바일</span></div>
+      </a>
+
+      <a href="10_학부모선수모바일_MFRC_v1_2.html" class="card">
+        <div class="card-role role-player-c">◆ Player</div>
+        <div class="card-top"><div class="card-num">11</div><div class="card-name">모바일 뷰</div></div>
+        <div class="card-desc">선수·학부모가 휴대폰에서 확인. 성장 추이, 이번 주 훈련 과제, 영상 튜토리얼까지. 팀 내 순위는 노출하지 않습니다.</div>
+        <div class="card-features"><span class="feat feat-ink">4탭</span><span class="feat feat-forest">● 교정 영상</span><span class="feat feat-ink">순위 미노출</span></div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- 연맹 5 -->
+  <div class="section-group">
+    <div class="sec-header">
+      <div class="sec-icon">◆ FEDERATION</div>
+      <div class="sec-title">연맹 관리자</div>
+      <div class="sec-desc">27구단 관리 5개 화면</div>
+    </div>
+    <div class="cards">
+
+      <a href="연맹관리자대시보드_MFRC_v1_2.html" class="card">
+        <div class="card-role role-league-c">◆ FED</div>
+        <div class="card-top"><div class="card-num">F1</div><div class="card-name">전체 현황</div></div>
+        <div class="card-desc">27개 구단 측정·보고서 진행 현황을 한눈에. 지연 구단은 자동으로 상단에 배치되어 즉시 조치 가능.</div>
+        <div class="card-features"><span class="feat feat-ink">27구단 관제</span><span class="feat feat-amber">▲ 지연 알림</span></div>
+      </a>
+
+      <a href="연맹_측정일정_MFRC_v1_2.html" class="card">
+        <div class="card-role role-league-c">◆ FED</div>
+        <div class="card-top"><div class="card-num">F2</div><div class="card-name">측정 일정</div></div>
+        <div class="card-desc">월별 구단 측정 일정을 권역별로 배치. 측정팀 파견 스케줄과 완료 현황을 같이 관리합니다.</div>
+        <div class="card-features"><span class="feat feat-ink">월별 일정</span><span class="feat feat-ink">권역별</span></div>
+      </a>
+
+      <a href="연맹_보고서현황_MFRC_v1_2.html" class="card">
+        <div class="card-role role-league-c">◆ FED</div>
+        <div class="card-top"><div class="card-num">F3</div><div class="card-name">보고서 현황</div></div>
+        <div class="card-desc">구단별 보고서 제출/미제출 상태. 연맹 납품 기한 임박 건과 3중 검수 완료 여부를 모니터링.</div>
+        <div class="card-features"><span class="feat feat-ink">제출 현황</span><span class="feat feat-forest">● 3중 검수</span></div>
+      </a>
+
+      <a href="연맹_리그기준값_MFRC_v1_2.html" class="card">
+        <div class="card-role role-league-c">◆ FED</div>
+        <div class="card-top"><div class="card-num">F4</div><div class="card-name">리그 기준값 · Normative DB</div></div>
+        <div class="card-desc">U18·U15 포지션별 표준 기준값 DB. 연도별 변화 추이와 성숙도에 따라 자동 보정됩니다.</div>
+        <div class="card-features"><span class="feat feat-ink">포지션별</span><span class="feat feat-forest">● 자동 업데이트</span></div>
+      </a>
+
+      <a href="연맹_지연관리_MFRC_v1_2.html" class="card">
+        <div class="card-role role-league-c">◆ FED</div>
+        <div class="card-top"><div class="card-num">F5</div><div class="card-name">지연 관리 · SLA</div></div>
+        <div class="card-desc">납품 지연 구단 자동 분류(즉시 조치/모니터링). 담당자 연락 이력과 조치 버튼을 한 화면에서.</div>
+        <div class="card-features"><span class="feat feat-red">■ 즉시 조치</span><span class="feat feat-amber">▲ 모니터링</span></div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- 구단 보고서 1 + PT 1 -->
+  <div class="section-group">
+    <div class="sec-header">
+      <div class="sec-icon">◆ REPORT</div>
+      <div class="sec-title">구단별 보고서</div>
+      <div class="sec-desc">연맹 납품용 A4 구단별 보고서</div>
+    </div>
+    <div class="cards">
+
+      <a href="12_구단별보고서_신평고U18_16p_MFRC_v1_2.html" class="card">
+        <div class="card-role role-report-c">◆ REPORT</div>
+        <div class="card-top"><div class="card-num">12</div><div class="card-name">구단별 보고서 · 신평고 U18</div></div>
+        <div class="card-desc">연맹 납품용 구단별 16페이지 종합 보고서. 측정 결과·부상 위험군·AT 처방을 한 문서에 정리.</div>
+        <div class="card-features"><span class="feat feat-ink">16 페이지</span><span class="feat feat-ink">RFP 매핑</span><span class="feat feat-forest">● 3중 검수</span></div>
+      </a>
+
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ============================================== -->
+<!-- FOOTER · Trust Bar                             -->
+<!-- ============================================== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="foot-brand" style="margin-bottom:16px">
+        <div style="width:220px"><svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#F5F3EE"/>
+      </svg></div>
+      </div>
+      <div class="foot-desc">
+        K리그 유소년 2026 피지컬 측정·분석 통합 시스템<br>
+        Powered by Kinvent · Ronfic · Catapult 생태계
+      </div>
+    </div>
+
+    <div class="foot-trust">
+      <div class="foot-trust-title">● Trust & Credentials</div>
+      <div class="foot-trust-item">
+        ● <strong>AT 검수:</strong> 이슬기 AT · 13개 국제 자격 · 국가대표 트레이너 경력
+      </div>
+      <div class="foot-trust-item">
+        ● <strong>학술 감수:</strong> 성균관대학교 스포츠과학과 Sports Interaction Science
+      </div>
+      <div class="foot-trust-item">
+        ● <strong>데이터 소유권:</strong> 한국프로축구연맹
+      </div>
+      <div class="foot-trust-item">
+        ● <strong>장비 공식 파트너:</strong> Kinvent (7종) · Ronfic · Catapult
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

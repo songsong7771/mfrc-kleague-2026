@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K리그 유소년 · 근력·좌우 균형 · 강민준 #17 · MFRC</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  a { text-decoration: none; color: inherit; }
+
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --bg-sidebar: #EFECE4; --card: #FFFFFF;
+    --ink: #1A1A1A; --mid: #6B6B6B; --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+    --shadow-card: 0 1px 4px rgba(26,26,26,0.04);
+  }
+
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 20px 20px; border-bottom: 1px solid var(--rule); }
+  .sb-logo-mark { margin-bottom: 12px; }
+  .sb-logo-mark svg { width: 42px; height: auto; display: block; }
+  .sidebar-logo h1 { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--ink); text-transform: uppercase; }
+  .sidebar-logo p { font-family: var(--font-sans); font-size: 11px; color: var(--mid); margin-top: 6px; letter-spacing: -0.005em; line-height: 1.55; }
+  .sidebar-logo p strong { color: var(--ink); font-weight: 700; }
+  .sidebar-logo p .tag { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-top: 3px; }
+
+  .sidebar-nav { flex: 1; padding: 16px 0; overflow-y: auto; }
+  .nav-section { padding: 16px 20px 6px; font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.15em; color: var(--light); text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 11px 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; cursor: pointer; letter-spacing: -0.01em; transition: all 0.15s; }
+  .nav-item:hover { color: var(--ink); background: rgba(26,26,26,0.03); }
+  .nav-item.active { background: var(--forest-dim); color: var(--forest); border-left-color: var(--forest); font-weight: 700; }
+  .nav-item .ni-mark { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--light); margin-right: 4px; letter-spacing: 0.05em; }
+  .nav-item .ni-tag { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-left: auto; letter-spacing: 0.05em; }
+
+  .sidebar-footer { padding: 14px 20px; border-top: 1px solid var(--rule); font-family: var(--font-mono); font-size: 9px; color: var(--light); line-height: 1.6; letter-spacing: 0.05em; }
+
+  /* ===== MAIN ===== */
+  .main { margin-left: 240px; min-height: 100vh; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245,243,238,0.82); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-sans); font-size: 12px; color: var(--mid); letter-spacing: -0.005em; }
+  .breadcrumb span { color: var(--ink); font-weight: 700; }
+  .device-tags { display: flex; gap: 6px; }
+  .device-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 4px 10px; background: var(--bg-subtle); color: var(--mid); border: 1px solid var(--rule); letter-spacing: 0.08em; text-transform: uppercase; }
+  .device-tag.primary { color: var(--forest); border-color: var(--forest); background: var(--forest-dim); }
+  .device-tag.ronfic { color: var(--amber); border-color: var(--amber); background: var(--amber-dim); }
+
+  /* ===== HERO ===== */
+  .hero { padding: 20px 36px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 18px; background: var(--bg-subtle); }
+  .hero-avatar { width: 48px; height: 48px; background: var(--red); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 16px; font-weight: 800; color: var(--card); letter-spacing: -0.03em; border: 2px solid var(--red); }
+  .hero-name-row { display: flex; align-items: baseline; gap: 10px; }
+  .hero-name { font-family: var(--font-sans); font-size: 17px; font-weight: 800; letter-spacing: -0.03em; }
+  .hero-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 8px; background: var(--red); color: var(--card); letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--red); }
+  .hero-meta { font-family: var(--font-mono); font-size: 11px; color: var(--mid); font-weight: 600; letter-spacing: 0.05em; margin-top: 4px; }
+
+  /* ===== CONTENT ===== */
+  .content { padding: 24px 36px 48px; }
+
+  .card { background: var(--card); border: 1px solid var(--rule); overflow: hidden; box-shadow: var(--shadow-card); margin-bottom: 16px; }
+  .card-header { padding: 16px 24px 12px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-family: var(--font-sans); font-size: 13px; font-weight: 800; letter-spacing: -0.02em; }
+  .card-subtitle { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 3px; letter-spacing: 0.05em; }
+  .card-body { padding: 22px 24px; }
+  .card-actions { display: flex; gap: 8px; padding: 14px 24px; border-top: 1px solid var(--rule); flex-wrap: wrap; background: var(--bg-subtle); }
+
+  .action-btn { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 7px 14px; background: transparent; color: var(--ink); border: 1px solid var(--ink); cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.15s; }
+  .action-btn:hover { background: var(--ink); color: var(--card); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+
+  /* ===== CONCLUSION CARDS ===== */
+  .conc { padding: 16px 20px; margin-bottom: 12px; border-left: 3px solid; border-top: 1px solid var(--rule); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .conc-title { font-family: var(--font-sans); font-size: 13px; font-weight: 800; margin-bottom: 5px; letter-spacing: -0.015em; }
+  .conc-data { font-family: var(--font-mono); font-size: 10px; color: var(--mid); font-weight: 600; margin-bottom: 5px; letter-spacing: 0.03em; }
+  .conc-game { font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: -0.005em; line-height: 1.55; }
+  .conc-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 8px; display: inline-block; margin-top: 6px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid; }
+
+  .conc.red { border-left-color: var(--red); background: var(--red-dim); }
+  .conc.red .conc-title { color: var(--red); }
+  .conc.red .conc-game { color: var(--red); }
+
+  .conc.amber { border-left-color: var(--amber); background: var(--amber-dim); }
+  .conc.amber .conc-title { color: var(--amber); }
+  .conc.amber .conc-game { color: var(--amber); }
+
+  .conc.forest { border-left-color: var(--forest); background: var(--forest-dim); }
+  .conc.forest .conc-title { color: var(--forest); }
+  .conc.forest .conc-game { color: var(--forest); }
+
+  .conc.ink { border-left-color: var(--ink); background: var(--bg-subtle); }
+  .conc.ink .conc-title { color: var(--ink); }
+  .conc.ink .conc-game { color: var(--ink); }
+
+  .cb-str { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+  .cb-act { background: var(--amber-dim); color: var(--amber); border-color: var(--amber); }
+  .cb-mob { background: var(--forest-dim); color: var(--forest); border-color: var(--forest); }
+  .cb-mix { background: var(--bg); color: var(--ink); border-color: var(--ink); }
+
+  /* ===== LR bars ===== */
+  .lr-row { display: grid; grid-template-columns: 110px 55px 1fr 46px 1fr 55px; gap: 6px; align-items: center; margin-bottom: 6px; }
+  .lr-label { font-family: var(--font-sans); font-size: 11px; font-weight: 600; color: var(--ink); letter-spacing: -0.005em; }
+  .lr-val { font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-align: right; letter-spacing: 0; }
+  .lr-val-r { font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-align: left; letter-spacing: 0; }
+  .lr-track { height: 20px; background: var(--bg-subtle); position: relative; overflow: hidden; border: 1px solid var(--rule); }
+  .lr-fill-l { position: absolute; right: 0; top: 0; height: 100%; }
+  .lr-fill-r { position: absolute; left: 0; top: 0; height: 100%; }
+  .lr-asi { text-align: center; font-family: var(--font-mono); font-size: 10.5px; font-weight: 800; padding: 3px 6px; letter-spacing: 0.02em; border: 1px solid; }
+
+  .fill-ink { background: var(--ink); }
+  .fill-forest { background: var(--forest); }
+  .fill-amber { background: var(--amber); }
+  .fill-red { background: var(--red); }
+
+  .thresh { display: flex; gap: 14px; font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; margin-bottom: 10px; color: var(--mid); letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .section-label { font-family: var(--font-mono); font-size: 10.5px; font-weight: 800; color: var(--ink); margin: 14px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--rule); letter-spacing: 0.1em; text-transform: uppercase; }
+  .section-label:first-child { margin-top: 0; }
+
+  .lr-annotation { text-align: center; font-family: var(--font-sans); font-size: 10.5px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.005em; }
+  .lr-annotation.red { color: var(--red); }
+  .lr-annotation.amber { color: var(--amber); }
+  .lr-annotation.forest { color: var(--forest); }
+
+  .lr-summary { margin: 10px 0; padding: 10px 14px; background: var(--bg-subtle); border: 1px solid var(--rule); border-left: 3px solid var(--ink); font-family: var(--font-sans); font-size: 11px; color: var(--ink); letter-spacing: -0.005em; line-height: 1.55; }
+  .lr-summary strong { font-weight: 700; }
+
+  /* ===== TABLES ===== */
+  .data-table { width: 100%; border-collapse: collapse; font-family: var(--font-sans); font-size: 10.5px; margin-bottom: 8px; }
+  .data-table th { background: var(--ink); color: var(--card); padding: 7px 9px; text-align: left; font-family: var(--font-mono); font-weight: 700; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .data-table td { padding: 7px 9px; border-bottom: 1px solid var(--rule); letter-spacing: -0.005em; }
+  .data-table tr:nth-child(even) td { background: var(--bg-subtle); }
+  .mono { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0; }
+
+  .table-header { font-family: var(--font-mono); font-size: 10.5px; font-weight: 800; color: var(--forest); margin: 16px 0 8px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ===== INSIGHT ===== */
+  .insight { background: var(--forest-dim); border: 1px solid var(--forest); padding: 14px 18px; margin: 12px 0; }
+  .insight-icon { font-family: var(--font-mono); font-size: 11px; font-weight: 700; margin-right: 6px; color: var(--forest); letter-spacing: 0.08em; text-transform: uppercase; }
+  .insight-text { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+  .insight-text strong { color: var(--forest); }
+  .insight-detail { font-family: var(--font-sans); font-size: 11px; color: var(--ink); font-weight: 500; margin-top: 6px; letter-spacing: -0.005em; line-height: 1.6; }
+
+  /* ===== K-Myo ACTIVATION BOX ===== */
+  .activation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 12px; }
+  .activation-col { padding: 14px; border: 1px solid var(--rule); background: var(--card); }
+  .activation-col.ok { border-left: 3px solid var(--forest); background: var(--forest-dim); }
+  .activation-col.warn { border-left: 3px solid var(--amber); background: var(--amber-dim); }
+  .activation-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .activation-label.ok { color: var(--forest); }
+  .activation-label.warn { color: var(--amber); }
+  .activation-line { font-family: var(--font-sans); font-size: 10.5px; color: var(--ink); margin-bottom: 4px; letter-spacing: -0.005em; }
+  .activation-line strong { font-family: var(--font-mono); font-weight: 700; letter-spacing: 0; }
+  .activation-note { font-family: var(--font-sans); font-size: 10.5px; font-weight: 700; margin-top: 6px; letter-spacing: -0.005em; }
+  .activation-note.ok { color: var(--forest); }
+  .activation-note.warn { color: var(--amber); }
+
+  .selective-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 10px; background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* ===== ROM ===== */
+  .rom-item { background: var(--bg-subtle); border: 1px solid var(--rule); padding: 11px 14px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .rom-name { font-family: var(--font-sans); font-size: 12px; font-weight: 700; letter-spacing: -0.005em; }
+  .rom-vals { display: flex; gap: 18px; }
+  .rom-v { font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0; }
+  .rom-v-label { font-family: var(--font-mono); font-size: 9px; color: var(--mid); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-right: 5px; }
+  .rom-interp { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid; }
+
+  /* ===== AI BOX ===== */
+  .ai-inline { background: var(--forest-dim); border: 1px solid var(--forest); padding: 16px 20px; margin-bottom: 20px; }
+  .ai-inline-head { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--forest); margin-bottom: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+  .ai-inline-line { font-family: var(--font-sans); font-size: 11px; color: var(--ink); line-height: 1.65; letter-spacing: -0.005em; margin-bottom: 6px; }
+  .ai-inline-line strong { font-weight: 700; }
+  .ai-inline-line em { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
+  .ai-inline-link { font-family: var(--font-mono); font-size: 10px; color: var(--forest); text-decoration: underline; font-weight: 700; letter-spacing: 0.05em; }
+
+  .ai-box { background: var(--card); border: 1px solid var(--ink); padding: 20px 24px; }
+  .ai-top { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
+  .ai-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 4px 10px; background: var(--ink); color: var(--card); letter-spacing: 0.15em; text-transform: uppercase; }
+  .ai-top-title { font-family: var(--font-sans); font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; flex: 1; }
+  .ai-check { font-family: var(--font-mono); font-size: 9.5px; color: var(--forest); font-weight: 700; letter-spacing: 0.05em; }
+  .ai-section { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--ink); margin: 14px 0 8px; padding-top: 12px; border-top: 1px solid var(--rule); letter-spacing: 0.15em; text-transform: uppercase; }
+  .ai-section:first-of-type { margin-top: 0; padding-top: 0; border: none; }
+  .ai-item { font-family: var(--font-sans); font-size: 12px; font-weight: 500; color: var(--ink); padding: 6px 0; display: grid; grid-template-columns: 22px 1fr; gap: 8px; letter-spacing: -0.005em; line-height: 1.55; }
+  .ai-item .ai-mark { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--mid); letter-spacing: 0; }
+  .ai-item.red .ai-mark { color: var(--red); }
+  .ai-item.amber .ai-mark { color: var(--amber); }
+  .ai-item.forest .ai-mark { color: var(--forest); }
+  .ai-item strong { font-weight: 700; color: var(--ink); }
+  .ai-item .link-ref { color: var(--forest); font-weight: 700; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; }
+
+  /* ===== POPUPS (preserved) ===== */
+  .popup-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26,26,26,0.5); z-index: 9998; }
+  .popup-action { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; background: var(--card); box-shadow: 0 12px 48px rgba(0,0,0,0.25); padding: 28px 32px; min-width: 420px; max-width: 540px; border: 1px solid var(--rule); }
+  .popup-close { position: absolute; top: 12px; right: 16px; font-family: var(--font-mono); font-size: 16px; cursor: pointer; color: var(--light); font-weight: 700; }
+  .popup-close:hover { color: var(--ink); }
+  #actionIcon { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--forest); margin-bottom: 12px; letter-spacing: 0.15em; text-transform: uppercase; }
+  #actionTitle { font-family: var(--font-sans); font-size: 17px; font-weight: 800; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.02em; }
+  #actionBody { font-family: var(--font-sans); font-size: 13px; color: var(--ink); line-height: 1.6; letter-spacing: -0.005em; }
+  #actionFooter { margin-top: 20px; display: flex; gap: 8px; justify-content: flex-end; }
+
+  @media print {
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sidebar { display: none !important; }
+    .main { margin-left: 0 !important; }
+    .topbar { position: relative !important; background: var(--bg-subtle) !important; backdrop-filter: none !important; }
+    .no-print { display: none !important; }
+    .card { box-shadow: none !important; break-inside: avoid; }
+    .popup-overlay, .popup-action { display: none !important; }
+  }
+
+  .sidebar-role { padding: 12px 22px; border-bottom: 1px solid var(--rule); }
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
+  .sidebar-footer { padding: 18px 22px 20px; border-top: 1px solid var(--rule); }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+    <div class="sb-ko">마이페이보릿리커버리</div>
+    <div class="sb-sub-line"></div>
+    <div class="sb-program">K리그 유소년<br>측정·분석 시스템</div>
+    <div class="sb-caption">2026 시즌 &nbsp;·&nbsp; v1.2</div>
+  </div>
+  <div class="sidebar-role">
+    <span class="role-badge">Coaching Staff</span>
+    <span class="role-team">신평고등학교 U18</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="홈_코칭스태프_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">00</span>코칭스태프 홈</a>
+    <a href="선수목록_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">00a</span>선수 목록</a>
+    <a href="2_팀대시보드_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">02</span>팀 대시보드</a>
+
+    <div class="nav-section">Analysis</div>
+    <a href="3_점프착지방향전환_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">03</span>점프·착지·방향전환<span class="ni-tag">3D-Deltas</span></a>
+    <a href="4_달리기가속감속_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">04</span>달리기·가속·감속<span class="ni-tag">K-Power</span></a>
+    <a href="근력좌우균형_MFRC_v1_2.html" class="nav-item active"><span class="ni-mark">05</span>근력·좌우 균형<span class="ni-tag">K-TDM · Ronfic</span></a>
+    <a href="5_부상위험도_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">06</span>부상 위험도<span class="ni-tag">Integrated</span></a>
+    <a href="6_플레이어유형_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">07</span>플레이어 유형<span class="ni-tag">Integrated</span></a>
+    <a href="7_컨디션피로도_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">08</span>컨디션·피로도<span class="ni-tag">K-Grip · Catapult</span></a>
+
+    <div class="nav-section">Operations</div>
+    <a href="8_훈련플래너_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">09</span>훈련 플래너</a>
+    <a href="14_전술훈련설계_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">14</span>전술 훈련 설계</a>
+    <a href="15_상대전술분석_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">15</span>상대 전술 분석</a>
+    <a href="9_월별캘린더_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">10</span>캘린더</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sb-footer-logo">
+      <svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+      </svg>
+    </div>
+    <div class="sb-copy">© 2026 My Favorite Recovery<br>마이페이보릿리커버리</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">분석 상세 &gt; 05. 근력·좌우 균형 &gt; <span>강민준 (#17, FW) · RED</span></div>
+    <div class="device-tags">
+      <span class="device-tag primary">● K-TDM</span>
+      <span class="device-tag ronfic">▲ Ronfic FITVISOR</span>
+      <span class="device-tag primary">● K-Move</span>
+      <span class="device-tag">K-Myo · 선별</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-avatar">17</div>
+    <div>
+      <div class="hero-name-row">
+        <div class="hero-name">강민준</div>
+        <div class="hero-badge">■ RED</div>
+      </div>
+      <div class="hero-meta">신평고 U18 · FW · 고3 · 2026.04.28 1차 측정</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== CONCLUSION CARDS ===== -->
+    <div class="grid-2">
+      <div class="conc red">
+        <div class="conc-title">■ 핵심 RED: H:Q 좌측 0.48 · Croisier 기준 미달</div>
+        <div class="conc-data">데이터: K-TDM 햄스트링 좌 224N · 대퇴사두 좌 465N · 비율 0.48 (기준 ≥0.60)</div>
+        <div class="conc-game">● 경기 영향: 전속력 달리기 후 급정지 시 좌측 뒷허벅지에 부상 위험 매우 높음. 고강도 스프린트 즉시 제한 필요.</div>
+        <div><span class="conc-badge cb-str">Strength Critical</span></div>
+      </div>
+      <div class="conc amber">
+        <div class="conc-title">▲ 연관 CAUT: Nordic 좌우 비대칭 22%</div>
+        <div class="conc-data">데이터: Ronfic 편심 근력 좌 280N / 우 358N · 좌측 -22% 약화</div>
+        <div class="conc-game">● 경기 영향: 신장성 수축 능력 좌측 부족 · 감속 시 좌측 햄스트링에 과부하 집중.</div>
+        <div><span class="conc-badge cb-act">Eccentric Deficit</span></div>
+      </div>
+      <div class="conc forest">
+        <div class="conc-title">● 유지 강점: 고관절 가동범위 양측 정상</div>
+        <div class="conc-data">데이터: K-Move 고관절 IR/ER 좌 44°/40° · 우 42°/38° · 차이 5%</div>
+        <div class="conc-game">● 경기 영향: 관절 제한 없음. 근력·활성화 문제에 집중 가능.</div>
+      </div>
+      <div class="conc ink">
+        <div class="conc-title">◆ 우선 액션 · 2주 집중</div>
+        <div class="conc-game">Single-leg Nordic (좌측 집중) + Ronfic 편심 저항 (30% 1RM) 주 3~4회 + 고강도 스프린트 제한 → H:Q 좌 0.60 TARGET 달성.</div>
+        <div><span class="conc-badge cb-mob">→ Nordic block · Ronfic block 연결</span></div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 1: 등척성 근력 (K-TDM) ===== -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">① 최대근력 · 근지구력 · 근발현속도 · 좌우 밸런스</div>
+          <div class="card-subtitle">Kinvent K-TDM · 관절별 고정 자세 · Peak Force · Fatigue Index · RFD · LSI</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="thresh">── 10% 관리 기준 ── 15% 주의 기준 ── 20% 위험 기준</div>
+
+        <div class="section-label">● 무릎 · 굴곡/신전 · H:Q ■ RED 이슈</div>
+        <div class="lr-row">
+          <div class="lr-label">햄스트링 (Ham)</div>
+          <div class="lr-val" style="color:var(--red)">224N</div>
+          <div class="lr-track"><div class="lr-fill-l fill-red" style="width:58%"></div></div>
+          <div class="lr-asi" style="color:var(--red);background:var(--red-dim);border-color:var(--red)">22%</div>
+          <div class="lr-track"><div class="lr-fill-r fill-ink" style="width:82%"></div></div>
+          <div class="lr-val-r" style="color:var(--ink)">287N</div>
+        </div>
+        <div class="lr-annotation red">■ 햄스트링 · 22% 위험기준 초과 · 좌측 -22%</div>
+
+        <div class="lr-row">
+          <div class="lr-label">대퇴사두 (Quad)</div>
+          <div class="lr-val" style="color:var(--ink)">465N</div>
+          <div class="lr-track"><div class="lr-fill-l fill-ink" style="width:86%"></div></div>
+          <div class="lr-asi" style="color:var(--forest);background:var(--forest-dim);border-color:var(--forest)">6%</div>
+          <div class="lr-track"><div class="lr-fill-r fill-forest" style="width:82%"></div></div>
+          <div class="lr-val-r" style="color:var(--forest)">495N</div>
+        </div>
+        <div class="lr-annotation forest">● 대퇴사두 · 정상 좌우 균형</div>
+
+        <div class="lr-summary"><strong>■ 뒷허벅지 보호력(H:Q) — 좌 0.48 RED / 우 0.58 주의</strong> · Croisier 기준 ≥0.60 · 좌측 즉시 개입 필수 · 고강도 스프린트 제한</div>
+
+        <div class="section-label">● 고관절 · 내전/외전</div>
+        <div class="lr-row">
+          <div class="lr-label">내전근 (Add)</div>
+          <div class="lr-val" style="color:var(--ink)">218N</div>
+          <div class="lr-track"><div class="lr-fill-l fill-ink" style="width:76%"></div></div>
+          <div class="lr-asi" style="color:var(--amber);background:var(--amber-dim);border-color:var(--amber)">11%</div>
+          <div class="lr-track"><div class="lr-fill-r fill-amber" style="width:68%"></div></div>
+          <div class="lr-val-r" style="color:var(--amber)">194N</div>
+        </div>
+        <div class="lr-annotation amber">▲ 내전근 · 10% 관리기준 초과 · 우측 약</div>
+
+        <div class="lr-row">
+          <div class="lr-label">외전근 (Abd)</div>
+          <div class="lr-val" style="color:var(--ink)">205N</div>
+          <div class="lr-track"><div class="lr-fill-l fill-ink" style="width:74%"></div></div>
+          <div class="lr-asi" style="color:var(--forest);background:var(--forest-dim);border-color:var(--forest)">7%</div>
+          <div class="lr-track"><div class="lr-fill-r fill-forest" style="width:68%"></div></div>
+          <div class="lr-val-r" style="color:var(--forest)">191N</div>
+        </div>
+        <div class="lr-annotation forest">● 외전근 · 정상</div>
+
+        <div class="lr-summary"><strong>사타구니 안정성(내전:외전) — 좌 1.06 / 우 1.02</strong> · 기준 ≥0.90 양측 충족 · Copenhagen 우측 집중</div>
+
+        <div class="section-label">● 고관절 · 굴곡/신전</div>
+        <div class="lr-row">
+          <div class="lr-label">굴곡근 (Flex)</div>
+          <div class="lr-val" style="color:var(--ink)">192N</div>
+          <div class="lr-track"><div class="lr-fill-l fill-ink" style="width:72%"></div></div>
+          <div class="lr-asi" style="color:var(--forest);background:var(--forest-dim);border-color:var(--forest)">6%</div>
+          <div class="lr-track"><div class="lr-fill-r fill-forest" style="width:68%"></div></div>
+          <div class="lr-val-r" style="color:var(--forest)">181N</div>
+        </div>
+
+        <div class="table-header">● 세부 지표 · 근지구력 · 근발현속도 · K-TDM + Ronfic 교차</div>
+        <table class="data-table">
+          <tr><th>관절</th><th>Peak Force</th><th>Fatigue Index</th><th>RFD</th><th>LSI</th><th>Ronfic 편심</th><th>판정</th></tr>
+          <tr><td>햄스트링</td><td class="mono">224/287N</td><td class="mono">-28%</td><td class="mono">1,520 N/s</td><td class="mono" style="color:var(--red);font-weight:700">78%</td><td class="mono" style="color:var(--red);font-weight:700">-22%</td><td style="color:var(--red);font-weight:700">■ RED</td></tr>
+          <tr><td>내전근</td><td class="mono">218/194N</td><td class="mono">-16%</td><td class="mono">1,380 N/s</td><td class="mono" style="color:var(--amber);font-weight:700">89%</td><td class="mono">-9%</td><td style="color:var(--amber);font-weight:700">▲ CAUT</td></tr>
+          <tr><td>외전근</td><td class="mono">205/191N</td><td class="mono">-12%</td><td class="mono">1,240 N/s</td><td class="mono" style="color:var(--forest);font-weight:700">93%</td><td class="mono">-5%</td><td style="color:var(--forest);font-weight:700">● SAFE</td></tr>
+          <tr><td>대퇴사두</td><td class="mono">465/495N</td><td class="mono">-10%</td><td class="mono">2,180 N/s</td><td class="mono" style="color:var(--forest);font-weight:700">94%</td><td class="mono">+2%</td><td style="color:var(--forest);font-weight:700">● SAFE</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 2: 근활성도 (K-Myo) ===== -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">② 근활성도 · 동원 순서 · 선별 심층 측정</div>
+          <div class="card-subtitle">Kinvent K-Myo · 비침습 EMG · RED 선수만 선별 · MVC 대비 % · onset detection</div>
+        </div>
+        <span class="selective-badge">● Selective Deep Scan</span>
+      </div>
+      <div class="card-body">
+        <div class="section-label">● 동원 순서 비교 · Knee Flexion 동작 (햄스트링 초점)</div>
+
+        <div class="activation-grid">
+          <div class="activation-col warn">
+            <div class="activation-label warn">▲ 좌측 · 지연 · RED 관련</div>
+            <div class="activation-line">1. 대퇴사두 onset: 90ms <strong style="color:var(--amber)">← 보상 선활성</strong></div>
+            <div class="activation-line">2. 둔근 onset: 125ms</div>
+            <div class="activation-line">3. 햄스트링 onset: <strong style="color:var(--red)">215ms</strong> <span style="color:var(--red);font-weight:700">← 140ms 지연</span></div>
+            <div class="activation-note warn">▲ 햄스트링 지연 · Quad이 먼저 켜짐 (신장성 실패 패턴)</div>
+          </div>
+          <div class="activation-col ok">
+            <div class="activation-label ok">● 우측 · 정상 순서</div>
+            <div class="activation-line">1. 햄스트링 onset: <strong style="color:var(--forest)">80ms</strong></div>
+            <div class="activation-line">2. 둔근 onset: 105ms</div>
+            <div class="activation-line">3. 대퇴사두 onset: 135ms</div>
+            <div class="activation-note ok">● 정상 순서 · 햄스트링 먼저 활성</div>
+          </div>
+        </div>
+
+        <div class="insight">
+          <div class="insight-text"><span class="insight-icon">◆ 통합 해석</span> <strong>근력 저하 + 활성 지연 = Mixed 이슈 (좌측 햄스트링)</strong></div>
+          <div class="insight-detail">좌측 햄스트링은 등척성 근력이 22% 부족할 뿐 아니라, 활성 개시도 140ms 느립니다. 즉 "힘도 약하고 제때 못 쓴다" — 급정지·감속 시 이중 취약. Quad이 보상 활성하므로 대퇴사두 과부하 → 햄스트링은 더 약해지는 악순환. Ronfic 편심 저항으로 신장성 근력 우선 회복 필요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 3: ROM (K-Move) ===== -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">③ 관절 가동범위 · ROM</div>
+          <div class="card-subtitle">Kinvent K-Move · IMU 기반 · 민감도 1° · 좌우 차이</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="rom-item">
+          <div><div class="rom-name">고관절 내회전 (IR)</div></div>
+          <div class="rom-vals">
+            <div><span class="rom-v-label">L</span><span class="rom-v" style="color:var(--forest)">44°</span></div>
+            <div><span class="rom-v-label">R</span><span class="rom-v" style="color:var(--forest)">42°</span></div>
+            <div><span class="rom-v-label">Δ</span><span class="rom-v" style="color:var(--forest)">5%</span></div>
+          </div>
+          <span class="rom-interp" style="background:var(--forest-dim);color:var(--forest);border-color:var(--forest)">● 정상 범위</span>
+        </div>
+        <div class="rom-item">
+          <div><div class="rom-name">고관절 외회전 (ER)</div></div>
+          <div class="rom-vals">
+            <div><span class="rom-v-label">L</span><span class="rom-v">40°</span></div>
+            <div><span class="rom-v-label">R</span><span class="rom-v">38°</span></div>
+            <div><span class="rom-v-label">Δ</span><span class="rom-v" style="color:var(--forest)">5%</span></div>
+          </div>
+          <span class="rom-interp" style="background:var(--forest-dim);color:var(--forest);border-color:var(--forest)">● 정상 범위</span>
+        </div>
+        <div class="rom-item">
+          <div><div class="rom-name">발목 배측굴곡 (DF)</div></div>
+          <div class="rom-vals">
+            <div><span class="rom-v-label">L</span><span class="rom-v">36°</span></div>
+            <div><span class="rom-v-label">R</span><span class="rom-v">35°</span></div>
+            <div><span class="rom-v-label">Δ</span><span class="rom-v" style="color:var(--forest)">3%</span></div>
+          </div>
+          <span class="rom-interp" style="background:var(--forest-dim);color:var(--forest);border-color:var(--forest)">● 정상 범위</span>
+        </div>
+        <div class="rom-item">
+          <div><div class="rom-name">햄스트링 길이 (SLR)</div></div>
+          <div class="rom-vals">
+            <div><span class="rom-v-label">L</span><span class="rom-v" style="color:var(--amber)">68°</span></div>
+            <div><span class="rom-v-label">R</span><span class="rom-v">78°</span></div>
+            <div><span class="rom-v-label">Δ</span><span class="rom-v" style="color:var(--amber)">13%</span></div>
+          </div>
+          <span class="rom-interp" style="background:var(--amber-dim);color:var(--amber);border-color:var(--amber)">▲ 관찰 필요</span>
+        </div>
+
+        <div class="insight">
+          <div class="insight-text"><span class="insight-icon">◆ 통합 해석</span> <strong>SLR 좌측 단축 + H:Q 좌측 미달 = "긴장+약화" 동시 발생</strong></div>
+          <div class="insight-detail">좌측 햄스트링은 길이(68°)도 우측보다 짧고 근력(224N)도 22% 약합니다. 일반적으로 "약한 근육은 짧아진다"는 패턴. 스트레칭만으로는 부족하며, Ronfic 편심 저항으로 <em>긴 근육 길이에서 힘을 내는 능력</em>을 동시 훈련해야 합니다. HSI 재발 예방의 표준 프로토콜입니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AI ANALYSIS ===== -->
+    <div class="card">
+      <div class="card-body">
+        <div class="ai-inline">
+          <div class="ai-inline-head">● 이 수치들이 경기에서 뜻하는 것</div>
+          <div class="ai-inline-line">■ <strong>H:Q 좌 0.48 · Croisier 기준 대폭 미달</strong> → 전속력 후 급정지 시 좌측 햄스트링 부상 <em>매우 위험</em>. <strong style="color:var(--red)">고강도 스프린트 즉시 제한 + Nordic 좌측 집중 주 4회.</strong></div>
+          <div class="ai-inline-line">▲ <strong>Ronfic 편심 좌 -22%</strong> → 신장성 수축 능력 부족. <strong style="color:var(--amber)">Ronfic 편심 저항 (30% 1RM · 좌측 집중) 주 3회.</strong></div>
+          <div class="ai-inline-line">● <strong>대퇴사두·외전근 SAFE</strong> → 전체가 약한 게 아니라 좌측 햄스트링에 집중된 이슈. <strong style="color:var(--forest)">근력 총량은 충분.</strong></div>
+          <div class="ai-inline-line" style="margin-top:10px">→ <a href="8_훈련플래너_MFRC_v1_2.html" class="ai-inline-link">훈련 플래너에서 개별 처방 확인</a></div>
+        </div>
+
+        <div class="ai-box">
+          <div class="ai-top">
+            <span class="ai-badge">● AI · 강민준 #17 Deep Scan</span>
+            <span class="ai-top-title">근력·좌우 균형 종합 · Croisier Protocol 기반</span>
+            <span class="ai-check">● AT 검수 · 이슬기 + 학술 감수 · 성균관대 SIS</span>
+          </div>
+
+          <div class="ai-section">● 해석</div>
+          <div class="ai-item red"><span class="ai-mark">■</span><div><strong>좌측 햄스트링이 이중으로 취약합니다</strong> — 등척성 근력 22% 부족 + 활성 개시 140ms 지연. 급정지·감속 시 가장 먼저 무너지는 지점. <span class="conc-badge cb-str">Strength Critical</span></div></div>
+          <div class="ai-item amber"><span class="ai-mark">▲</span><div><strong>Ronfic 편심 근력 좌 -22%</strong> — 신장성 수축이 특히 약함. 경기 중 감속 동작에서 좌측 햄에 과부하 집중. <span class="conc-badge cb-act">Eccentric Deficit</span></div></div>
+          <div class="ai-item forest"><span class="ai-mark">●</span><div><strong>관절 가동범위·대퇴사두·외전근 정상</strong> — 동작 제한이 아니라 좌측 햄스트링 집중 이슈. 치료 방향 명확.</div></div>
+          <div class="ai-item amber"><span class="ai-mark">▲</span><div><strong>SLR 좌 68° · 짧아짐 동반</strong> — 약화와 단축 동시 발생. 스트레칭보다 <em>편심 저항</em> 우선.</div></div>
+
+          <div class="ai-section">● 권장 · 2주 집중 프로토콜</div>
+          <div class="ai-item forest"><span class="ai-mark">01</span><div>Single-leg Nordic curl (좌측 집중) 주 4회 3×6회 — <span class="link-ref">→ 훈련 플래너 hamstring block</span></div></div>
+          <div class="ai-item forest"><span class="ai-mark">02</span><div>Ronfic 편심 저항 (30% 1RM · 좌측 집중) 주 3회 3×8회 — <span class="link-ref">→ 훈련 플래너 Ronfic block</span></div></div>
+          <div class="ai-item forest"><span class="ai-mark">03</span><div>감각운동 통합 훈련 (불안정 면) 주 3회 2×10회 — <span class="link-ref">→ 훈련 플래너 neuromuscular</span></div></div>
+          <div class="ai-item forest"><span class="ai-mark">04</span><div>Copenhagen 우측 집중 (내전근 11%) 주 3회 3×10회 — <span class="link-ref">→ 훈련 플래너 adductor block</span></div></div>
+          <div class="ai-item red"><span class="ai-mark">■</span><div><strong>고강도 스프린트 즉시 제한</strong> · 재측정 후 재평가까지 유지</div></div>
+          <div class="ai-item"><span class="ai-mark">■</span><div>재측정 · 2주 후 (2026.05.12) · TARGET: H:Q 좌 ≥0.60 · Ronfic 편심 좌우 차이 ≤10%</div></div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="action-btn" onclick="location.href='8_훈련플래너_MFRC_v1_2.html'">● 훈련 플래너로 보내기</button>
+        <button class="action-btn" onclick="showActionPopup('tag')">■ 등급 태그 등록</button>
+        <button class="action-btn" onclick="showActionPopup('memo_at')">● AT 메모</button>
+        <button class="action-btn" onclick="showActionPopup('memo_coach')">● 코치 메모</button>
+        <button class="action-btn" onclick="showActionPopup('memo_director')">● 감독 메모</button>
+        <button class="action-btn" onclick="showActionPopup('parent')">◆ 학부모용 요약</button>
+        <button class="action-btn" onclick="showActionPopup('save')">● 리포트 저장</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- 공통 액션 팝업 -->
+<div id="actionPopup" class="popup-action">
+  <div onclick="closeActionPopup()" class="popup-close">✕</div>
+  <div id="actionIcon"></div>
+  <div id="actionTitle"></div>
+  <div id="actionBody"></div>
+  <div id="actionFooter"></div>
+</div>
+<div id="actionOverlay" class="popup-overlay" onclick="closeActionPopup()"></div>
+
+<script>
+const _ac = {
+  planner: { icon: '● Planner', title: '훈련 플래너로 전송', body: '<div style="margin-bottom:14px;font-family:var(--font-sans);font-size:13px;letter-spacing:-0.005em">강민준 #17 RED 근력 분석 결과를 기반으로 개인 보강 훈련 플랜을 생성합니다.</div><div style="background:var(--red-dim);border:1px solid var(--red);padding:14px 16px"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--red);margin-bottom:6px;letter-spacing:0.15em;text-transform:uppercase">■ RED 즉시 생성 플랜</div><div style="font-family:var(--font-sans);font-size:12px;color:var(--ink);line-height:1.8">• Single-leg Nordic (좌측 집중) 주 4회<br>• Ronfic 편심 저항 (30% 1RM) 주 3회<br>• 고강도 스프린트 제한<br>• AT 검수 후 코치 승인 대기</div></div>', buttons: ['플랜 생성', '취소'] },
+  tag: { icon: '■ Tag', title: '관리 등급 태그 등록', body: '<div style="margin-bottom:14px;font-family:var(--font-sans);font-size:13px;letter-spacing:-0.005em">RED · CAUT 등급 선수에게 태그를 적용합니다.</div><div style="background:var(--red-dim);border:1px solid var(--red);padding:12px 14px;margin-bottom:8px"><div style="font-family:var(--font-mono);font-weight:700;color:var(--red);font-size:10px;margin-bottom:6px;letter-spacing:0.15em;text-transform:uppercase">■ RED (2)</div><div style="font-family:var(--font-sans);font-size:12px;color:var(--ink);line-height:1.65">강민준 (FW #17) — H:Q 좌 0.48<br>박정민 (CB #24) — H:Q 양측 미달</div></div><div style="background:var(--amber-dim);border:1px solid var(--amber);padding:12px 14px"><div style="font-family:var(--font-mono);font-weight:700;color:var(--amber);font-size:10px;margin-bottom:6px;letter-spacing:0.15em;text-transform:uppercase">▲ CAUT (4)</div><div style="font-family:var(--font-sans);font-size:12px;color:var(--ink);line-height:1.8">정한서 · 이재호 · 윤성민 · 신동혁</div></div>', buttons: ['태그 적용', '취소'] },
+  memo_at: { icon: '● AT Memo', title: 'AT 메모 · Athletic Trainer', body: '<div style="margin-bottom:14px;font-family:var(--font-sans);font-size:13px;letter-spacing:-0.005em">Athletic Trainer 전문 소견 · 강민준 #17</div><textarea style="width:100%;height:110px;border:1px solid var(--rule);padding:12px;font-family:var(--font-sans);font-size:13px;resize:vertical;outline:none;letter-spacing:-0.005em">H:Q 좌 0.48 + Ronfic 편심 -22% 확인. Croisier 기준 대폭 미달. 고강도 스프린트 즉시 제한 필수. Single-leg Nordic 좌측 집중 + Ronfic 편심 저항 30% 1RM 시작. SLR 좌 68°로 짧아짐 동반되나 스트레칭보다 편심 저항 우선. 2주 후 재측정 · TARGET H:Q 좌 0.60.</textarea><div style="font-family:var(--font-mono);font-size:9.5px;color:var(--mid);margin-top:6px;letter-spacing:0.08em">이슬기 AT · 2026.04.28</div>', buttons: ['저장', '취소'] },
+  memo_coach: { icon: '● Coach Memo', title: '코치 메모', body: '<textarea style="width:100%;height:90px;border:1px solid var(--rule);padding:12px;font-family:var(--font-sans);font-size:13px;resize:vertical;outline:none;letter-spacing:-0.005em" placeholder="코치 메모를 입력하세요..."></textarea>', buttons: ['저장', '취소'] },
+  memo_director: { icon: '● Director Memo', title: '감독 메모', body: '<textarea style="width:100%;height:90px;border:1px solid var(--rule);padding:12px;font-family:var(--font-sans);font-size:13px;resize:vertical;outline:none;letter-spacing:-0.005em" placeholder="감독님 의견을 기록합니다..."></textarea>', buttons: ['저장', '취소'] },
+  parent: { icon: '◆ Parent', title: '학부모용 요약 생성 · 강민준', body: '<div style="background:var(--red-dim);border:1px solid var(--red);padding:14px 16px;margin-bottom:10px"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--red);margin-bottom:6px;letter-spacing:0.15em;text-transform:uppercase">■ RED 학부모 공유 정책</div><div style="font-family:var(--font-sans);font-size:12px;color:var(--ink);line-height:1.65">수치는 직접 노출하지 않고 "방향성 언어"로 전달합니다. "좌측 뒷허벅지 집중 관리 중" + 2주 재측정 안내만 공유.</div></div><div style="background:var(--forest-dim);border:1px solid var(--forest);padding:14px 16px"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--forest);margin-bottom:6px;letter-spacing:0.15em;text-transform:uppercase">● 포함 내용</div><div style="font-family:var(--font-sans);font-size:12px;color:var(--ink);line-height:1.8">• 관리 방향 설명 (수치 없음)<br>• 레이더 차트 · 영역 표시만<br>• 성숙도 정보<br>• QR → 모바일 상세</div></div>', buttons: ['요약 생성', '취소'] },
+  schedule: { icon: '● Schedule', title: '재측정 일정', body: '<div style="background:var(--red-dim);border:1px solid var(--red);padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center"><span style="font-family:var(--font-sans);font-weight:700;font-size:12px">■ RED 재측정</span><span style="font-family:var(--font-mono);font-size:10.5px;color:var(--red);font-weight:700;letter-spacing:0.05em">2주 후 · 05.12</span></div><div style="background:var(--amber-dim);border:1px solid var(--amber);padding:12px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-family:var(--font-sans);font-weight:700;font-size:12px">▲ CAUT 재측정</span><span style="font-family:var(--font-mono);font-size:10.5px;color:var(--amber);font-weight:700;letter-spacing:0.05em">3주 후 · 05.19</span></div>', buttons: ['일정 등록', '취소'] },
+  save: { icon: '● Save', title: '리포트 저장', body: '<div style="text-align:center;padding:16px"><div style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--forest);letter-spacing:0.1em;margin-bottom:8px">● 저장 완료</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--mid);letter-spacing:0.05em">2026.04.28 14:32</div></div>', buttons: ['확인'] },
+  pdf: { icon: '● Export', title: 'PDF 출력', body: '<div style="text-align:center;padding:16px"><div style="font-family:var(--font-sans);font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px">PDF 생성 준비 완료</div><div style="font-family:var(--font-sans);font-size:12px;color:var(--mid);margin-bottom:14px;letter-spacing:-0.005em">아래 버튼을 클릭하면 인쇄 대화상자가 열립니다</div><button onclick="closeActionPopup();setTimeout(()=>window.print(),300)" style="padding:10px 24px;border:1px solid var(--ink);background:var(--ink);color:var(--card);font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">● 인쇄 / PDF 저장</button></div>', buttons: ['취소'] },
+  approve: { icon: '● Approve', title: '코치 승인', body: '<div style="text-align:center;padding:16px"><div style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--forest);letter-spacing:0.1em">● 승인 완료</div></div>', buttons: ['확인'] },
+  upload: { icon: '◆ Upload', title: '자료 업로드', body: '<div style="border:1px dashed var(--ink);padding:32px;text-align:center;background:var(--bg-subtle)"><div style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:0.15em;text-transform:uppercase">◆ File Drop</div><div style="font-family:var(--font-sans);font-size:13px;color:var(--mid);letter-spacing:-0.005em">파일을 드래그하거나 클릭<br><span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em">MP4 · PDF · JPG · PNG</span></div></div>', buttons: ['업로드', '취소'] },
+  task: { icon: '● Task', title: '과제 추가', body: '<div style="margin-bottom:10px"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;margin-bottom:4px;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase">● 과제명</div><input style="width:100%;border:1px solid var(--rule);padding:8px 12px;font-family:var(--font-sans);font-size:13px;letter-spacing:-0.005em" placeholder="예: Nordic 좌측 집중 영상"></div><div style="margin-bottom:10px"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;margin-bottom:4px;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase">● 대상</div><input style="width:100%;border:1px solid var(--rule);padding:8px 12px;font-family:var(--font-sans);font-size:13px;letter-spacing:-0.005em" placeholder="예: RED 2명"></div><div><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;margin-bottom:4px;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase">● 기한</div><input type="date" style="border:1px solid var(--rule);padding:8px 12px;font-family:var(--font-mono);font-size:13px" value="2026-05-05"></div>', buttons: ['생성', '취소'] },
+  calendar: { icon: '● Calendar', title: '캘린더 등록', body: '<div style="text-align:center;padding:16px"><div style="font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--forest);letter-spacing:0.1em">● 등록 완료</div></div>', buttons: ['확인'] },
+  memo_add: { icon: '● Memo', title: '메모 추가', body: '<textarea style="width:100%;height:100px;border:1px solid var(--rule);padding:12px;font-family:var(--font-sans);font-size:13px;resize:vertical;outline:none;letter-spacing:-0.005em" placeholder="메모를 입력하세요..."></textarea>', buttons: ['저장', '취소'] }
+};
+
+function showActionPopup(t) {
+  const d = _ac[t];
+  if (!d) return;
+  document.getElementById('actionIcon').textContent = d.icon;
+  document.getElementById('actionTitle').textContent = d.title;
+  document.getElementById('actionBody').innerHTML = d.body;
+  const f = document.getElementById('actionFooter');
+  f.innerHTML = '';
+  d.buttons.forEach((b, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = b;
+    btn.style.cssText = i === 0
+      ? 'padding:9px 22px;border:1px solid var(--ink);background:var(--ink);color:var(--card);font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer'
+      : 'padding:9px 22px;border:1px solid var(--rule);background:transparent;color:var(--mid);font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer';
+    btn.onclick = closeActionPopup;
+    f.appendChild(btn);
+  });
+  document.getElementById('actionPopup').style.display = 'block';
+  document.getElementById('actionOverlay').style.display = 'block';
+}
+
+function closeActionPopup() {
+  document.getElementById('actionPopup').style.display = 'none';
+  document.getElementById('actionOverlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

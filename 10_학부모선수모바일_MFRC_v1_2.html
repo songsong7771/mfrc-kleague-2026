@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>마이페이보릿리커버리 · 윤희서 #21 · 나의 리포트</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --card: #FFFFFF; --ink: #1A1A1A; --mid: #6B6B6B;
+    --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+  }
+  html, body { background: var(--bg-subtle); color: var(--ink); font-family: var(--font-sans); font-size: 14px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; min-height: 100vh; margin: 0; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  /* ===== DUAL LAYOUT WRAPPER ===== */
+  .dual-wrap { display: grid; grid-template-columns: 1fr 440px; max-width: 1320px; margin: 0 auto; gap: 60px; padding: 48px 48px 48px; align-items: start; min-height: 100vh; }
+  .dl-left { position: sticky; top: 48px; padding-top: 8px; }
+  .dl-brand-line { width: 32px; height: 1.5px; background: var(--ink); margin-bottom: 14px; }
+  .dl-brand { font-family: var(--font-sans); font-size: 17px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; margin-bottom: 4px; }
+  .dl-brand-en { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 36px; }
+  .dl-eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--forest); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 14px; padding-left: 14px; border-left: 2px solid var(--forest); }
+  .dl-h1 { font-family: var(--font-sans); font-size: 32px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.18; margin-bottom: 20px; }
+  .dl-h1 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--forest); }
+  .dl-lede { font-family: var(--font-sans); font-size: 14px; color: var(--mid); line-height: 1.7; letter-spacing: -0.01em; margin-bottom: 28px; }
+  .dl-spec-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 28px; border-top: 1px solid var(--rule); }
+  .dl-spec { display: grid; grid-template-columns: 110px 1fr; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+  .dl-spec-key { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.12em; text-transform: uppercase; }
+  .dl-spec-val { font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .dl-spec-val strong { font-weight: 800; }
+  .dl-spec-val .tag { display: inline-block; font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; padding: 2px 7px; margin-left: 4px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid; }
+  .dl-spec-val .tag.forest { color: var(--forest); border-color: var(--forest); background: var(--forest-dim); }
+  .dl-spec-val .tag.ink { color: var(--ink); border-color: var(--ink); background: var(--bg); }
+  .dl-principle { padding: 16px 18px; background: var(--card); border-left: 3px solid var(--ink); margin-bottom: 24px; }
+  .dl-principle-title { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--ink); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px; }
+  .dl-principle-body { font-family: var(--font-sans); font-size: 12.5px; color: var(--ink); line-height: 1.65; letter-spacing: -0.01em; }
+  .dl-principle-body strong { color: var(--forest); font-weight: 700; }
+  .dl-tips { display: flex; flex-direction: column; gap: 10px; }
+  .dl-tip { display: grid; grid-template-columns: 20px 1fr; gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--rule); }
+  .dl-tip-num { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--forest); letter-spacing: 0.05em; line-height: 1.6; }
+  .dl-tip-text { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.55; letter-spacing: -0.01em; }
+  .dl-tip-text strong { font-weight: 700; }
+  .dl-footer-meta { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); font-family: var(--font-mono); font-size: 9.5px; color: var(--light); letter-spacing: 0.06em; line-height: 1.6; }
+
+  /* Phone Frame */
+  .dl-right { display: flex; justify-content: center; }
+  .phone-wrap { position: relative; }
+  .phone-caption { position: absolute; top: -32px; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: var(--mid); letter-spacing: 0.2em; text-transform: uppercase; }
+  .phone-frame { width: 420px; height: 860px; background: var(--ink); border-radius: 52px; padding: 14px; box-shadow: 0 30px 60px -20px rgba(26,26,26,0.35), 0 18px 30px -15px rgba(26,26,26,0.22), 0 0 0 2px rgba(26,26,26,0.92); position: relative; }
+  .phone-frame::before { content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 124px; height: 30px; background: var(--ink); border-radius: 20px; z-index: 20; }
+  .phone-screen { width: 100%; height: 100%; background: var(--bg); border-radius: 40px; overflow-y: auto; overflow-x: hidden; position: relative; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .phone-screen::-webkit-scrollbar { width: 3px; }
+  .phone-screen::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+  .phone-statusbar { position: sticky; top: 0; z-index: 15; background: var(--card); padding: 14px 28px 8px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--ink); letter-spacing: 0.02em; }
+  .phone-statusbar-icons { display: flex; gap: 5px; align-items: center; font-size: 10px; }
+  .phone-home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 120px; height: 4px; background: var(--ink); border-radius: 2px; z-index: 200; opacity: 0.5; pointer-events: none; }
+
+  /* ===== AUTH SCREEN ===== */
+  #authScreen { padding: 0 24px; }
+  .auth-banner { margin-top: 80px; background: var(--card); border: 1px solid var(--rule); padding: 32px 24px; text-align: center; }
+  .auth-icon { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; color: var(--ink); margin-bottom: 14px; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--ink); display: inline-block; }
+  .auth-title { font-family: var(--font-sans); font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 12px; }
+  .auth-desc { font-family: var(--font-sans); font-size: 12.5px; color: var(--mid); line-height: 1.7; letter-spacing: -0.01em; margin-bottom: 22px; }
+  .auth-btn { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 20px; background: var(--ink); color: var(--card); border: 1px solid var(--ink); width: 100%; margin-bottom: 12px; }
+  .auth-note { font-family: var(--font-mono); font-size: 9.5px; color: var(--light); line-height: 1.5; letter-spacing: 0.04em; }
+
+  /* ===== MOBILE HEADER ===== */
+  .m-header { background: var(--card); border-bottom: 1px solid var(--rule); padding: 22px 20px 18px; }
+  .m-logo-row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+  .m-brand { font-family: var(--font-sans); font-size: 11px; font-weight: 700; color: var(--ink); letter-spacing: -0.015em; }
+  .m-league { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.1em; text-transform: uppercase; }
+  .m-player { display: flex; align-items: center; gap: 14px; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--rule); }
+  .m-avatar { width: 56px; height: 56px; background: var(--ink); color: var(--card); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; font-size: 22px; letter-spacing: -1px; }
+  .m-name-row { display: flex; align-items: baseline; gap: 6px; }
+  .m-name { font-family: var(--font-sans); font-size: 19px; font-weight: 700; color: var(--ink); letter-spacing: -0.03em; }
+  .m-captain { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 2px 7px; background: var(--ink); color: var(--card); letter-spacing: 0.08em; text-transform: uppercase; }
+  .m-meta { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 4px; letter-spacing: 0.05em; }
+  .m-date { font-family: var(--font-sans); font-size: 10.5px; color: var(--ink); font-weight: 600; margin-top: 3px; letter-spacing: -0.005em; }
+
+  /* ===== SAFE A BANNER ===== */
+  .safe-banner { background: var(--bg-subtle); border: 1px solid var(--ink); padding: 10px 14px; margin: 14px 20px 0; display: flex; align-items: center; gap: 10px; }
+  .safe-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 8px; letter-spacing: 0.12em; text-transform: uppercase; background: var(--ink); color: var(--card); flex-shrink: 0; }
+  .safe-text { font-family: var(--font-sans); font-size: 11px; color: var(--ink); line-height: 1.5; letter-spacing: -0.01em; font-weight: 600; }
+
+  /* ===== TAB BAR ===== */
+  .tab-bar { display: flex; background: var(--card); border-bottom: 1px solid var(--rule); position: sticky; top: 40px; z-index: 50; }
+  .tab { flex: 1; text-align: center; padding: 13px 0; font-family: var(--font-sans); font-size: 12.5px; font-weight: 600; color: var(--mid); cursor: pointer; border-bottom: 2px solid transparent; letter-spacing: -0.01em; }
+  .tab.active { color: var(--ink); border-bottom-color: var(--ink); font-weight: 700; }
+
+  /* ===== CONTENT ===== */
+  .tab-content { display: none; padding: 16px 16px 20px; }
+  .tab-content.active { display: block; }
+
+  /* ===== CARD ===== */
+  .m-card { background: var(--card); border: 1px solid var(--rule); padding: 18px; margin-bottom: 14px; }
+  .mc-title { font-family: var(--font-sans); font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 6px; }
+  .mc-subtitle { font-family: var(--font-mono); font-size: 10px; color: var(--mid); letter-spacing: 0.05em; margin-bottom: 14px; }
+
+  /* ===== GROWTH STATS ===== */
+  .grow-stat { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  .grow-stat:last-child { border-bottom: none; padding-bottom: 0; }
+  .gs-label { font-family: var(--font-sans); font-size: 12.5px; font-weight: 600; color: var(--mid); letter-spacing: -0.01em; padding-top: 4px; }
+  .gs-val-block { text-align: right; }
+  .gs-val { font-family: var(--font-display); font-size: 22px; font-weight: 900; letter-spacing: -1px; color: var(--ink); line-height: 1; margin-bottom: 4px; }
+  .gs-val.forest { color: var(--forest); }
+  .gs-val.ink { color: var(--ink); }
+  .gs-val .unit { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--mid); margin-left: 2px; letter-spacing: 0.02em; }
+  .gs-change { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.03em; }
+  .gs-change.forest { color: var(--forest); }
+  .gs-change.mid { color: var(--mid); }
+  .gs-note { font-family: var(--font-sans); font-size: 10.5px; color: var(--mid); line-height: 1.5; letter-spacing: -0.01em; margin-top: 6px; font-style: italic; font-family: var(--font-serif); }
+
+  /* ===== PROGRESS RING ===== */
+  .progress-ring { display: flex; justify-content: center; margin: 14px 0 8px; }
+  .pr-svg { width: 150px; height: 150px; }
+  .pr-desc { text-align: center; font-family: var(--font-sans); font-size: 12.5px; color: var(--ink); line-height: 1.6; letter-spacing: -0.01em; margin-top: 8px; }
+  .pr-desc strong { color: var(--forest); font-weight: 700; }
+
+  /* ===== STRENGTH CARDS ===== */
+  .strength-card { background: var(--bg); border: 1px solid var(--rule); border-left: 3px solid var(--forest); padding: 14px 16px; margin-bottom: 10px; }
+  .strength-card:last-child { margin-bottom: 0; }
+  .sc-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; flex-wrap: wrap; gap: 6px; }
+  .sc-name { font-family: var(--font-sans); font-size: 13.5px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+  .sc-val-inline { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--forest); letter-spacing: 0.02em; }
+  .sc-level { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--forest); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .sc-desc { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.55; letter-spacing: -0.01em; }
+  .sc-desc strong { color: var(--forest); font-weight: 700; }
+
+  /* ===== IMPROVE CARD ===== */
+  .improve-card { background: var(--bg); border: 1px solid var(--rule); border-left: 3px solid var(--ink); padding: 14px 16px; margin-bottom: 10px; }
+  .ic-name { font-family: var(--font-sans); font-size: 13.5px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 4px; }
+  .ic-level { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--ink); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .ic-desc { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.55; letter-spacing: -0.01em; }
+
+  /* ===== TRAINING ITEM ===== */
+  .train-item { background: var(--bg); border: 1px solid var(--rule); padding: 14px 16px; margin-bottom: 10px; }
+  .ti-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .ti-name { font-family: var(--font-sans); font-size: 13.5px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 4px; }
+  .ti-desc { font-family: var(--font-sans); font-size: 12px; color: var(--mid); line-height: 1.55; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .ti-freq { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--ink); letter-spacing: 0.03em; margin-bottom: 6px; }
+  .ti-note { font-family: var(--font-sans); font-size: 11px; font-weight: 600; color: var(--amber); letter-spacing: -0.01em; margin-top: 4px; padding-top: 6px; border-top: 1px solid var(--rule); }
+  .ti-video-btn { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 14px; background: var(--card); color: var(--ink); border: 1px solid var(--ink); margin-top: 8px; display: inline-block; cursor: pointer; }
+  .train-item.homework { border-left: 3px solid var(--amber); }
+  .hw-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule); flex-wrap: wrap; gap: 6px; }
+  .hw-due { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--amber); letter-spacing: 0.05em; }
+  .hw-check-btn { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 16px; background: var(--forest-dim); color: var(--forest); border: 1px solid var(--forest); cursor: pointer; }
+
+  /* ===== COACH BOX ===== */
+  .coach-box { background: var(--bg-subtle); border: 1px solid var(--rule); border-left: 3px solid var(--ink); padding: 16px 18px; margin-top: 4px; }
+  .cb-badge { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; margin-bottom: 10px; }
+  .cb-text { font-family: var(--font-sans); font-size: 12.5px; color: var(--ink); line-height: 1.7; letter-spacing: -0.01em; }
+  .cb-sig { font-family: var(--font-serif); font-style: italic; font-size: 11px; color: var(--mid); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule); text-align: right; }
+
+  /* ===== CONSULT BANNER ===== */
+  .consult-banner { background: var(--bg); border: 1px solid var(--ink); padding: 14px 16px; margin-top: 14px; }
+  .con-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--ink); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
+  .con-text { font-family: var(--font-sans); font-size: 12.5px; color: var(--ink); font-weight: 600; letter-spacing: -0.01em; line-height: 1.5; margin-bottom: 4px; }
+  .con-sub { font-family: var(--font-sans); font-size: 11px; color: var(--mid); letter-spacing: -0.01em; line-height: 1.5; }
+
+  /* ===== FOOTNOTE ===== */
+  .footnote { text-align: center; font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); line-height: 1.6; letter-spacing: 0.05em; padding: 10px 0; }
+
+  /* ===== BOTTOM TAB ===== */
+  .bottom-tab { position: sticky; bottom: 0; left: 0; right: 0; width: 100%; background: var(--card); border-top: 1px solid var(--rule); display: flex; padding: 10px 0 22px; z-index: 100; }
+  .bt-item { flex: 1; text-align: center; font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: var(--mid); letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 0 4px; cursor: pointer; }
+  .bt-item.active { color: var(--ink); }
+  .bt-icon { display: block; font-family: var(--font-mono); font-size: 14px; font-weight: 700; margin-bottom: 4px; letter-spacing: 0; }
+  .bt-item.active .bt-icon { color: var(--ink); }
+
+  /* ===== RADAR CARD ===== */
+  .radar-card { text-align: center; padding: 18px 18px 22px; }
+  .radar-card svg { width: 90%; max-width: 280px; height: auto; margin: 8px auto; display: block; }
+  .radar-note { font-family: var(--font-mono); font-size: 10px; color: var(--mid); letter-spacing: 0.04em; margin-top: 10px; }
+
+  /* Responsive breakpoints */
+  @media (max-width: 1100px) {
+    .dual-wrap { grid-template-columns: 1fr; max-width: 480px; gap: 32px; padding: 32px 24px; }
+    .dl-left { position: static; }
+    .dl-right { order: -1; }
+    .phone-caption { position: static; margin-bottom: 12px; text-align: center; }
+  }
+  @media (max-width: 500px) {
+    .dual-wrap { padding: 16px 12px; max-width: 100%; gap: 24px; }
+    .phone-frame { width: 100%; max-width: 420px; height: 820px; border-radius: 36px; padding: 10px; }
+    .phone-screen { border-radius: 26px; }
+    .phone-frame::before { top: 6px; width: 110px; height: 24px; }
+    .dl-h1 { font-size: 26px; }
+  }
+  @media print {
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .dual-wrap { grid-template-columns: 1fr; padding: 20px; gap: 20px; max-width: 100%; }
+    .dl-left { position: static; }
+    .phone-frame { box-shadow: none; background: white; border: 1px solid var(--ink); border-radius: 0; }
+    .phone-frame::before { display: none; }
+    .phone-screen { height: auto; border-radius: 0; overflow: visible; }
+    .phone-home-indicator, .phone-statusbar { display: none !important; }
+    .tab-bar, .bottom-tab { display: none !important; }
+    .tab-content { display: block !important; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<div class="dual-wrap">
+
+  <!-- ========== LEFT · EXPLANATION PANEL ========== -->
+  <aside class="dl-left">
+    <div class="dl-brand-line"></div>
+    <div class="dl-brand">마이페이보릿리커버리</div>
+    <div class="dl-brand-en">My Favorite Recovery</div>
+
+    <div class="dl-eyebrow">● Parent · Player App Preview</div>
+    <h1 class="dl-h1">학부모·선수가<br>실제로 보는 <em>화면</em></h1>
+    <p class="dl-lede">
+      측정 결과를 AT가 검수하고 코치가 승인한 뒤, 학부모와 선수 본인의 모바일에 전달되는 리포트입니다. 좌우 스크롤 없이 한 화면에서 성장·강점·훈련·과제 네 가지 탭을 이동하며 확인합니다.
+    </p>
+
+    <div class="dl-spec-list">
+      <div class="dl-spec">
+        <div class="dl-spec-key">대상</div>
+        <div class="dl-spec-val">윤희서 #21 · <strong>주장</strong><span class="tag ink">Captain</span></div>
+      </div>
+      <div class="dl-spec">
+        <div class="dl-spec-key">관리 등급</div>
+        <div class="dl-spec-val">전 항목 Safe<span class="tag forest">Safe A</span></div>
+      </div>
+      <div class="dl-spec">
+        <div class="dl-spec-key">공유 방식</div>
+        <div class="dl-spec-val">수치 직접 공유 가능 (주장 특례)</div>
+      </div>
+      <div class="dl-spec">
+        <div class="dl-spec-key">측정일</div>
+        <div class="dl-spec-val">2026.04.28 (화) · 1차 측정</div>
+      </div>
+      <div class="dl-spec">
+        <div class="dl-spec-key">발송일</div>
+        <div class="dl-spec-val">2026.04.29 (수) · 코치 승인 직후</div>
+      </div>
+      <div class="dl-spec">
+        <div class="dl-spec-key">열람 권한</div>
+        <div class="dl-spec-val">본인 + 보호자 (PASS 본인 확인)</div>
+      </div>
+    </div>
+
+    <div class="dl-principle">
+      <div class="dl-principle-title">● v1.1 · 선수 공유 원칙</div>
+      <div class="dl-principle-body">
+        <strong>RED · CAUT 등급</strong>은 수치를 직접 노출하지 않고 방향성 언어로 변환합니다. <strong>SAFE 선수</strong>는 팀 공통 훈련만 표시됩니다. <strong>주장 Safe A</strong>는 예외로 수치를 그대로 공유합니다.
+      </div>
+    </div>
+
+    <div class="dl-tips">
+      <div class="dl-tip"><div class="dl-tip-num">01</div><div class="dl-tip-text"><strong>PASS 본인 확인</strong>은 최초 1회만 진행되며, 이후부터는 자동 열람</div></div>
+      <div class="dl-tip"><div class="dl-tip-num">02</div><div class="dl-tip-text">하단 탭으로 <strong>성장 · 강점 · 훈련 · 과제</strong> 네 섹션 이동</div></div>
+      <div class="dl-tip"><div class="dl-tip-num">03</div><div class="dl-tip-text">전문 용어는 <em>"H:Q 0.64"</em> → <em>"뒷허벅지 보호력 기준 이상"</em> 자동 변환</div></div>
+      <div class="dl-tip"><div class="dl-tip-num">04</div><div class="dl-tip-text">과제 확인 완료 시 코칭스태프와 AT에게 <strong>자동 전달</strong></div></div>
+      <div class="dl-tip"><div class="dl-tip-num">05</div><div class="dl-tip-text">본인 호소(<em>Player Voice</em>)는 수치 Safe여도 <strong>선제 관리</strong> 반영</div></div>
+    </div>
+
+    <div class="dl-footer-meta">
+      마이페이보릿리커버리 · MY FAVORITE RECOVERY<br>
+      검수 이슬기 AT · 학술 감수 성균관대 SIS<br>
+      © 2026 · 신평고등학교 U18
+    </div>
+  </aside>
+
+  <!-- ========== RIGHT · PHONE FRAME ========== -->
+  <div class="dl-right">
+    <div class="phone-wrap">
+      <div class="phone-caption">→ iPhone Preview · 390 × 844</div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+
+          <!-- Phone status bar -->
+          <div class="phone-statusbar">
+            <span>9:41</span>
+            <span class="phone-statusbar-icons">● ▮▮▮ ■</span>
+          </div>
+          <!-- ===== AUTH SCREEN ===== -->
+<div id="authScreen" style="display:none">
+  <div class="auth-banner">
+    <div class="auth-icon">● Auth</div>
+    <div class="auth-title">본인 확인이 필요합니다</div>
+    <div class="auth-desc">
+      마이페이보릿리커버리 · K리그 유소년 리포트는<br>
+      개인정보 보호를 위해 최초 1회 본인 확인 후 열람할 수 있습니다.<br><br>
+      14세 미만 선수는 보호자(학부모) 확인이 필요합니다.
+    </div>
+    <button class="auth-btn" onclick="document.getElementById('authScreen').style.display='none';document.getElementById('mainApp').style.display='block'">PASS 본인 확인</button>
+    <div class="auth-note">※ 최초 1회만 진행 · 개인정보는 연맹 정책에 따라 관리</div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="mainApp">
+
+  <!-- Header -->
+  <div class="m-header">
+    <div class="m-logo-row">
+      <div class="m-brand">마이페이보릿리커버리</div>
+      <div class="m-league">K리그 유소년 · 신평고 U18</div>
+    </div>
+    <div class="m-player">
+      <div class="m-avatar">21</div>
+      <div style="flex: 1;">
+        <div class="m-name-row">
+          <div class="m-name">윤희서</div>
+          <span class="m-captain">Captain · C</span>
+        </div>
+        <div class="m-meta">MF · CM · 2008년생 · 만 17세 10개월</div>
+        <div class="m-date">2026.04.28 · 1차 측정 결과</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Safe A Banner (주장 수치 직접 공유 가능) -->
+  <div class="safe-banner">
+    <span class="safe-badge">Safe A</span>
+    <span class="safe-text">주장 예외 · 수치 직접 공유 가능 · 8대 영역 전체 Safe</span>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab('growth',0)">성장</div>
+    <div class="tab" onclick="switchTab('strengths',1)">강점</div>
+    <div class="tab" onclick="switchTab('training',2)">훈련</div>
+    <div class="tab" onclick="switchTab('homework',3)">과제</div>
+  </div>
+
+  <!-- ===== TAB 1: GROWTH ===== -->
+  <div class="tab-content active" id="tab-growth">
+
+    <div class="m-card">
+      <div class="mc-title">나의 성장 현황</div>
+      <div class="mc-subtitle">Growth &amp; Maturation</div>
+      <div class="grow-stat">
+        <div class="gs-label">키</div>
+        <div class="gs-val-block">
+          <div class="gs-val ink">178.4<span class="unit">cm</span></div>
+          <div class="gs-change forest">▲ +2.6cm (2025 H2 대비)</div>
+        </div>
+      </div>
+      <div class="grow-stat">
+        <div class="gs-label">몸무게</div>
+        <div class="gs-val-block">
+          <div class="gs-val ink">70.8<span class="unit">kg</span></div>
+          <div class="gs-change forest">▲ +2.2kg</div>
+        </div>
+      </div>
+      <div class="grow-stat">
+        <div class="gs-label">성숙도 · 성장 단계</div>
+        <div class="gs-val-block">
+          <div class="gs-val ink" style="font-size:16px;">Post-PHV +1.8년</div>
+          <div class="gs-change mid">성장 최고 속도 지나 안정기</div>
+        </div>
+      </div>
+      <div class="gs-note">Mirwald Maturity Offset 기반 · 약 3~4cm 내외 추가 성장 예상 · 영양·수면·훈련에 따라 개인차 있음</div>
+    </div>
+
+    <div class="m-card">
+      <div class="mc-title">성숙도 진행률</div>
+      <div class="mc-subtitle">Maturity Progress</div>
+      <div class="progress-ring">
+        <svg class="pr-svg" viewBox="0 0 150 150">
+          <circle cx="75" cy="75" r="62" stroke="#E5E3DE" stroke-width="8" fill="none"/>
+          <circle cx="75" cy="75" r="62" stroke="#006A3A" stroke-width="8" fill="none" stroke-dasharray="389.6" stroke-dashoffset="23.4" stroke-linecap="round" transform="rotate(-90 75 75)"/>
+          <text x="75" y="70" text-anchor="middle" font-family="Inter" font-size="28" font-weight="900" fill="#006A3A" letter-spacing="-1">94%</text>
+          <text x="75" y="88" text-anchor="middle" font-family="JetBrains Mono" font-size="10" font-weight="700" fill="#6B6B6B" letter-spacing="1">MATURITY</text>
+        </svg>
+      </div>
+      <div class="pr-desc">
+        성장 급등기를 지나 안정기에 진입.<br>
+        <strong>몸이 빠르게 성장한 시기가 거의 마무리 단계</strong>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="mc-title">체력 변화 요약</div>
+      <div class="mc-subtitle">Performance Progress · 지난 측정 대비</div>
+      <div class="grow-stat">
+        <div class="gs-label">점프 높이 · CMJ</div>
+        <div class="gs-val-block">
+          <div class="gs-val forest">42.8<span class="unit">cm</span></div>
+          <div class="gs-change forest">▲ +3.4cm · 상위 12%</div>
+        </div>
+      </div>
+      <div class="grow-stat">
+        <div class="gs-label">달리기 · 30m</div>
+        <div class="gs-val-block">
+          <div class="gs-val forest">4.24<span class="unit">s</span></div>
+          <div class="gs-change forest">▲ 0.11s 빨라짐</div>
+        </div>
+      </div>
+      <div class="grow-stat">
+        <div class="gs-label">최고 속도 · Vmax</div>
+        <div class="gs-val-block">
+          <div class="gs-val forest">8.58<span class="unit">m/s</span></div>
+          <div class="gs-change forest">▲ 상위 22%</div>
+        </div>
+      </div>
+      <div class="grow-stat">
+        <div class="gs-label">좌우 균형 · ASI</div>
+        <div class="gs-val-block">
+          <div class="gs-val ink">8.3<span class="unit">%</span></div>
+          <div class="gs-change forest">● TARGET 정상</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: STRENGTHS ===== -->
+  <div class="tab-content" id="tab-strengths">
+
+    <div class="m-card radar-card">
+      <div class="mc-title">나의 피지컬 프로필</div>
+      <div class="mc-subtitle">같은 포지션 MF 선수와 비교한 나의 위치</div>
+      <svg viewBox="0 0 200 180">
+        <polygon points="100,20 168,59 142,140 58,140 32,59" fill="none" stroke="#E5E3DE" stroke-width="0.8"/>
+        <polygon points="100,40 148,68 130,128 70,128 52,68" fill="none" stroke="#E5E3DE" stroke-width="0.6"/>
+        <polygon points="100,60 128,77 118,116 82,116 72,77" fill="none" stroke="#E5E3DE" stroke-width="0.4"/>
+        <text x="100" y="12" text-anchor="middle" font-family="JetBrains Mono" font-size="9" font-weight="700" fill="#1A1A1A" letter-spacing="0.5">점프·파워</text>
+        <text x="178" y="62" text-anchor="start" font-family="JetBrains Mono" font-size="9" font-weight="700" fill="#1A1A1A">스피드</text>
+        <text x="152" y="150" text-anchor="start" font-family="JetBrains Mono" font-size="9" font-weight="700" fill="#1A1A1A">방향전환</text>
+        <text x="48" y="150" text-anchor="end" font-family="JetBrains Mono" font-size="9" font-weight="700" fill="#1A1A1A">근력</text>
+        <text x="22" y="62" text-anchor="end" font-family="JetBrains Mono" font-size="9" font-weight="700" fill="#1A1A1A">지구력</text>
+
+        <polygon points="100,26 158,58 128,132 72,128 46,65" fill="rgba(0,106,58,0.15)" stroke="#006A3A" stroke-width="2"/>
+        <circle cx="100" cy="26" r="4.5" fill="#006A3A" stroke="#FFFFFF" stroke-width="1.5"/>
+        <circle cx="158" cy="58" r="4.5" fill="#006A3A" stroke="#FFFFFF" stroke-width="1.5"/>
+        <circle cx="128" cy="132" r="4.5" fill="#1A1A1A" stroke="#FFFFFF" stroke-width="1.5"/>
+        <circle cx="72" cy="128" r="4.5" fill="#006A3A" stroke="#FFFFFF" stroke-width="1.5"/>
+        <circle cx="46" cy="65" r="4.5" fill="#006A3A" stroke="#FFFFFF" stroke-width="1.5"/>
+      </svg>
+      <div class="radar-note">● 초록색이 넓을수록 강점 · ● 검정색은 유지·관찰 영역</div>
+    </div>
+
+    <div class="m-card">
+      <div class="mc-title">나의 강점 Top 3</div>
+      <div class="mc-subtitle">같은 포지션 MF 선수와 비교해 상위 영역</div>
+
+      <div class="strength-card">
+        <div class="sc-head">
+          <div class="sc-name">● 점프력 · CMJ</div>
+          <div class="sc-val-inline">42.8 cm</div>
+        </div>
+        <div class="sc-level">● 상위 12%</div>
+        <div class="sc-desc">공중볼 경합과 짧은 거리 가속에서 MF 포지션 상위. 이전 측정보다 <strong>+3.4cm</strong> 좋아졌습니다.</div>
+      </div>
+
+      <div class="strength-card">
+        <div class="sc-head">
+          <div class="sc-name">● 직선 달리기 속도</div>
+          <div class="sc-val-inline">4.24 s</div>
+        </div>
+        <div class="sc-level">● 상위 22%</div>
+        <div class="sc-desc">같은 포지션 선수와 달리기 경쟁에서 우위. 이전보다 <strong>0.11초</strong> 빨라졌습니다.</div>
+      </div>
+
+      <div class="strength-card">
+        <div class="sc-head">
+          <div class="sc-name">● 좌우 근력 균형 · H:Q</div>
+          <div class="sc-val-inline">L 0.64 / R 0.62</div>
+        </div>
+        <div class="sc-level">● TARGET 정상</div>
+        <div class="sc-desc">뒷허벅지 대 앞허벅지 힘 비율이 양측 모두 <strong>기준 ≥0.60 달성</strong>. 햄스트링 보호력 양호.</div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="mc-title">유지·관찰 영역</div>
+      <div class="mc-subtitle">더 안정적으로 만들 수 있는 부분</div>
+
+      <div class="improve-card">
+        <div class="ic-name">● 방향 바꾸며 멈추기 · Turn &amp; Accel</div>
+        <div class="ic-level">중위 · 유지 중</div>
+        <div class="ic-desc">회전 후 재가속이 MF 포지션 중위. 현재 훈련에서 박스-투-박스 드릴로 꾸준히 보강 중.</div>
+      </div>
+
+      <div class="improve-card">
+        <div class="ic-name">● 본인 감각 · 우측 햄 당김</div>
+        <div class="ic-level">수치 Safe · 선제 관리</div>
+        <div class="ic-desc">수치 모두 Safe이나 본인이 호소하는 우측 감각을 선제적으로 관리. Nordic 우측 부하 -5% 조정.</div>
+      </div>
+    </div>
+
+    <div class="consult-banner">
+      <div class="con-head">● 주장 예외 · Safe A</div>
+      <div class="con-text">전 항목 Safe 등급 · 8대 영역 전체 안정</div>
+      <div class="con-sub">감각 일지 작성 + 주간 감각 추적으로 선제적 관리 지속</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: TRAINING ===== -->
+  <div class="tab-content" id="tab-training">
+
+    <div class="m-card">
+      <div class="mc-title">이번 주 나의 훈련</div>
+      <div class="mc-subtitle">2026.04.27 ~ 05.03 · AT 검수 + 학술 감수 + 코치 승인 완료</div>
+
+      <div class="train-item">
+        <div class="ti-head">● 팀 공통 · Copenhagen</div>
+        <div class="ti-name">사타구니 강화 운동</div>
+        <div class="ti-desc">측와위 내전근 강화 · 양측 실시 · 팀 공통 프로그램</div>
+        <div class="ti-freq">주 3회 · 3세트 × 8회</div>
+        <button class="ti-video-btn">▶ 운동 영상 보기</button>
+      </div>
+
+      <div class="train-item">
+        <div class="ti-head">● 팀 공통 · Nordic 주장 조정</div>
+        <div class="ti-name">뒷허벅지 강화 운동</div>
+        <div class="ti-desc">Nordic curl · 우측 부하 5% 감소 조정 · 본인 감각 기반 선제 관리</div>
+        <div class="ti-freq">주 3회 · 3세트 × 5회</div>
+        <div class="ti-note">▲ 통증 시 즉시 중단 · 트레이너에게 보고</div>
+        <button class="ti-video-btn">▶ 운동 영상 보기</button>
+      </div>
+
+      <div class="train-item">
+        <div class="ti-head">● 포지션 · MF</div>
+        <div class="ti-name">박스-투-박스 + 회전 재가속</div>
+        <div class="ti-desc">60m 왕복 + 회전 후 10m 스프린트 · 2분 리피트 · MF 특화</div>
+        <div class="ti-freq">주 2회 · 5세트 × 3회</div>
+        <button class="ti-video-btn">▶ 운동 영상 보기</button>
+      </div>
+
+      <div class="train-item">
+        <div class="ti-head">● 주장 예외 · 감각 일지</div>
+        <div class="ti-name">주간 감각 일지 작성</div>
+        <div class="ti-desc">매일 훈련 후 우측 햄 당김 감각 기록 · RPE + 감각 구분 · 주간 패턴 추적</div>
+        <div class="ti-freq">매일 · 훈련 후 5분</div>
+      </div>
+    </div>
+
+    <div class="coach-box">
+      <span class="cb-badge">Coach &middot; AT Comment</span>
+      <div class="cb-text">
+        주장 역할 완벽하게 수행 중입니다. 점프·속도·균형 모두 상승세가 확실합니다. 본인이 호소하는 우측 감각은 수치상 Safe이지만 선제적으로 Nordic 부하를 조정했으니 감각 일지만 꾸준히 작성해주세요. 이번 시즌 핵심 선수로서 건강하게 풀타임 가능합니다.
+      </div>
+      <div class="cb-sig">— 이슬기 AT · 마이페이보릿리커버리</div>
+    </div>
+
+    <div class="footnote">
+      ● 이슬기 AT 검수 · 성균관대 스포츠과학과 Sports Interaction Science 감수 완료
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: HOMEWORK ===== -->
+  <div class="tab-content" id="tab-homework">
+
+    <div class="m-card">
+      <div class="mc-title">이번 주 영상 과제</div>
+      <div class="mc-subtitle">기한 내 확인 후 완료 처리 · 코칭스태프 자동 전달</div>
+
+      <div class="train-item homework">
+        <div class="ti-head">● 전술 분석</div>
+        <div class="ti-name">다음 경기 상대 MF 패턴 분석</div>
+        <div class="ti-desc">상대 중앙 미드필더 빌드업 패턴 확인 · 박스-투-박스 포지션 숙지 · 주장 시야에서 볼 받기 타이밍 체크</div>
+        <div class="hw-meta">
+          <span class="hw-due">기한 · 05/02 (토)</span>
+          <button class="ti-video-btn">▶ 영상 보기</button>
+        </div>
+        <div style="margin-top:10px; text-align:center;">
+          <button class="hw-check-btn">● 확인 완료</button>
+        </div>
+      </div>
+
+      <div class="train-item homework">
+        <div class="ti-head">● 세트피스</div>
+        <div class="ti-name">코너킥 수비 패턴 숙지</div>
+        <div class="ti-desc">니어 포스트 집중 커버 · 세컨드 볼 대비 위치 · 주장으로서 팀 라인 지시 포인트 확인</div>
+        <div class="hw-meta">
+          <span class="hw-due">기한 · 05/02 (토)</span>
+          <button class="ti-video-btn">▶ 자료 보기</button>
+        </div>
+        <div style="margin-top:10px; text-align:center;">
+          <button class="hw-check-btn">● 확인 완료</button>
+        </div>
+      </div>
+
+      <div class="train-item homework">
+        <div class="ti-head">● 주장 리더십</div>
+        <div class="ti-name">팀 RED/CAUT 선수 상태 체크</div>
+        <div class="ti-desc">강민준·박정민·정한서·이재호·윤성민·신동혁 상태 관찰 · 훈련 중 감각 공유 · AT 브리프 전달</div>
+        <div class="hw-meta">
+          <span class="hw-due">상시 · 주 1회 보고</span>
+          <button class="ti-video-btn">▶ 체크리스트</button>
+        </div>
+        <div style="margin-top:10px; text-align:center;">
+          <button class="hw-check-btn">● 확인 완료</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footnote">
+      확인 완료 시 코칭스태프 + AT에게 자동 전달
+    </div>
+  </div>
+
+</div><!-- /mainApp -->
+
+<!-- Bottom tab -->
+<div class="bottom-tab">
+  <div class="bt-item active" onclick="switchTab('growth',0)"><span class="bt-icon">●</span>성장</div>
+  <div class="bt-item" onclick="switchTab('strengths',1)"><span class="bt-icon">▲</span>강점</div>
+  <div class="bt-item" onclick="switchTab('training',2)"><span class="bt-icon">■</span>훈련</div>
+  <div class="bt-item" onclick="switchTab('homework',3)"><span class="bt-icon">▶</span>과제</div>
+</div>
+
+        </div><!-- /phone-screen -->
+        <div class="phone-home-indicator"></div>
+      </div><!-- /phone-frame -->
+    </div><!-- /phone-wrap -->
+  </div><!-- /dl-right -->
+
+</div><!-- /dual-wrap -->
+
+<script>
+function switchTab(tabId, idx) {
+  document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.bt-item').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('tab-' + tabId).classList.add('active');
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+  document.querySelectorAll('.bt-item')[idx].classList.add('active');
+  var screen = document.querySelector('.phone-screen');
+  if (screen) screen.scrollTop = 0;
+}
+</script>
+
+</body>
+</html>

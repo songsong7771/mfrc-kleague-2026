@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이보릿리커버리 · 달리기·가감속 · 윤희서 #21</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --card: #FFFFFF; --ink: #1A1A1A; --mid: #6B6B6B;
+    --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+  }
+  html, body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 13px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* SIDEBAR v1.2 */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: #EFECE4; border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 22px 20px; border-bottom: 1px solid var(--rule); }
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sidebar-role { padding: 12px 22px; border-bottom: 1px solid var(--rule); }
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+  .sidebar-nav { flex: 1; padding: 14px 0; overflow-y: auto; }
+  .nav-section { padding: 18px 22px 8px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: var(--light); text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; padding: 9px 22px; font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; transition: all 0.15s; letter-spacing: -0.01em; }
+  .nav-item:hover { color: var(--ink); background: var(--bg-subtle); }
+  .nav-item.active { color: var(--ink); background: var(--bg); border-left-color: var(--ink); font-weight: 700; }
+  .nav-num { font-family: var(--font-mono); font-size: 10px; color: var(--light); margin-right: 10px; letter-spacing: 0.05em; min-width: 16px; }
+  .nav-item.active .nav-num { color: var(--ink); font-weight: 700; }
+  .nav-sub { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-left: auto; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sidebar-footer { padding: 18px 22px 20px; border-top: 1px solid var(--rule); background: var(--bg-subtle); }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
+
+  /* MAIN */
+  .main { margin-left: 240px; min-height: 100vh; }
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245, 243, 238, 0.88); backdrop-filter: saturate(180%) blur(16px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); }
+  .breadcrumb .current { font-family: var(--font-sans); text-transform: none; letter-spacing: -0.01em; font-size: 13px; font-weight: 700; color: var(--ink); margin-left: 4px; }
+  .breadcrumb .sep { color: var(--light); margin: 0 8px; }
+  .topbar-right { display: flex; align-items: center; gap: 14px; }
+  .version-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); }
+  .device-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--ink); background: var(--bg); }
+
+  /* HERO */
+  .hero { padding: 24px 36px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 18px; background: var(--card); }
+  .hero-av { width: 60px; height: 60px; background: var(--ink); color: var(--card); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; font-size: 24px; letter-spacing: -1px; }
+  .hero-name { font-family: var(--font-sans); font-size: 22px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); line-height: 1; display: flex; align-items: center; gap: 10px; }
+  .hero-captain { display: inline-block; padding: 2px 9px; background: var(--ink); color: var(--card); font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; }
+  .hero-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--mid); margin-top: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .hero-right { margin-left: auto; text-align: right; }
+  .hero-triage { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 12px; display: inline-block; border: 1px solid var(--ink); color: var(--ink); background: var(--bg); }
+
+  /* CONTENT */
+  .content { padding: 24px 36px 48px; max-width: 1400px; }
+
+  /* v1.1 Info Strip */
+  .v11-strip { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; padding: 11px 18px; background: var(--card); border: 1px solid var(--ink); margin-bottom: 20px; }
+  .v11-strip-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 4px 10px; background: var(--ink); color: var(--card); }
+  .v11-strip-body { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.55; letter-spacing: -0.01em; }
+  .v11-strip-body strong { font-weight: 700; }
+  .v11-strip-body .k { font-family: var(--font-mono); font-size: 10.5px; background: var(--bg); padding: 1px 5px; border: 1px solid var(--rule); }
+
+  /* Card · Section */
+  .card { background: var(--card); border: 1px solid var(--rule); margin-bottom: 20px; }
+  .sec { padding: 18px 22px 14px; border-bottom: 1px solid var(--rule); }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+  .sec-num { font-family: var(--font-display); font-size: 14px; font-weight: 900; color: var(--ink); letter-spacing: 0.02em; }
+  .sec-title { font-family: var(--font-sans); font-size: 17px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+  .sec-sub { font-family: var(--font-serif); font-style: italic; font-size: 12px; color: var(--mid); margin-bottom: 10px; letter-spacing: 0; }
+  .sec-conc { padding: 9px 14px; background: var(--bg); border-left: 2px solid var(--ink); font-family: var(--font-sans); font-size: 12px; color: var(--ink); letter-spacing: -0.01em; font-weight: 600; line-height: 1.5; }
+  .sec-conc strong { font-weight: 700; }
+  .cb { padding: 18px 22px 22px; }
+
+  /* Judgment card */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .jc { padding: 14px 16px; background: var(--bg); border: 1px solid var(--rule); border-top: 3px solid; }
+  .jc.forest { border-top-color: var(--forest); }
+  .jc.amber { border-top-color: var(--amber); }
+  .jc.red { border-top-color: var(--red); }
+  .jc.ink { border-top-color: var(--ink); }
+  .jc-label { font-family: var(--font-sans); font-size: 11.5px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 6px; line-height: 1.3; }
+  .jc-val { font-family: var(--font-display); font-size: 28px; font-weight: 900; letter-spacing: -1.2px; line-height: 1; margin-bottom: 8px; }
+  .jc-val.forest { color: var(--forest); }
+  .jc-val.amber { color: var(--amber); }
+  .jc-val.red { color: var(--red); }
+  .jc-val.ink { color: var(--ink); }
+  .jc-val small { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--mid); letter-spacing: 0.02em; margin-left: 3px; }
+  .jc-judge { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; padding: 3px 8px; letter-spacing: 0.1em; text-transform: uppercase; display: inline-block; }
+  .jc-judge.forest { background: var(--forest-dim); color: var(--forest); border: 1px solid var(--forest); }
+  .jc-judge.amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
+  .jc-judge.red { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+  .jc-judge.ink { background: var(--bg); color: var(--ink); border: 1px solid var(--ink); }
+
+  /* Distribution row (dr) */
+  .dr { display: grid; grid-template-columns: 200px 1fr 140px; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--rule); }
+  .dr:last-child { border-bottom: none; }
+  .dr-l .dr-n { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+  .dr-l .dr-g { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); margin-top: 2px; letter-spacing: 0.05em; }
+  .dr-bar { position: relative; height: 14px; background: var(--bg); border: 1px solid var(--rule); }
+  .dr-fill { position: absolute; left: 0; top: 0; bottom: 0; }
+  .dr-fill.forest { background: var(--forest); }
+  .dr-fill.amber { background: var(--amber); }
+  .dr-fill.red { background: var(--red); }
+  .dr-fill.ink { background: var(--ink); }
+  .dr-v { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.02em; text-align: right; }
+  .dr-v.forest { color: var(--forest); }
+  .dr-v.amber { color: var(--amber); }
+  .dr-v.red { color: var(--red); }
+  .dr-v.ink { color: var(--ink); }
+
+  /* Left-right direction card */
+  .lr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0 10px; }
+  .lr-card { padding: 14px 16px; background: var(--bg); border: 1px solid var(--rule); text-align: center; }
+  .lr-card.forest { border-color: var(--forest); background: var(--forest-dim); }
+  .lr-card.amber { border-color: var(--amber); background: var(--amber-dim); }
+  .lr-label { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: var(--mid); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .lr-val { font-family: var(--font-display); font-size: 22px; font-weight: 900; letter-spacing: -0.8px; line-height: 1; margin-bottom: 4px; }
+  .lr-val.forest { color: var(--forest); }
+  .lr-val.amber { color: var(--amber); }
+  .lr-judge { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .lr-judge.forest { color: var(--forest); }
+  .lr-judge.amber { color: var(--amber); }
+  .lr-note { text-align: center; font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; padding: 6px 0 10px; }
+  .lr-note.forest { color: var(--forest); }
+  .lr-note.amber { color: var(--amber); }
+  .game-note { padding: 10px 14px; background: var(--bg); border-left: 2px solid var(--ink); font-family: var(--font-sans); font-size: 11.5px; color: var(--ink); line-height: 1.6; letter-spacing: -0.01em; margin-top: 10px; }
+  .game-note.forest { border-left-color: var(--forest); }
+  .game-note.amber { border-left-color: var(--amber); }
+  .game-note strong { font-weight: 700; }
+
+  /* Position distribution */
+  .pd { margin-top: 6px; padding: 12px 14px; background: var(--bg); border: 1px solid var(--rule); }
+  .pd-title { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .pd-bar { display: grid; grid-template-columns: 50px 1fr 130px; gap: 10px; align-items: center; padding: 5px 0; }
+  .pd-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.08em; text-transform: uppercase; }
+  .pd-track { position: relative; height: 12px; background: var(--card); border: 1px solid var(--rule); }
+  .pd-fill { height: 100%; }
+  .pd-fill.forest { background: var(--forest); }
+  .pd-fill.amber { background: var(--amber); }
+  .pd-fill.ink { background: var(--ink); }
+  .pd-marker { position: absolute; top: -3px; width: 2px; height: 18px; background: var(--red); }
+  .pd-val { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.03em; text-align: right; }
+  .pd-val.forest { color: var(--forest); }
+  .pd-val.amber { color: var(--amber); }
+  .pd-val.ink { color: var(--ink); }
+
+  /* Warning box */
+  .wb { padding: 14px 18px; background: var(--forest-dim); border: 1px solid var(--forest); border-left: 3px solid var(--forest); margin-top: 14px; }
+  .wb.amber { background: var(--amber-dim); border-color: var(--amber); }
+  .wb.red { background: var(--red-dim); border-color: var(--red); }
+  .wb-title { font-family: var(--font-sans); font-size: 13px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .wb-title.forest { color: var(--forest); }
+  .wb-title.amber { color: var(--amber); }
+  .wb-title.red { color: var(--red); }
+  .wb-body { font-family: var(--font-sans); font-size: 11.5px; color: var(--ink); line-height: 1.6; letter-spacing: -0.01em; }
+
+  /* Speed curve chart */
+  .curve-block { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-top: 14px; }
+  .curve-svg-wrap { background: var(--bg); border: 1px solid var(--rule); padding: 14px; }
+  .curve-legend { background: var(--bg); border: 1px solid var(--rule); padding: 14px; }
+  .cl-title { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .cl-item { display: grid; grid-template-columns: 12px 1fr; gap: 8px; align-items: baseline; padding: 4px 0; }
+  .cl-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; }
+  .cl-dot.forest { background: var(--forest); }
+  .cl-dot.amber { background: var(--amber); }
+  .cl-dot.ink { background: var(--ink); }
+  .cl-text { font-family: var(--font-sans); font-size: 11px; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; }
+  .cl-text strong { font-weight: 700; }
+
+  /* K-Power Protocol cards */
+  .proto { padding: 14px 18px; background: var(--bg); border: 1px solid var(--rule); margin-bottom: 10px; border-left: 2px solid var(--ink); }
+  .proto:last-child { margin-bottom: 0; }
+  .proto-title { font-family: var(--font-sans); font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 5px; }
+  .proto-desc { font-family: var(--font-sans); font-size: 11.5px; color: var(--ink); line-height: 1.6; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .proto-desc strong { font-weight: 700; }
+  .proto-pos { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); letter-spacing: 0.06em; text-transform: uppercase; }
+  .proto-pos strong { color: var(--ink); font-weight: 700; }
+
+  /* AT Comment */
+  .at-comment-card { background: var(--card); border: 1px solid var(--rule); padding: 24px 28px; margin-bottom: 18px; }
+  .at-bridge { background: var(--bg); border-left: 2px solid var(--ink); padding: 14px 18px; margin-bottom: 22px; }
+  .at-bridge-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+  .at-bridge-body { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.7; letter-spacing: -0.01em; }
+  .at-bridge-body .tag { display: inline; font-family: var(--font-sans); font-size: 12px; font-weight: 700; margin-right: 2px; }
+  .at-bridge-body .tag.forest { color: var(--forest); }
+  .at-bridge-body .tag.amber { color: var(--amber); }
+  .at-bridge-body .tag.red { color: var(--red); }
+  .at-bridge-body strong { font-weight: 700; }
+  .at-bridge-body em { font-family: var(--font-serif); font-style: italic; color: var(--mid); }
+
+  .at-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+  .at-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.2em; text-transform: uppercase; background: var(--ink); color: var(--card); }
+  .at-title { font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .at-cert { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); letter-spacing: 0.04em; margin-left: auto; }
+
+  .at-section-title { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin: 18px 0 10px; padding-top: 14px; border-top: 1px solid var(--rule); }
+  .at-section-title:first-of-type { margin-top: 4px; padding-top: 0; border-top: none; }
+  .at-item { display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 7px 0; align-items: baseline; }
+  .at-item-num { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--light); letter-spacing: 0.05em; }
+  .at-item-num.forest { color: var(--forest); }
+  .at-item-num.amber { color: var(--amber); }
+  .at-item-num.red { color: var(--red); }
+  .at-item strong { font-weight: 700; font-size: 12.5px; color: var(--ink); display: block; margin-bottom: 2px; letter-spacing: -0.01em; }
+  .at-item em { font-family: var(--font-serif); font-style: italic; font-size: 11.5px; color: var(--mid); letter-spacing: 0; }
+  .basis { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 1px 6px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--rule); color: var(--mid); margin: 0 2px; }
+  .at-sig { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule); text-align: right; font-family: var(--font-serif); font-style: italic; font-size: 12px; color: var(--mid); letter-spacing: 0.02em; }
+
+  /* Action Buttons */
+  .card-act { display: flex; gap: 6px; padding: 14px 22px; border-top: 1px solid var(--rule); flex-wrap: wrap; background: var(--bg); }
+  .abtn { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border: 1px solid var(--rule); background: var(--card); color: var(--mid); transition: all 0.15s; cursor: pointer; }
+  .abtn:hover { border-color: var(--ink); color: var(--ink); }
+  .abtn.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .abtn.primary:hover { background: var(--mid); border-color: var(--mid); }
+
+  /* Action Popup */
+  #actionPopup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; background: var(--card); border: 1px solid var(--ink); padding: 28px 32px; min-width: 420px; max-width: 520px; box-shadow: 0 8px 40px rgba(0,0,0,.18); }
+  #actionPopup .close-x { position: absolute; top: 14px; right: 18px; font-family: var(--font-mono); font-size: 16px; cursor: pointer; color: var(--light); font-weight: 300; }
+  #actionIcon { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
+  #actionTitle { font-family: var(--font-sans); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.02em; }
+  #actionBody { font-family: var(--font-sans); font-size: 13px; color: var(--ink); line-height: 1.6; letter-spacing: -0.01em; }
+  #actionBody .info-block { padding: 12px 14px; background: var(--bg); margin: 12px 0 6px; border-left: 2px solid var(--ink); }
+  #actionBody .info-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink); margin-bottom: 6px; }
+  #actionBody .info-list { font-size: 12px; color: var(--ink); line-height: 1.75; letter-spacing: -0.01em; }
+  #actionBody textarea { width: 100%; height: 100px; border: 1px solid var(--rule); padding: 10px; font-family: var(--font-sans); font-size: 13px; color: var(--ink); resize: vertical; outline: none; letter-spacing: -0.01em; }
+  #actionBody textarea:focus { border-color: var(--ink); }
+  #actionBody .meta-small { font-family: var(--font-mono); font-size: 9.5px; color: var(--light); margin-top: 6px; letter-spacing: 0.06em; }
+  #actionBody .success-box { padding: 22px 16px; background: var(--bg); border-left: 2px solid var(--forest); text-align: center; }
+  #actionBody .success-head { font-family: var(--font-sans); font-size: 14px; font-weight: 700; color: var(--forest); margin-bottom: 6px; letter-spacing: -0.01em; }
+  #actionBody .success-body { font-family: var(--font-mono); font-size: 11px; color: var(--mid); line-height: 1.7; letter-spacing: 0.03em; }
+  #actionFooter { margin-top: 22px; display: flex; gap: 8px; justify-content: flex-end; }
+  #actionFooter button { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px; border: 1px solid; cursor: pointer; }
+  #actionFooter button.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  #actionFooter button.secondary { background: var(--card); color: var(--mid); border-color: var(--rule); }
+  #actionOverlay { display: none; position: fixed; inset: 0; background: rgba(26, 26, 26, 0.4); z-index: 9998; }
+
+  @media print {
+    .sidebar { display: none !important; }
+    .main { margin-left: 0 !important; }
+    .topbar { position: relative !important; }
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sb-ko">마이페이보릿리커버리</div>
+    <div class="sb-sub-line"></div>
+    <div class="sb-program">K리그 유소년<br>측정·분석 시스템</div>
+    <div class="sb-caption">2026 시즌 &nbsp;·&nbsp; v1.1</div>
+  </div>
+  <div class="sidebar-role">
+    <span class="role-badge">Coaching Staff</span>
+    <span class="role-team">신평고등학교 U18</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="홈_코칭스태프_MFRC_v1_2.html" class="nav-item"><span class="nav-num">00</span><span>홈</span></a>
+    <a href="선수목록_MFRC_v1_2.html" class="nav-item"><span class="nav-num">—</span><span>선수 목록</span></a>
+    <a href="1_개인선수대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">01</span><span>개인 선수</span></a>
+    <a href="2_팀대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">02</span><span>팀 대시보드</span></a>
+    <div class="nav-section">Analysis</div>
+    <a href="3_점프착지방향전환_MFRC_v1_2.html" class="nav-item"><span class="nav-num">03</span><span>점프·착지·전환</span><span class="nav-sub">3D-Deltas</span></a>
+    <a href="4_달리기가속감속_MFRC_v1_2.html" class="nav-item active"><span class="nav-num">04</span><span>달리기·가감속</span><span class="nav-sub">K-Power</span></a>
+    <a href="근력좌우균형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">05</span><span>근력·균형</span><span class="nav-sub">K-TDM</span></a>
+    <a href="5_부상위험도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">06</span><span>부상 위험도</span><span class="nav-sub">통합</span></a>
+    <a href="6_플레이어유형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">07</span><span>플레이어 유형</span><span class="nav-sub">통합</span></a>
+    <a href="7_컨디션피로도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">08</span><span>컨디션·피로도</span><span class="nav-sub">K-Grip</span></a>
+    <div class="nav-section">Operations</div>
+    <a href="8_훈련플래너_MFRC_v1_2.html" class="nav-item"><span class="nav-num">09</span><span>훈련 플래너</span></a>
+    <a href="9_월별캘린더_MFRC_v1_2.html" class="nav-item"><span class="nav-num">10</span><span>캘린더</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sb-footer-logo">
+      <svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+      </svg>
+    </div>
+    <div class="sb-copy">© 2026 My Favorite Recovery<br>마이페이보릿리커버리</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">
+      분석 상세 <span class="sep">›</span> 04 달리기·가감속 <span class="sep">›</span> <span class="current">윤희서 #21 · MF · 주장</span>
+    </div>
+    <div class="topbar-right">
+      <span class="device-badge">K-Power · 속도 측정</span>
+      <span class="version-badge">Ref DB v1.1</span>
+    </div>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <div class="hero">
+    <div class="hero-av">21</div>
+    <div>
+      <div class="hero-name">윤희서<span class="hero-captain">Captain · C</span></div>
+      <div class="hero-meta">신평고등학교 U18 · MF · CM · 17세10개월 · Post-PHV · 2026.04.28 측정</div>
+    </div>
+    <div class="hero-right">
+      <span class="hero-triage">⊚ 주장 예외 · 우선 4분</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== v1.1 INFO STRIP ===== -->
+    <div class="v11-strip">
+      <span class="v11-strip-label">v1.1 관리 등급 · Triage</span>
+      <div class="v11-strip-body">
+        <strong>달리기·가감속 · Safe 등급 A</strong> · <span class="k">30m 4.24s</span> 상위 24% · <span class="k">Vmax 8.58 m/s</span> · <span class="k">505 ASI 6.1% R</span> TARGET · 감속 효율 양호 · 반복 유지율 72% · Monthly Battery 4주 후 재측정
+      </div>
+    </div>
+
+    <!-- ===== SECTION 1: 순간 스피드 ===== -->
+    <div class="card">
+      <div class="sec">
+        <div class="sec-head">
+          <span class="sec-num">01</span>
+          <span class="sec-title">순간 스피드 · Maximum Velocity</span>
+        </div>
+        <div class="sec-sub">치고 나가는 속도 — 이 선수 최대 속도가 어느 수준인가</div>
+        <div class="sec-conc">● <strong>Vmax 8.58 m/s · 0~10m 상위 22%</strong> · 탑스피드 양호 + 도달 빠름 (22m) · 도달 후 유지 구간도 안정 · Post-PHV 성숙도 기반 상위권</div>
+      </div>
+      <div class="cb">
+        <div class="grid-3">
+          <div class="jc forest">
+            <div class="jc-label">탑스피드 · Vmax</div>
+            <div class="jc-val forest">8.58<small>m/s</small></div>
+            <span class="jc-judge forest">MF 상위 22%</span>
+          </div>
+          <div class="jc forest">
+            <div class="jc-label">Best 10m 스플릿</div>
+            <div class="jc-val forest">1.74<small>s</small></div>
+            <span class="jc-judge forest">상위 18%</span>
+          </div>
+          <div class="jc ink">
+            <div class="jc-label">탑스피드 도달 지점</div>
+            <div class="jc-val ink">22<small>m</small></div>
+            <span class="jc-judge ink">빠른 도달</span>
+          </div>
+        </div>
+
+        <div class="dr">
+          <div class="dr-l"><div class="dr-n">0~10m 가속</div><div class="dr-g">짧은 거리 출발 속도</div></div>
+          <div class="dr-bar"><div class="dr-fill forest" style="width:82%"></div></div>
+          <div class="dr-v forest">Peak 4.84 m/s²</div>
+        </div>
+        <div class="dr">
+          <div class="dr-l"><div class="dr-n">10~20m 가속 유지</div><div class="dr-g">중거리 속도 유지</div></div>
+          <div class="dr-bar"><div class="dr-fill forest" style="width:78%"></div></div>
+          <div class="dr-v forest">상위 24%</div>
+        </div>
+        <div class="dr">
+          <div class="dr-l"><div class="dr-n">20~30m 최대속도 구간</div><div class="dr-g">탑스피드 유지</div></div>
+          <div class="dr-bar"><div class="dr-fill forest" style="width:74%"></div></div>
+          <div class="dr-v forest">상위 28%</div>
+        </div>
+
+        <div class="game-note forest">
+          ● <strong>도달 방식</strong> : 탑스피드 높고 도달까지 빠름(22m) · 도달 후 유지 구간도 안정. <strong>"중원에서 박스까지 한 번에 치고 올라가는 속도형"</strong> · 쓰루패스 러닝 + 컷 인 스프린트 모두 대응 가능.
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 2: 민첩성 ===== -->
+    <div class="card">
+      <div class="sec">
+        <div class="sec-head">
+          <span class="sec-num">02</span>
+          <span class="sec-title">민첩성 · Agility</span>
+        </div>
+        <div class="sec-sub">돌아서 쫓아가는 속도 — 방향 바꾸는 게 얼마나 빠른가</div>
+        <div class="sec-conc">● <strong>505 COD 2.28s · ASI 6.1% R TARGET 달성</strong> · 좌우 방향전환 양호 · Turn &amp; Accel 1.42s 중위 · 전환 자체 능력 안정</div>
+      </div>
+      <div class="cb">
+        <div class="grid-2">
+          <div class="jc forest">
+            <div class="jc-label">505 COD 통과 시간 (양측 평균)</div>
+            <div class="jc-val forest">2.28<small>s</small></div>
+            <span class="jc-judge forest">상위 24%</span>
+          </div>
+          <div class="jc ink">
+            <div class="jc-label">Turn &amp; Accel (회전→가속 1.5m)</div>
+            <div class="jc-val ink">1.42<small>s</small></div>
+            <span class="jc-judge ink">MF 중위 46%</span>
+          </div>
+        </div>
+
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.12em;text-transform:uppercase;margin:16px 0 8px;">좌우 방향전환 차이 · v1.1 Test-Specific</div>
+        <div class="lr-grid">
+          <div class="lr-card forest">
+            <div class="lr-label">좌→우 전환 · 축발 L</div>
+            <div class="lr-val forest">2.26<small style="font-size:12px;">s</small></div>
+            <div class="lr-judge forest">양호</div>
+          </div>
+          <div class="lr-card forest">
+            <div class="lr-label">우→좌 전환 · 축발 R</div>
+            <div class="lr-val forest">2.30<small style="font-size:12px;">s</small></div>
+            <div class="lr-judge forest">양호</div>
+          </div>
+        </div>
+        <div class="lr-note forest">좌우 차이 0.04s · 양측 모두 TARGET 달성 · 505 ASI 6.1% R (TARGET &lt;10%)</div>
+
+        <div class="game-note forest">
+          ● <strong>경기 내 활용</strong> : 중원 수비 전환 시 양측으로 자유롭게 빠짐 · 주장 역할 시 팀 방향 설정에 유리. <strong>v1.1 v1.1 Test-Specific</strong> 표기 : <span style="font-family:var(--font-mono);font-size:11px;background:var(--card);padding:1px 5px;border:1px solid var(--rule);">505 ASI 6.1% R · weaker = R</span>
+        </div>
+
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.12em;text-transform:uppercase;margin:18px 0 8px;">MF 포지션 Turn &amp; Accel 분포</div>
+        <div class="pd">
+          <div class="pd-title">신평고 U18 MF 9명 내 위치 · 윤희서 #21</div>
+          <div class="pd-bar">
+            <div class="pd-label">상위</div>
+            <div class="pd-track"><div class="pd-fill forest" style="width:25%"></div></div>
+            <div class="pd-val forest">~1.30s</div>
+          </div>
+          <div class="pd-bar">
+            <div class="pd-label">중위</div>
+            <div class="pd-track">
+              <div class="pd-fill ink" style="width:50%"></div>
+              <div class="pd-marker" style="left:60%;background:var(--forest);"></div>
+            </div>
+            <div class="pd-val ink">1.30~1.45s · 윤희서</div>
+          </div>
+          <div class="pd-bar">
+            <div class="pd-label">하위</div>
+            <div class="pd-track"><div class="pd-fill amber" style="width:75%"></div></div>
+            <div class="pd-val amber">1.45s+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 3: 가속 & 감속 ===== -->
+    <div class="card">
+      <div class="sec">
+        <div class="sec-head">
+          <span class="sec-num">03</span>
+          <span class="sec-title">가속 &amp; 감속 · Acceleration &amp; Deceleration</span>
+        </div>
+        <div class="sec-sub">출발하고 멈추는 힘 — 후반에도 유지되는가</div>
+        <div class="sec-conc">● <strong>초기 가속 상위 18% · 감속 효율 -0.48 m/s² 양호 · 반복 유지율 72%</strong> · Post-PHV Safe A 기준 달성 · 후반 구간 안정</div>
+      </div>
+      <div class="cb">
+        <div class="grid-3">
+          <div class="jc forest">
+            <div class="jc-label">0~10m 초기 가속</div>
+            <div class="jc-val forest">상위<small> 18%</small></div>
+            <span class="jc-judge forest">우수</span>
+          </div>
+          <div class="jc forest">
+            <div class="jc-label">감속 효율 (Peak Deceleration)</div>
+            <div class="jc-val forest">-0.48<small>m/s²</small></div>
+            <span class="jc-judge forest">상위 26%</span>
+          </div>
+          <div class="jc forest">
+            <div class="jc-label">피로 후 감속 유지율</div>
+            <div class="jc-val forest">72<small>%</small></div>
+            <span class="jc-judge forest">양호</span>
+          </div>
+        </div>
+
+        <div class="dr">
+          <div class="dr-l"><div class="dr-n">완전 정지 거리</div><div class="dr-g">탑스피드 후 0m/s까지</div></div>
+          <div class="dr-bar"><div class="dr-fill forest" style="width:68%"></div></div>
+          <div class="dr-v forest">2.4m · MF 평균 2.6m</div>
+        </div>
+        <div class="dr">
+          <div class="dr-l"><div class="dr-n">반복 5회 후 감속력 변화</div><div class="dr-g">후반 피로 내성</div></div>
+          <div class="dr-bar"><div class="dr-fill forest" style="width:72%"></div></div>
+          <div class="dr-v forest">-18% · 양호</div>
+        </div>
+
+        <div class="wb forest">
+          <div class="wb-title forest">● 후반 구간 안정성 양호</div>
+          <div class="wb-body">반복 스프린트 5회 후에도 감속력 <strong>-18%</strong>로 큰 저하 없음 · 후반 수비 복귀·역습 대응 능력 유지. 주장으로서 풀타임 중원 커버리지에 적합.</div>
+        </div>
+
+        <div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.12em;text-transform:uppercase;margin:18px 0 10px;">30m 연속 속도 곡선 · 구간 판독</div>
+        <div class="curve-block">
+          <div class="curve-svg-wrap">
+            <svg viewBox="0 0 320 110" style="width:100%;height:auto">
+              <line x1="30" y1="85" x2="300" y2="85" stroke="#E5E3DE" stroke-width="0.5"/>
+              <line x1="30" y1="10" x2="30" y2="85" stroke="#E5E3DE" stroke-width="0.5"/>
+              <text x="25" y="88" font-size="8" fill="#6B6B6B" text-anchor="end" font-family="JetBrains Mono">0</text>
+              <text x="25" y="50" font-size="8" fill="#6B6B6B" text-anchor="end" font-family="JetBrains Mono">5</text>
+              <text x="25" y="15" font-size="8" fill="#6B6B6B" text-anchor="end" font-family="JetBrains Mono">9 m/s</text>
+              <text x="60" y="98" font-size="8" fill="#6B6B6B" text-anchor="middle" font-family="JetBrains Mono">5m</text>
+              <text x="120" y="98" font-size="8" fill="#6B6B6B" text-anchor="middle" font-family="JetBrains Mono">10m</text>
+              <text x="200" y="98" font-size="8" fill="#6B6B6B" text-anchor="middle" font-family="JetBrains Mono">20m</text>
+              <text x="280" y="98" font-size="8" fill="#6B6B6B" text-anchor="middle" font-family="JetBrains Mono">30m</text>
+
+              <!-- MF 기준선 (연함) -->
+              <polyline points="30,85 60,62 90,42 120,32 160,22 200,18 240,16 280,18" fill="none" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="4 3" opacity="0.6"/>
+              <!-- 윤희서 곡선 -->
+              <polyline points="30,85 60,58 90,38 120,26 160,18 200,14 240,14 280,16" fill="none" stroke="#006A3A" stroke-width="2.5" stroke-linejoin="round"/>
+              <circle cx="120" cy="26" r="3" fill="#006A3A" stroke="white" stroke-width="1"/>
+              <circle cx="240" cy="14" r="3.5" fill="#006A3A" stroke="white" stroke-width="1.5"/>
+              <text x="245" y="11" font-size="8" fill="#006A3A" font-weight="700" font-family="JetBrains Mono">8.58 m/s</text>
+              <!-- 구간 표시 -->
+              <line x1="240" y1="10" x2="240" y2="85" stroke="#006A3A" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.5"/>
+              <text x="240" y="8" font-size="7" fill="#006A3A" text-anchor="middle" font-family="JetBrains Mono">Vmax</text>
+            </svg>
+          </div>
+          <div class="curve-legend">
+            <div class="cl-title">구간 판독</div>
+            <div class="cl-item"><span class="cl-dot forest"></span><div class="cl-text"><strong>0~10m</strong> 상위 18% · 출발 양호</div></div>
+            <div class="cl-item"><span class="cl-dot forest"></span><div class="cl-text"><strong>10~20m</strong> 가속 유지 상위 24%</div></div>
+            <div class="cl-item"><span class="cl-dot forest"></span><div class="cl-text"><strong>20~30m</strong> Vmax 도달 · 유지 안정</div></div>
+            <div class="cl-item"><span class="cl-dot ink"></span><div class="cl-text"><strong>━</strong> 윤희서 실측</div></div>
+            <div class="cl-item"><span class="cl-dot" style="background:#A8A8A8"></span><div class="cl-text"><strong>┄</strong> MF 포지션 평균</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== K-Power 추가 측정 프로토콜 ===== -->
+    <div class="card">
+      <div class="sec">
+        <div class="sec-head">
+          <span class="sec-title">K-Power 추가 측정 프로토콜</span>
+        </div>
+        <div class="sec-sub">스마트스피드(타이밍게이트)로는 불가능한 K-Power 전용 항목 · MFRC 차별화 지점</div>
+      </div>
+      <div class="cb">
+        <div class="proto">
+          <div class="proto-title">01 · 힘-속도 곡선 (Force-Velocity Profile)</div>
+          <div class="proto-desc">스프린트 전 구간의 힘과 속도 관계를 연속 곡선으로 산출. <strong>윤희서 분류 : Balanced</strong> (Force / Velocity 균형형). Post-PHV Safe A 기준 최적 구간.</div>
+          <div class="proto-pos"><strong>대상</strong> 전원 · <strong>결과</strong> F-V 프로파일 분류 (Force-dominant / Balanced / V-dominant)</div>
+        </div>
+        <div class="proto">
+          <div class="proto-title">02 · 수비 스텝 전환 (백스텝→대쉬)</div>
+          <div class="proto-desc">백스텝 3m → 전환점 반응속도 → 직선 대쉬 3m. 수비 시 뒷걸음치다 돌아서 쫓아가는 동작의 전환 속도 분석. <strong>윤희서 전환 시간 0.38s</strong> · MF 상위 22%.</div>
+          <div class="proto-pos"><strong>대상</strong> CB · FB · MF · <strong>상황</strong> 수비 전환 · 역습 대응</div>
+        </div>
+        <div class="proto">
+          <div class="proto-title">03 · 기립 반응속도 (GK 전용)</div>
+          <div class="proto-desc">바닥에서 일어나는 속도. 세이빙 후 재기립 · 1차 세이브 후 2차 대응 시간. <em>윤희서 MF 포지션 · 해당 없음.</em></div>
+          <div class="proto-pos"><strong>대상</strong> GK only · 신평고 김태영 #1 · 김성훈 #22</div>
+        </div>
+        <div class="proto">
+          <div class="proto-title">04 · 공격수 30m 스프린트 힘-속도 곡선 (FW 전용)</div>
+          <div class="proto-desc">30m 전 구간 힘-속도 곡선. 쓰루패스 받고 골대까지 전력질주 상황의 구간별 출력. <em>윤희서 MF · 해당 없음.</em></div>
+          <div class="proto-pos"><strong>대상</strong> FW only · 신평고 5명 · 강민준 박정민 최준영 백지훈 양현준</div>
+        </div>
+        <div class="proto">
+          <div class="proto-title">05 · 지그재그 드리블 가감속 분석</div>
+          <div class="proto-desc">20m 구간에 3/5/15/20m 콘 배치 · 지그재그 이동 시 각 구간별 가속·감속 힘-속도 그래프. 드리블하며 수비수 제치는 동작. <strong>윤희서 평균 가속 3.84 m/s²</strong> · MF 상위 30%.</div>
+          <div class="proto-pos"><strong>대상</strong> FW · MF · FB · <strong>상황</strong> 드리블 돌파 · 공간 창출</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AT COMMENT ===== -->
+    <div class="at-comment-card">
+
+      <!-- Bridge -->
+      <div class="at-bridge">
+        <div class="at-bridge-head">이 수치들이 경기에서 뜻하는 것</div>
+        <div class="at-bridge-body">
+          <span class="tag forest">●</span> <strong>Vmax 8.58 m/s · 0~10m 상위 18%</strong> → 중원에서 박스까지 한 번에 치고 올라가는 속도. <em>현재 수준 유지.</em><br>
+          <span class="tag forest">●</span> <strong>505 ASI 6.1% R TARGET 달성</strong> → 양측 방향전환 자유 · 주장 역할 시 팀 방향 설정 유리.<br>
+          <span class="tag forest">●</span> <strong>감속 효율 -0.48 m/s² · 유지율 72%</strong> → 후반 수비 복귀 + 역습 대응에서 템포 유지.<br>
+          <span class="tag amber">▲</span> <strong>Turn &amp; Accel 1.42s · MF 중위</strong> → 회전 후 재가속이 약간 느림. <em>개선 여지 있는 유일한 지표.</em>
+        </div>
+      </div>
+
+      <!-- Header -->
+      <div class="at-head">
+        <span class="at-badge">AT Comment</span>
+        <span class="at-title">윤희서 #21 주장 · 달리기·가감속 · Safe 등급 A</span>
+        <span class="at-cert">AT 이슬기 검수 · 성균관대 스포츠과학과 감수</span>
+      </div>
+
+      <!-- 구간별 해석 -->
+      <div class="at-section-title">구간별 해석 · Section Interpretation</div>
+      <div class="at-item">
+        <span class="at-item-num forest">01</span>
+        <span><strong>순간 스피드 Safe A · Vmax + 0~10m + 도달 모두 상위</strong><em>MF 중에서 치고 올라가는 속도 상위 20% 안쪽 · 주장 역할과 중원 스프린트에 이상적 프로파일.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num forest">02</span>
+        <span><strong>민첩성 Safe A · 505 ASI TARGET 달성</strong><em>좌우 축발 어디든 자유 · 컷팅·감속 시 방향 제약 없음 · 본인 호소 "급정지 우측 햄 당김"은 수치상 RED 아님.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num forest">03</span>
+        <span><strong>가속·감속 Safe A · 후반 유지율 72%</strong><em>반복 스프린트 5회 후에도 감속력 -18% 유지 · 주장 풀타임 체력과 일치하는 결과.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num amber">04</span>
+        <span><strong>Turn &amp; Accel 중위 · 유일한 개선 여지</strong><em>회전 후 재가속 1.42s는 MF 평균 · 플라이오메트릭 단거리 드릴로 상위권 진입 가능.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num">05</span>
+        <span><strong>F-V 프로파일 Balanced · 최적 구간</strong><em>Force 측·Velocity 측 어느 쪽도 치우치지 않음 · 현 프로그램 유지로 점진적 향상 지속 가능.</em></span>
+      </div>
+
+      <!-- 이번 주 실행 -->
+      <div class="at-section-title">이번 주 실행 · This Week</div>
+      <div class="at-item"><span class="at-item-num">01</span><span>정규 훈련 참여 · <strong>현 프로그램 유지</strong> · Safe A 기준 제한 없음 <span class="basis">Safe A</span></span></div>
+      <div class="at-item"><span class="at-item-num">02</span><span><strong>Turn &amp; Accel 플라이오 드릴</strong> 주 2회 추가 · 양측 회전 1.5m 가속 3세트×6회 <span class="basis">개선 대상</span></span></div>
+      <div class="at-item"><span class="at-item-num">03</span><span><strong>본인 호소 모니터링</strong> · 경기 중 급정지 우측 햄 감각 변화 시 즉시 AT 브리프</span></div>
+      <div class="at-item"><span class="at-item-num">—</span><span><strong>Monthly Battery 재측정 2026.05.26</strong> · CMJ + 30m + 505 + field ASI</span></div>
+
+      <div class="at-sig">— 이슬기 AT &nbsp;·&nbsp; 마이페이보릿리커버리 &nbsp;·&nbsp; 성균관대 스포츠과학과 감수</div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card">
+      <div class="card-act">
+        <button class="abtn primary" onclick="showActionPopup('planner')">→ 훈련 플래너</button>
+        <button class="abtn" onclick="showActionPopup('memo_at')">AT 메모</button>
+        <button class="abtn" onclick="showActionPopup('memo_coach')">코치 메모</button>
+        <button class="abtn" onclick="showActionPopup('memo_director')">감독 메모</button>
+        <button class="abtn" onclick="showActionPopup('save')">리포트 저장</button>
+        <button class="abtn" onclick="showActionPopup('pdf')">PDF 출력</button>
+        <button class="abtn" onclick="showActionPopup('schedule')">재측정 일정</button>
+        <button class="abtn" onclick="showActionPopup('approve')">코치 승인</button>
+        <button class="abtn" onclick="showActionPopup('upload')">자료 업로드</button>
+        <button class="abtn" onclick="showActionPopup('task')">과제 추가</button>
+        <button class="abtn" onclick="showActionPopup('settings')">설정</button>
+        <button class="abtn" onclick="showActionPopup('parent')">학부모 요약</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== ACTION POPUP ===== -->
+<div id="actionPopup">
+  <div class="close-x" onclick="closeActionPopup()">✕</div>
+  <div id="actionIcon"></div>
+  <div id="actionTitle"></div>
+  <div id="actionBody"></div>
+  <div id="actionFooter"></div>
+</div>
+<div id="actionOverlay" onclick="closeActionPopup()"></div>
+
+<script>
+var _ac = {
+  planner: {
+    icon: 'Planner',
+    title: '훈련 플래너로 전송 · K-Power',
+    body: '<div>윤희서 #21 주장 달리기·가감속 유지 프로그램 생성</div>'
+      + '<div class="info-block"><div class="info-head">생성될 플랜 · Safe A 유지 + Turn &amp; Accel 보강</div>'
+      + '<div class="info-list">· 정규 훈련 참여 · 제한 없음<br>· Turn &amp; Accel 플라이오 드릴 주 2회<br>· 반복 스프린트 5×30m · 주 1회<br>· F-V 프로파일 Balanced 유지 블록</div></div>',
+    buttons: [['플랜 생성', 'primary'], ['취소', 'secondary']]
+  },
+  memo_at: {
+    icon: 'AT Memo',
+    title: 'AT 메모 · 윤희서 #21',
+    body: '<div>Athletic Trainer 전문 소견 · K-Power</div>'
+      + '<textarea>달리기·가감속 Safe A. Vmax 8.58 상위 22% · 505 ASI 6.1% R TARGET 달성 · 감속 유지율 72% 양호. Turn &amp; Accel 1.42s 중위 · 유일한 개선 여지. F-V 프로파일 Balanced. 현 프로그램 유지 + 플라이오 드릴 주 2회 추가. Monthly Battery 5/26 재측정.</textarea>'
+      + '<div class="meta-small">이슬기 AT · 2026.04.28</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  memo_coach: {
+    icon: 'Memo',
+    title: '코치 메모',
+    body: '<div>코칭스태프 관찰 기록 · 훈련·경기 내</div>'
+      + '<textarea placeholder="스프린트 빈도 · 감속 국면 · 주장 역할 관찰 사항을 기록하세요..."></textarea>'
+      + '<div class="meta-small">마지막 저장 : —</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  memo_director: {
+    icon: 'Memo',
+    title: '감독 메모',
+    body: '<div>감독 전달 사항</div>'
+      + '<textarea placeholder="포지션 운영 · 출전 시간 관련 의견을 기록합니다..."></textarea>'
+      + '<div class="meta-small">마지막 저장 : —</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  save: {
+    icon: 'Save',
+    title: '리포트 저장',
+    body: '<div class="success-box"><div class="success-head">✓ K-Power 리포트 저장 완료</div>'
+      + '<div class="success-body">신평고 U18 · 2026 1차 측정 · 윤희서 #21<br>저장 시각 : 2026.04.28 14:58<br>형식 : PDF (A4) · 섹션 3개 + 프로토콜 5종</div></div>',
+    buttons: [['확인', 'primary']]
+  },
+  pdf: {
+    icon: 'Print',
+    title: 'PDF 출력',
+    body: '<div class="success-box" style="border-left-color:var(--ink);"><div class="success-head" style="color:var(--ink);">K-Power PDF 생성 준비 완료</div>'
+      + '<div class="success-body">아래 버튼으로 인쇄 대화상자 열기</div>'
+      + '<button onclick="closeActionPopup();setTimeout(function(){window.print()},300)" style="margin-top:14px;padding:9px 20px;background:var(--ink);color:var(--card);border:1px solid var(--ink);font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">인쇄 · PDF 저장</button></div>',
+    buttons: [['취소', 'secondary']]
+  },
+  schedule: {
+    icon: 'Schedule',
+    title: '재측정 일정 · K-Power',
+    body: '<div>K-Power 달리기·가감속 재측정</div>'
+      + '<div class="info-block"><div class="info-head">Monthly Battery · 4주 후</div>'
+      + '<div class="info-list">2026.05.26 · 전체 항목<br>CMJ · 30m · 505 · field ASI · YoYo</div></div>'
+      + '<div class="info-block"><div class="info-head">Quarterly Battery · 12주 후</div>'
+      + '<div class="info-list">2026.07.21 · K-Power 전용 프로토콜 포함<br>F-V 프로파일 + 수비 스텝 전환 + 지그재그</div></div>',
+    buttons: [['등록', 'primary'], ['취소', 'secondary']]
+  },
+  approve: {
+    icon: 'Approve',
+    title: '코치 승인',
+    body: '<div class="success-box"><div class="success-head">✓ 코치 승인 완료</div>'
+      + '<div class="success-body">승인자 : 코칭스태프<br>승인 시각 : 2026.04.29 09:15<br>윤희서 K-Power 유지 프로그램 적용</div></div>',
+    buttons: [['확인', 'primary']]
+  },
+  upload: {
+    icon: 'Upload',
+    title: '자료 업로드',
+    body: '<div>스프린트 영상 · 경기 영상 업로드</div>'
+      + '<div style="border:1.5px dashed var(--rule);padding:32px;text-align:center;margin-top:10px;">'
+      + '<div style="font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--ink);letter-spacing:0.1em;text-transform:uppercase;">Drop Files Here</div>'
+      + '<div style="font-family:var(--font-sans);font-size:11.5px;color:var(--mid);margin-top:6px;letter-spacing:-0.01em;">MP4 · MOV · PDF · JPG (최대 500MB)</div></div>',
+    buttons: [['업로드', 'primary'], ['취소', 'secondary']]
+  },
+  task: {
+    icon: 'Task',
+    title: '과제 추가',
+    body: '<div>선수 과제 생성</div>'
+      + '<div style="margin-top:12px;"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">과제명</div>'
+      + '<input type="text" style="width:100%;border:1px solid var(--rule);padding:8px 12px;font-family:var(--font-sans);font-size:12.5px;outline:none;" placeholder="예: Turn &amp; Accel 영상 일지 · 주 2회"></div>'
+      + '<div style="margin-top:10px;"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">기한</div>'
+      + '<input type="date" value="2026-05-26" style="border:1px solid var(--rule);padding:8px 12px;font-family:var(--font-sans);font-size:12.5px;outline:none;"></div>',
+    buttons: [['과제 생성', 'primary'], ['취소', 'secondary']]
+  },
+  settings: {
+    icon: 'Settings',
+    title: '설정 변경',
+    body: '<div style="margin-bottom:14px;"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">비교 대상</div>'
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap;">'
+      + '<span style="font-family:var(--font-mono);font-size:10px;font-weight:700;padding:5px 12px;background:var(--ink);color:var(--card);letter-spacing:0.1em;text-transform:uppercase;">K리그 U18 MF</span>'
+      + '<span style="font-family:var(--font-mono);font-size:10px;font-weight:700;padding:5px 12px;border:1px solid var(--rule);color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">동일 연령대</span>'
+      + '<span style="font-family:var(--font-mono);font-size:10px;font-weight:700;padding:5px 12px;border:1px solid var(--rule);color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">팀 내 비교</span>'
+      + '</div></div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  parent: {
+    icon: 'Export',
+    title: '학부모 요약 카드',
+    body: '<div>학부모 전달용 요약 생성</div>'
+      + '<div class="info-block"><div class="info-head">포함 내용 · Safe A 직접 공유 가능</div>'
+      + '<div class="info-list">· Vmax 8.58 m/s · 상위 22%<br>· 505 ASI 6.1% R · TARGET 달성<br>· 감속 유지율 72% · 후반 체력 양호<br>· F-V 프로파일 Balanced<br>· 팀 내 순위는 미노출</div></div>',
+    buttons: [['요약 생성', 'primary'], ['취소', 'secondary']]
+  }
+};
+
+function showActionPopup(t) {
+  var d = _ac[t]; if (!d) return;
+  document.getElementById('actionIcon').textContent = d.icon;
+  document.getElementById('actionTitle').textContent = d.title;
+  document.getElementById('actionBody').innerHTML = d.body;
+  var f = document.getElementById('actionFooter'); f.innerHTML = '';
+  d.buttons.forEach(function(btn) {
+    var b = document.createElement('button');
+    b.textContent = btn[0];
+    b.className = btn[1];
+    b.onclick = closeActionPopup;
+    f.appendChild(b);
+  });
+  document.getElementById('actionPopup').style.display = 'block';
+  document.getElementById('actionOverlay').style.display = 'block';
+}
+
+function closeActionPopup() {
+  document.getElementById('actionPopup').style.display = 'none';
+  document.getElementById('actionOverlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

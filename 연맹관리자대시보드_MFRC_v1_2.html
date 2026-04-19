@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K리그 유소년 · 연맹 관리자 대시보드 · MFRC</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  a { text-decoration: none; color: inherit; }
+
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --bg-sidebar: #EFECE4; --card: #FFFFFF;
+    --ink: #1A1A1A; --mid: #6B6B6B; --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+    --shadow-card: 0 1px 4px rgba(26,26,26,0.04);
+  }
+
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+
+  /* ===== SIDEBAR (Federation Role) ===== */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 20px 18px; border-bottom: 1px solid var(--rule); }
+  .sb-logo-mark { margin-bottom: 12px; }
+  .sb-logo-mark svg { width: 42px; height: auto; display: block; }
+  .sidebar-logo h1 { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--ink); text-transform: uppercase; }
+  .sidebar-logo p { font-family: var(--font-sans); font-size: 11px; color: var(--mid); margin-top: 6px; line-height: 1.55; letter-spacing: -0.005em; }
+  .sidebar-logo p strong { color: var(--ink); font-weight: 700; }
+  .sidebar-logo p .tag { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-top: 3px; }
+
+  .sidebar-role { padding: 14px 22px; border-bottom: 1px solid var(--rule); background: var(--bg-subtle); }
+  .role-badge { display: inline-block; font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 4px 10px; background: var(--ink); color: var(--card); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+  
+
+  .view-switch { display: block; margin: 12px 20px; padding: 8px 14px; border: 1px solid var(--forest); background: var(--forest-dim); color: var(--forest); font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-align: center; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.15s; }
+  .view-switch:hover { background: var(--forest); color: var(--card); }
+
+  .sidebar-nav { flex: 1; padding: 16px 0; overflow-y: auto; }
+  .nav-section { padding: 16px 20px 6px; font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.15em; color: var(--light); text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 11px 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; cursor: pointer; letter-spacing: -0.01em; transition: all 0.15s; }
+  .nav-item:hover { color: var(--ink); background: rgba(26,26,26,0.03); }
+  .nav-item.active { background: var(--forest-dim); color: var(--forest); border-left-color: var(--forest); font-weight: 700; }
+  .nav-item .ni-mark { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--light); margin-right: 4px; letter-spacing: 0.05em; }
+
+  .sidebar-footer { padding: 14px 20px; border-top: 1px solid var(--rule); font-family: var(--font-mono); font-size: 9px; color: var(--light); line-height: 1.6; letter-spacing: 0.05em; }
+
+  /* ===== MAIN ===== */
+  .main { margin-left: 240px; min-height: 100vh; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245,243,238,0.82); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-sans); font-size: 12px; color: var(--mid); letter-spacing: -0.005em; }
+  .breadcrumb span { color: var(--ink); font-weight: 700; }
+  .tb-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--mid); font-weight: 600; letter-spacing: 0.08em; }
+
+  .content { padding: 24px 36px 48px; }
+
+  /* ===== SUMMARY LINE ===== */
+  .summary-line { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--ink); padding: 16px 22px; margin-bottom: 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--ink); letter-spacing: -0.005em; line-height: 1.6; }
+  .summary-line .head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--ink); letter-spacing: 0.15em; text-transform: uppercase; margin-right: 8px; }
+  .summary-line strong.forest { color: var(--forest); font-weight: 700; }
+  .summary-line strong.amber { color: var(--amber); font-weight: 700; }
+  .summary-line strong.red { color: var(--red); font-weight: 700; }
+
+  /* ===== KPI ROW ===== */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+  .kpi { background: var(--card); border: 1px solid var(--rule); padding: 18px; box-shadow: var(--shadow-card); border-left: 3px solid; }
+  .kpi.forest { border-left-color: var(--forest); }
+  .kpi.ink { border-left-color: var(--ink); }
+  .kpi.amber { border-left-color: var(--amber); }
+  .kpi.red { border-left-color: var(--red); }
+
+  .kpi-label { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: var(--mid); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 5px; }
+  .kpi-val { font-family: var(--font-display); font-size: 28px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; }
+  .kpi-val .denom { font-family: var(--font-display); font-size: 14px; color: var(--mid); font-weight: 500; letter-spacing: -0.02em; }
+  .kpi-val.forest { color: var(--forest); }
+  .kpi-val.ink { color: var(--ink); }
+  .kpi-val.amber { color: var(--amber); }
+  .kpi-val.red { color: var(--red); }
+  .kpi-change { font-family: var(--font-mono); font-size: 10px; font-weight: 700; margin-top: 4px; letter-spacing: 0.03em; }
+  .kpi-tag { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 8px; display: inline-block; margin-top: 8px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; }
+  .kpi-tag.forest { color: var(--forest); border-color: var(--forest); background: var(--forest-dim); }
+  .kpi-tag.ink { color: var(--ink); border-color: var(--ink); background: var(--bg-subtle); }
+  .kpi-tag.amber { color: var(--amber); border-color: var(--amber); background: var(--amber-dim); }
+  .kpi-tag.red { color: var(--red); border-color: var(--red); background: var(--red-dim); }
+
+  /* ===== CARD ===== */
+  .card { background: var(--card); border: 1px solid var(--rule); overflow: hidden; box-shadow: var(--shadow-card); margin-bottom: 18px; }
+  .card-header { padding: 16px 24px 12px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-family: var(--font-sans); font-size: 14px; font-weight: 800; letter-spacing: -0.02em; }
+  .card-subtitle { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 3px; letter-spacing: 0.05em; }
+  .card-body { padding: 22px 24px; }
+
+  /* ===== TABLE ===== */
+  .club-table { width: 100%; border-collapse: collapse; font-family: var(--font-sans); font-size: 11px; }
+  .club-table th { background: var(--ink); color: var(--card); padding: 10px 12px; text-align: left; font-family: var(--font-mono); font-weight: 700; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--ink); }
+  .club-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); letter-spacing: -0.005em; }
+  .club-table tr.red-row td { background: var(--red-dim); }
+  .club-table tr.amber-row td { background: var(--amber-dim); }
+  .club-table tr:hover td { background: var(--bg-subtle); }
+  .club-table tr.red-row:hover td { background: rgba(230,57,70,0.1); }
+  .club-table tr.amber-row:hover td { background: rgba(199,122,30,0.1); }
+
+  .mono { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0; }
+  .tg { color: var(--forest); font-weight: 700; }
+  .tw { color: var(--amber); font-weight: 700; }
+  .td-txt { color: var(--red); font-weight: 700; }
+
+  .badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 8px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid; }
+  .b-done { background: var(--forest-dim); color: var(--forest); border-color: var(--forest); }
+  .b-prog { background: var(--bg-subtle); color: var(--ink); border-color: var(--ink); }
+  .b-delay { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+  .b-pend { background: var(--amber-dim); color: var(--amber); border-color: var(--amber); }
+
+  /* ===== INSIGHT ROW ===== */
+  .insight-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .ins-card { background: var(--card); border: 1px solid var(--rule); padding: 16px; border-left: 3px solid; }
+  .ins-card.forest { border-left-color: var(--forest); }
+  .ins-card.amber { border-left-color: var(--amber); }
+  .ins-label { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); font-weight: 700; margin-bottom: 5px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .ins-val { font-family: var(--font-display); font-size: 22px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; }
+  .ins-val.forest { color: var(--forest); }
+  .ins-val.amber { color: var(--amber); }
+  .ins-detail { font-family: var(--font-sans); font-size: 10.5px; color: var(--mid); font-weight: 500; margin-top: 5px; letter-spacing: -0.005em; line-height: 1.5; }
+
+  .benchmark-title { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .benchmark-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .bm-label { font-family: var(--font-mono); font-size: 10px; color: var(--mid); width: 70px; letter-spacing: 0.05em; }
+  .bm-label.right { text-align: right; }
+  .bm-track { flex: 1; height: 24px; background: var(--bg-subtle); position: relative; border: 1px solid var(--rule); }
+  .bm-zone-red { position: absolute; left: 0; top: 0; width: 20%; height: 100%; background: var(--red-dim); }
+  .bm-zone-amber { position: absolute; left: 20%; top: 0; width: 30%; height: 100%; background: var(--amber-dim); }
+  .bm-zone-neutral { position: absolute; left: 50%; top: 0; width: 30%; height: 100%; background: var(--bg-subtle); }
+  .bm-zone-forest { position: absolute; left: 80%; top: 0; width: 20%; height: 100%; background: var(--forest-dim); }
+  .bm-marker { position: absolute; top: -5px; width: 2px; height: 34px; background: var(--ink); }
+  .bm-marker-label { position: absolute; top: -24px; transform: translateX(-50%); font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: var(--ink); background: var(--card); padding: 1px 6px; border: 1px solid var(--ink); white-space: nowrap; }
+  .bm-caption { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); text-align: center; margin-top: 10px; letter-spacing: 0.05em; }
+
+  /* ===== ALERT PANEL ===== */
+  .alert-panel { background: var(--card); border: 1px solid var(--rule); overflow: hidden; box-shadow: var(--shadow-card); margin-bottom: 18px; }
+  .ap-header { padding: 14px 24px; border-bottom: 1px solid var(--rule); font-family: var(--font-sans); font-size: 13px; font-weight: 800; letter-spacing: -0.02em; background: var(--ink); color: var(--card); }
+  .ap-header .head-mark { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--card); margin-right: 8px; letter-spacing: 0.15em; text-transform: uppercase; }
+  .ap-item { padding: 12px 24px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 12px; cursor: pointer; transition: background 0.15s; }
+  .ap-item:hover { background: var(--bg-subtle); }
+  .ap-item:last-child { border-bottom: none; }
+  .ap-icon { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; }
+  .ap-icon.red { color: var(--red); }
+  .ap-icon.amber { color: var(--amber); }
+  .ap-text { font-family: var(--font-sans); font-size: 12px; font-weight: 600; flex: 1; letter-spacing: -0.005em; }
+  .ap-days { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.03em; }
+  .ap-cat { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 8px; border: 1px solid; letter-spacing: 0.08em; text-transform: uppercase; }
+  .ap-cat.red { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+  .ap-cat.amber { background: var(--amber-dim); color: var(--amber); border-color: var(--amber); }
+
+  @media print {
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sidebar { display: none !important; }
+    .main { margin-left: 0 !important; }
+    .topbar { position: relative !important; background: var(--bg-subtle) !important; backdrop-filter: none !important; }
+    .no-print { display: none !important; }
+    .card, .alert-panel, .kpi { box-shadow: none !important; break-inside: avoid; }
+  }
+
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sb-ko">마이페이보릿리커버리</div>
+    <div class="sb-sub-line"></div>
+    <div class="sb-program">K리그 유소년<br>측정·분석 시스템</div>
+    <div class="sb-caption">2026 시즌 &nbsp;·&nbsp; v1.2</div>
+  </div>
+
+  <div class="sidebar-role">
+    <span class="role-badge">Federation Admin</span>
+    <span class="role-team">한국프로축구연맹</span>
+  </div>
+
+  <a href="2_팀대시보드_MFRC_v1_2.html" class="view-switch">↩ 코칭스태프 뷰</a>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">Federation</div>
+    <a href="연맹관리자대시보드_MFRC_v1_2.html" class="nav-item active"><span class="ni-mark">F1</span>전체 현황</a>
+    <a href="연맹_측정일정_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">F2</span>측정 일정</a>
+    <a href="연맹_보고서현황_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">F3</span>보고서 현황</a>
+    <a href="연맹_리그기준값_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">F4</span>리그 기준값</a>
+    <a href="연맹_지연관리_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">F5</span>지연 관리</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sb-footer-logo">
+      <svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+      </svg>
+    </div>
+    <div class="sb-copy">© 2026 My Favorite Recovery<br>마이페이보릿리커버리</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb"><span>연맹 관리자 대시보드</span> · 2026년 1차 측정 현황</div>
+    <div class="tb-meta">● Last Updated · 2026.04.28 14:30 KST</div>
+  </div>
+
+  <div class="content">
+
+    <!-- Summary line -->
+    <div class="summary-line">
+      <span class="head">● SITREP</span>현재 전체 사업은 <strong class="forest">1차 측정 66.7% 진행</strong> (18/27구단 완료), 보고서 제출은 <strong class="amber">다소 지연 상태</strong>이며 <strong class="red">4개 구단 추가 확인</strong>이 필요합니다.
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kpi forest">
+        <div class="kpi-label">● 1차 측정 완료</div>
+        <div class="kpi-val forest">18<span class="denom"> / 27</span></div>
+        <div class="kpi-change" style="color:var(--forest)">▲ 이번 주 +3 구단</div>
+        <span class="kpi-tag forest">정상 진행</span>
+      </div>
+      <div class="kpi ink">
+        <div class="kpi-label">● 총 측정 선수</div>
+        <div class="kpi-val ink">1,847<span class="denom"> / 2,500</span></div>
+        <div class="kpi-change" style="color:var(--ink)">▲ 73.9% · 이번 주 +180명</div>
+        <span class="kpi-tag ink">정상 진행</span>
+      </div>
+      <div class="kpi amber">
+        <div class="kpi-label">▲ 보고서 제출</div>
+        <div class="kpi-val amber">15<span class="denom"> / 18</span></div>
+        <div class="kpi-change" style="color:var(--amber)">▲ 이번 주 +2 · 3구단 미제출</div>
+        <span class="kpi-tag amber">확인 필요</span>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-label">■ 지연 알림</div>
+        <div class="kpi-val red">4<span class="denom"> 건</span></div>
+        <div class="kpi-change" style="color:var(--forest)">▼ 전주 대비 -1건</div>
+        <span class="kpi-tag red">즉시 조치</span>
+      </div>
+    </div>
+
+    <!-- 27 clubs table -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">● 27구단 측정 진행 현황</div>
+          <div class="card-subtitle">Club Progress Matrix · 지연 구단 자동 상단 정렬 · 완료순 하단</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding: 0; overflow-x: auto;">
+        <table class="club-table">
+          <thead>
+            <tr>
+              <th>● 구단</th>
+              <th>권역</th>
+              <th>U18</th>
+              <th>U15</th>
+              <th>1차 측정</th>
+              <th>인원</th>
+              <th>보고서</th>
+              <th>다음 액션</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="red-row">
+              <td style="font-weight:700">경남FC</td>
+              <td>영남</td>
+              <td class="mono">25</td>
+              <td class="mono">22</td>
+              <td class="td-txt">미착수</td>
+              <td class="mono">0/47</td>
+              <td>—</td>
+              <td class="td-txt">측정 일정 확정 필요</td>
+              <td><span class="badge b-delay">■ 지연 12일</span></td>
+            </tr>
+            <tr class="red-row">
+              <td style="font-weight:700">대전시티즌</td>
+              <td>충청</td>
+              <td class="mono">23</td>
+              <td class="mono">20</td>
+              <td class="td-txt">미착수</td>
+              <td class="mono">0/43</td>
+              <td>—</td>
+              <td class="td-txt">담당자 연락 필요</td>
+              <td><span class="badge b-delay">■ 지연 8일</span></td>
+            </tr>
+            <tr class="red-row">
+              <td style="font-weight:700">제주유나이티드</td>
+              <td>제주</td>
+              <td class="mono">22</td>
+              <td class="mono">20</td>
+              <td class="td-txt">미착수</td>
+              <td class="mono">0/42</td>
+              <td>—</td>
+              <td class="tw">일정 조율 중</td>
+              <td><span class="badge b-delay">■ 지연 5일</span></td>
+            </tr>
+            <tr class="amber-row">
+              <td style="font-weight:700">수원FC</td>
+              <td>수도권</td>
+              <td class="mono">25</td>
+              <td class="mono">23</td>
+              <td class="tw">진행 중</td>
+              <td class="mono">25/48</td>
+              <td>—</td>
+              <td>U15 측정 2026.05.02 예정</td>
+              <td><span class="badge b-prog">▲ 진행 중</span></td>
+            </tr>
+            <tr class="amber-row">
+              <td style="font-weight:700">인천유나이티드</td>
+              <td>수도권</td>
+              <td class="mono">24</td>
+              <td class="mono">22</td>
+              <td class="tw">진행 중</td>
+              <td class="mono">24/46</td>
+              <td>—</td>
+              <td>U15 측정 2026.05.03 예정</td>
+              <td><span class="badge b-prog">▲ 진행 중</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700">신평고 (U18)</td>
+              <td>수도권</td>
+              <td class="mono">23</td>
+              <td class="mono">—</td>
+              <td class="tg">완료</td>
+              <td class="mono tg">23/23</td>
+              <td class="tg">제출 완료</td>
+              <td>2차 측정 9~10월</td>
+              <td><span class="badge b-done">● 완료</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700">전북현대</td>
+              <td>호남</td>
+              <td class="mono">26</td>
+              <td class="mono">24</td>
+              <td class="tg">완료</td>
+              <td class="mono tg">50/50</td>
+              <td class="tg">제출 완료</td>
+              <td>2차 측정 9~10월</td>
+              <td><span class="badge b-done">● 완료</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700">포항스틸러스</td>
+              <td>영남</td>
+              <td class="mono">24</td>
+              <td class="mono">22</td>
+              <td class="tg">완료</td>
+              <td class="mono tg">46/46</td>
+              <td class="tw">미제출</td>
+              <td class="tw">보고서 제출 대기</td>
+              <td><span class="badge b-pend">▲ 보고서 대기</span></td>
+            </tr>
+            <tr>
+              <td colspan="9" style="text-align:center; color:var(--mid); font-family:var(--font-mono); font-size:10.5px; padding:14px; letter-spacing:0.05em; background:var(--bg-subtle)">
+                ... 외 19개 구단 · 완료 13 · 진행 중 4 · 보고서 대기 2
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- League insights -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">● 리그 전체 핵심 변화 · 측정 완료 18구단 기준</div>
+          <div class="card-subtitle">League-Wide Insights · 전년 대비 주요 변화 · 포지션별/연령별</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="insight-row">
+          <div class="ins-card forest">
+            <div class="ins-label">● U18 MF 점프 (CMJ)</div>
+            <div class="ins-val forest">+4.2%</div>
+            <div class="ins-detail">전년 대비 · 리그 전체 MF 점프력 상승 추세</div>
+          </div>
+          <div class="ins-card amber">
+            <div class="ins-label">▲ U15 COD</div>
+            <div class="ins-val amber">정체</div>
+            <div class="ins-detail">전년 대비 변화 없음 · 방향전환 보강 필요</div>
+          </div>
+          <div class="ins-card forest">
+            <div class="ins-label">● FB 직선 스피드</div>
+            <div class="ins-val forest">+2.8%</div>
+            <div class="ins-detail">FB 포지션 전체 30m 기록 향상 · Catapult 교차 검증</div>
+          </div>
+        </div>
+
+        <div class="benchmark-title">● 27구단 익명 벤치마킹 · 점프(CMJ) 기준</div>
+        <div class="benchmark-bar">
+          <span class="bm-label">하위 20%</span>
+          <div class="bm-track">
+            <div class="bm-zone-red"></div>
+            <div class="bm-zone-amber"></div>
+            <div class="bm-zone-neutral"></div>
+            <div class="bm-zone-forest"></div>
+            <div class="bm-marker" style="left:72%"></div>
+            <div class="bm-marker-label" style="left:72%">● 신평고</div>
+          </div>
+          <span class="bm-label right">상위 20%</span>
+        </div>
+        <div class="bm-caption">구단명 익명 처리 · 상위/중위/하위 밴드 + 해당 구단 위치점 표시</div>
+      </div>
+    </div>
+
+    <!-- Alert panel -->
+    <div class="alert-panel">
+      <div class="ap-header"><span class="head-mark">■ Alert</span>운영 통제 패널</div>
+      <div class="ap-item">
+        <div class="ap-icon red">■</div>
+        <div class="ap-text">경남FC · 측정 일정 미확정</div>
+        <div class="ap-days td-txt">12일 지연</div>
+        <span class="ap-cat red">일정 지연</span>
+      </div>
+      <div class="ap-item">
+        <div class="ap-icon red">■</div>
+        <div class="ap-text">대전시티즌 · 담당자 연락 두절</div>
+        <div class="ap-days td-txt">8일 경과</div>
+        <span class="ap-cat red">연락 필요</span>
+      </div>
+      <div class="ap-item">
+        <div class="ap-icon amber">▲</div>
+        <div class="ap-text">포항스틸러스 · 보고서 미제출</div>
+        <div class="ap-days tw">5일 지연</div>
+        <span class="ap-cat amber">제출 지연</span>
+      </div>
+      <div class="ap-item">
+        <div class="ap-icon amber">▲</div>
+        <div class="ap-text">제주유나이티드 · 측정 일정 조율 중</div>
+        <div class="ap-days tw">5일 경과</div>
+        <span class="ap-cat amber">재확인 필요</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

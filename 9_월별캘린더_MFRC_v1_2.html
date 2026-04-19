@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이보릿리커버리 · 월별 캘린더 · 2026년 5월</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --card: #FFFFFF; --ink: #1A1A1A; --mid: #6B6B6B;
+    --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+  }
+  html, body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 13px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: #EFECE4; border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 22px 20px; border-bottom: 1px solid var(--rule); }
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sidebar-role { padding: 12px 22px; border-bottom: 1px solid var(--rule); }
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+  .sidebar-nav { flex: 1; padding: 14px 0; overflow-y: auto; }
+  .nav-section { padding: 18px 22px 8px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: var(--light); text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; padding: 9px 22px; font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; transition: all 0.15s; letter-spacing: -0.01em; }
+  .nav-item:hover { color: var(--ink); background: var(--bg-subtle); }
+  .nav-item.active { color: var(--ink); background: var(--bg); border-left-color: var(--ink); font-weight: 700; }
+  .nav-num { font-family: var(--font-mono); font-size: 10px; color: var(--light); margin-right: 10px; letter-spacing: 0.05em; min-width: 16px; }
+  .nav-item.active .nav-num { color: var(--ink); font-weight: 700; }
+  .nav-sub { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-left: auto; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sidebar-footer { padding: 18px 22px 20px; border-top: 1px solid var(--rule); background: var(--bg-subtle); }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
+
+  .main { margin-left: 240px; min-height: 100vh; }
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245, 243, 238, 0.88); backdrop-filter: saturate(180%) blur(16px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); }
+  .breadcrumb .current { font-family: var(--font-sans); text-transform: none; letter-spacing: -0.01em; font-size: 13px; font-weight: 700; color: var(--ink); margin-left: 4px; }
+  .breadcrumb .sep { color: var(--light); margin: 0 8px; }
+  .topbar-right { display: flex; align-items: center; gap: 8px; }
+  .t-btn { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 11px; border: 1px solid var(--rule); background: var(--card); color: var(--mid); cursor: pointer; transition: all 0.15s; }
+  .t-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .t-btn.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+
+  .content { padding: 24px 36px 48px; max-width: 1400px; display: grid; grid-template-columns: 1fr 340px; gap: 22px; }
+
+  .card { background: var(--card); border: 1px solid var(--rule); }
+  .card-h { padding: 16px 22px 12px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .card-t { font-family: var(--font-sans); font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+  .card-st { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 4px; letter-spacing: 0.05em; }
+  .card-nav { display: flex; align-items: center; gap: 6px; }
+  .cal-nav-btn { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--mid); padding: 5px 10px; border: 1px solid var(--rule); background: var(--card); cursor: pointer; letter-spacing: 0.05em; }
+  .cal-nav-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .cb { padding: 16px 22px 22px; }
+
+  .cal-legend { display: flex; flex-wrap: wrap; gap: 12px; padding: 12px 22px; background: var(--bg-subtle); border-bottom: 1px solid var(--rule); }
+  .lg-item { display: flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.05em; }
+  .lg-chip { width: 10px; height: 10px; border-radius: 50%; }
+  .lg-chip.measure { background: var(--ink); }
+  .lg-chip.match { background: var(--amber); }
+  .lg-chip.train { background: var(--forest); }
+  .lg-chip.feedback { background: var(--mid); }
+  .lg-chip.report { background: var(--ink); border: 1.5px dashed var(--card); }
+  .lg-chip.retest { background: var(--red); }
+  .lg-chip.captain { background: var(--card); border: 2px solid var(--ink); }
+
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .cal-day-label { text-align: center; font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); padding: 10px 0; background: var(--bg-subtle); letter-spacing: 0.08em; text-transform: uppercase; }
+  .cal-day-label.sat { color: var(--ink); }
+  .cal-day-label.sun { color: var(--red); }
+  .cal-cell { background: var(--card); min-height: 94px; padding: 7px 8px; position: relative; }
+  .cal-cell.empty { background: var(--bg-subtle); }
+  .cal-cell.today { background: var(--bg); outline: 2px solid var(--ink); outline-offset: -2px; z-index: 1; }
+  .cal-date { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 5px; letter-spacing: -0.02em; }
+  .cal-date.sun { color: var(--red); }
+  .today-date { background: var(--ink); color: var(--card); padding: 1px 6px; display: inline-block; }
+  .cal-event { font-family: var(--font-sans); font-size: 10px; font-weight: 700; padding: 2px 5px; margin-bottom: 2px; letter-spacing: -0.01em; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-left: 2px solid; line-height: 1.4; }
+  .cal-event.measure { color: var(--ink); background: var(--bg); border-left-color: var(--ink); }
+  .cal-event.match { color: var(--amber); background: var(--amber-dim); border-left-color: var(--amber); }
+  .cal-event.train { color: var(--forest); background: var(--forest-dim); border-left-color: var(--forest); }
+  .cal-event.feedback { color: var(--mid); background: var(--bg); border-left-color: var(--mid); }
+  .cal-event.report { color: var(--ink); background: var(--card); border: 1px dashed var(--ink); border-left: 2px solid var(--ink); }
+  .cal-event.retest { color: var(--red); background: var(--red-dim); border-left-color: var(--red); font-weight: 700; }
+  .cal-event.captain { color: var(--ink); background: var(--card); border: 1px solid var(--ink); font-weight: 700; }
+
+  .side-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
+  .side-head:not(:first-child) { margin-top: 22px; }
+  .alert-card { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid; padding: 12px 14px; margin-bottom: 8px; transition: all 0.15s; cursor: pointer; }
+  .alert-card:hover { background: var(--bg-subtle); }
+  .alert-card.red { border-left-color: var(--red); }
+  .alert-card.amber { border-left-color: var(--amber); }
+  .alert-card.ink { border-left-color: var(--ink); }
+  .alert-card.forest { border-left-color: var(--forest); }
+  .al-title { font-family: var(--font-sans); font-size: 12.5px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; margin-bottom: 4px; }
+  .al-title.red { color: var(--red); }
+  .al-title.amber { color: var(--amber); }
+  .al-title.ink { color: var(--ink); }
+  .al-title.forest { color: var(--forest); }
+  .al-detail { font-family: var(--font-sans); font-size: 11px; color: var(--mid); line-height: 1.5; letter-spacing: -0.01em; margin-bottom: 5px; }
+  .al-link { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: var(--ink); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .detail-panel { grid-column: 1 / -1; background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--ink); padding: 18px 22px; margin-top: 4px; }
+  .dp-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+  .dp-type { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--ink); color: var(--ink); background: var(--bg); white-space: nowrap; }
+  .dp-title { font-family: var(--font-sans); font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+  .dp-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--mid); margin-top: 4px; letter-spacing: 0.04em; }
+  .dp-body { font-family: var(--font-sans); font-size: 12.5px; color: var(--ink); line-height: 1.7; letter-spacing: -0.01em; padding: 14px 16px; background: var(--bg); border-left: 2px solid var(--ink); margin-bottom: 14px; }
+  .dp-body strong { font-weight: 700; }
+  .dp-actions { display: flex; gap: 6px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--rule); }
+  .dp-btn { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border: 1px solid var(--rule); background: var(--card); color: var(--mid); cursor: pointer; transition: all 0.15s; }
+  .dp-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .dp-btn.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+
+  #actionPopup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; background: var(--card); border: 1px solid var(--ink); padding: 28px 32px; min-width: 420px; max-width: 520px; box-shadow: 0 8px 40px rgba(0,0,0,.18); }
+  #actionPopup .close-x { position: absolute; top: 14px; right: 18px; font-family: var(--font-mono); font-size: 16px; cursor: pointer; color: var(--light); font-weight: 300; }
+  #actionIcon { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
+  #actionTitle { font-family: var(--font-sans); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.02em; }
+  #actionBody { font-family: var(--font-sans); font-size: 13px; color: var(--ink); line-height: 1.6; letter-spacing: -0.01em; }
+  #actionBody .info-block { padding: 12px 14px; background: var(--bg); margin: 12px 0 6px; border-left: 2px solid var(--ink); }
+  #actionBody .info-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink); margin-bottom: 6px; }
+  #actionBody .info-list { font-size: 12px; color: var(--ink); line-height: 1.75; letter-spacing: -0.01em; }
+  #actionBody textarea { width: 100%; height: 100px; border: 1px solid var(--rule); padding: 10px; font-family: var(--font-sans); font-size: 13px; color: var(--ink); resize: vertical; outline: none; letter-spacing: -0.01em; }
+  #actionBody .meta-small { font-family: var(--font-mono); font-size: 9.5px; color: var(--light); margin-top: 6px; letter-spacing: 0.06em; }
+  #actionBody .success-box { padding: 22px 16px; background: var(--bg); border-left: 2px solid var(--forest); text-align: center; }
+  #actionBody .success-head { font-family: var(--font-sans); font-size: 14px; font-weight: 700; color: var(--forest); margin-bottom: 6px; letter-spacing: -0.01em; }
+  #actionBody .success-body { font-family: var(--font-mono); font-size: 11px; color: var(--mid); line-height: 1.7; letter-spacing: 0.03em; }
+  #actionFooter { margin-top: 22px; display: flex; gap: 8px; justify-content: flex-end; }
+  #actionFooter button { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px; border: 1px solid; cursor: pointer; }
+  #actionFooter button.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  #actionFooter button.secondary { background: var(--card); color: var(--mid); border-color: var(--rule); }
+  #actionOverlay { display: none; position: fixed; inset: 0; background: rgba(26, 26, 26, 0.4); z-index: 9998; }
+
+  @media (max-width: 1100px) { .content { grid-template-columns: 1fr; } }
+  @media print { .sidebar { display: none !important; } .main { margin-left: 0 !important; } .topbar { position: relative !important; } body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sb-ko">마이페이보릿리커버리</div>
+    <div class="sb-sub-line"></div>
+    <div class="sb-program">K리그 유소년<br>측정·분석 시스템</div>
+    <div class="sb-caption">2026 시즌 &nbsp;·&nbsp; v1.1</div>
+  </div>
+  <div class="sidebar-role">
+    <span class="role-badge">Coaching Staff</span>
+    <span class="role-team">신평고등학교 U18</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="홈_코칭스태프_MFRC_v1_2.html" class="nav-item"><span class="nav-num">00</span><span>홈</span></a>
+    <a href="선수목록_MFRC_v1_2.html" class="nav-item"><span class="nav-num">—</span><span>선수 목록</span></a>
+    <a href="1_개인선수대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">01</span><span>개인 선수</span></a>
+    <a href="2_팀대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">02</span><span>팀 대시보드</span></a>
+    <div class="nav-section">Analysis</div>
+    <a href="3_점프착지방향전환_MFRC_v1_2.html" class="nav-item"><span class="nav-num">03</span><span>점프·착지·전환</span><span class="nav-sub">3D-Deltas</span></a>
+    <a href="4_달리기가속감속_MFRC_v1_2.html" class="nav-item"><span class="nav-num">04</span><span>달리기·가감속</span><span class="nav-sub">K-Power</span></a>
+    <a href="근력좌우균형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">05</span><span>근력·균형</span><span class="nav-sub">K-TDM</span></a>
+    <a href="5_부상위험도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">06</span><span>부상 위험도</span><span class="nav-sub">통합</span></a>
+    <a href="6_플레이어유형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">07</span><span>플레이어 유형</span><span class="nav-sub">통합</span></a>
+    <a href="7_컨디션피로도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">08</span><span>컨디션·피로도</span><span class="nav-sub">K-Grip</span></a>
+    <div class="nav-section">Operations</div>
+    <a href="8_훈련플래너_MFRC_v1_2.html" class="nav-item"><span class="nav-num">09</span><span>훈련 플래너</span></a>
+    <a href="9_월별캘린더_MFRC_v1_2.html" class="nav-item active"><span class="nav-num">10</span><span>캘린더</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sb-footer-logo">
+<svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+      </svg>
+    </div>
+    <div class="sb-copy">© 2026 My Favorite Recovery<br>마이페이보릿리커버리</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">운영 <span class="sep">›</span> 10 캘린더 <span class="sep">›</span> <span class="current">신평고 U18 · 2026년 5월</span></div>
+    <div class="topbar-right">
+      <button class="t-btn">◀ 4월</button>
+      <button class="t-btn">6월 ▶</button>
+      <button class="t-btn primary" onclick="showActionPopup('pdf')">PDF 출력</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div>
+      <div class="card">
+        <div class="card-h">
+          <div>
+            <div class="card-t">2026년 5월</div>
+            <div class="card-st">신평고등학교 U18 · 측정 후 1~5주차</div>
+          </div>
+          <div class="card-nav">
+            <button class="cal-nav-btn">◀</button>
+            <button class="cal-nav-btn">오늘</button>
+            <button class="cal-nav-btn">▶</button>
+          </div>
+        </div>
+
+        <div class="cal-legend">
+          <div class="lg-item"><span class="lg-chip measure"></span>측정</div>
+          <div class="lg-item"><span class="lg-chip match"></span>경기</div>
+          <div class="lg-item"><span class="lg-chip train"></span>훈련 플랜</div>
+          <div class="lg-item"><span class="lg-chip feedback"></span>피드백</div>
+          <div class="lg-item"><span class="lg-chip report"></span>리포트</div>
+          <div class="lg-item"><span class="lg-chip retest"></span>재측정</div>
+          <div class="lg-item"><span class="lg-chip captain"></span>주장 Safe A</div>
+        </div>
+
+        <div class="cb">
+          <div class="cal-grid">
+            <div class="cal-day-label">월</div>
+            <div class="cal-day-label">화</div>
+            <div class="cal-day-label">수</div>
+            <div class="cal-day-label">목</div>
+            <div class="cal-day-label">금</div>
+            <div class="cal-day-label sat">토</div>
+            <div class="cal-day-label sun">일</div>
+
+            <div class="cal-cell"><div class="cal-date">27</div><div class="cal-event train" onclick="showActionPopup('plan')">● 17주차 팀훈련 시작</div></div>
+            <div class="cal-cell"><div class="cal-date">28</div><div class="cal-event measure" onclick="showActionPopup('measure')">● 1차 측정 완료</div></div>
+            <div class="cal-cell"><div class="cal-date">29</div><div class="cal-event feedback" onclick="showActionPopup('approve')">● AT→코치 승인 발송</div></div>
+            <div class="cal-cell"><div class="cal-date">30</div><div class="cal-event train" onclick="showActionPopup('plan')">● Copenhagen/Nordic 시작</div></div>
+            <div class="cal-cell"><div class="cal-date">1</div><div class="cal-event feedback" onclick="showActionPopup('feedback')">● 학부모 리포트 발송</div></div>
+            <div class="cal-cell"><div class="cal-date sat">2</div><div class="cal-event match" onclick="showActionPopup('match')">● 연습경기 · 대곡고</div></div>
+            <div class="cal-cell"><div class="cal-date sun">3</div></div>
+
+            <div class="cal-cell"><div class="cal-date">4</div><div class="cal-event train" onclick="showActionPopup('plan')">● 18주차 팀훈련</div></div>
+            <div class="cal-cell"><div class="cal-date">5</div><div class="cal-event retest" onclick="showActionPopup('retest_caut_sm')">● 윤성민 #12 간이 재측정</div></div>
+            <div class="cal-cell"><div class="cal-date">6</div><div class="cal-event captain" onclick="showActionPopup('journal')">● 윤희서 주장 감각일지</div></div>
+            <div class="cal-cell"><div class="cal-date">7</div><div class="cal-event train" onclick="showActionPopup('plan')">● 포지션 그룹 드릴</div></div>
+            <div class="cal-cell"><div class="cal-date">8</div><div class="cal-event feedback" onclick="showActionPopup('director')">● 감독 주간 리뷰 (1차)</div></div>
+            <div class="cal-cell"><div class="cal-date sat">9</div><div class="cal-event match" onclick="showActionPopup('match')">● 주말리그 · 범일고</div></div>
+            <div class="cal-cell"><div class="cal-date sun">10</div></div>
+
+            <div class="cal-cell"><div class="cal-date">11</div><div class="cal-event train" onclick="showActionPopup('plan')">● 19주차 팀훈련</div></div>
+            <div class="cal-cell"><div class="cal-date">12</div><div class="cal-event retest" onclick="showActionPopup('retest_red')">■ RED 2명 재측정</div><div class="cal-event measure" onclick="showActionPopup('measure')">● H:Q · ASI 집중</div></div>
+            <div class="cal-cell"><div class="cal-date">13</div><div class="cal-event feedback" onclick="showActionPopup('feedback')">● RED 재측정 결과 발송</div></div>
+            <div class="cal-cell today"><div class="cal-date"><span class="today-date">14</span></div><div class="cal-event report" onclick="showActionPopup('report')">● 2주 중간 리뷰</div></div>
+            <div class="cal-cell"><div class="cal-date">15</div><div class="cal-event train" onclick="showActionPopup('plan')">● 포지션 그룹 드릴</div></div>
+            <div class="cal-cell"><div class="cal-date sat">16</div><div class="cal-event match" onclick="showActionPopup('match')">● 주말리그 · 사직고</div></div>
+            <div class="cal-cell"><div class="cal-date sun">17</div></div>
+
+            <div class="cal-cell"><div class="cal-date">18</div><div class="cal-event train" onclick="showActionPopup('plan')">● 20주차 팀훈련</div></div>
+            <div class="cal-cell"><div class="cal-date">19</div><div class="cal-event retest" onclick="showActionPopup('retest_caut')">▲ CAUT 3명 재측정</div></div>
+            <div class="cal-cell"><div class="cal-date">20</div><div class="cal-event feedback" onclick="showActionPopup('director')">● 감독 주간 리뷰 (3차)</div></div>
+            <div class="cal-cell"><div class="cal-date">21</div><div class="cal-event feedback" onclick="showActionPopup('feedback')">● CAUT 결과 발송</div></div>
+            <div class="cal-cell"><div class="cal-date">22</div><div class="cal-event train" onclick="showActionPopup('plan')">● 포지션 그룹 드릴</div></div>
+            <div class="cal-cell"><div class="cal-date sat">23</div><div class="cal-event match" onclick="showActionPopup('match')">● 주말리그 · 용호고</div></div>
+            <div class="cal-cell"><div class="cal-date sun">24</div></div>
+
+            <div class="cal-cell"><div class="cal-date">25</div><div class="cal-event train" onclick="showActionPopup('plan')">● 21주차 팀훈련</div></div>
+            <div class="cal-cell"><div class="cal-date">26</div><div class="cal-event measure" onclick="showActionPopup('monthly')">● Monthly Battery</div><div class="cal-event report" onclick="showActionPopup('report')">● 5월 종합 리포트</div></div>
+            <div class="cal-cell"><div class="cal-date">27</div><div class="cal-event feedback" onclick="showActionPopup('feedback')">● Monthly 결과 발송</div></div>
+            <div class="cal-cell"><div class="cal-date">28</div><div class="cal-event feedback" onclick="showActionPopup('director')">● 감독 주간 리뷰 (5차)</div></div>
+            <div class="cal-cell"><div class="cal-date">29</div><div class="cal-event train" onclick="showActionPopup('plan')">● 6월 플랜 AT 검수</div></div>
+            <div class="cal-cell"><div class="cal-date sat">30</div><div class="cal-event match" onclick="showActionPopup('match')">● 주말리그 · 해운대고</div></div>
+            <div class="cal-cell"><div class="cal-date sun">31</div></div>
+          </div>
+
+          <div style="margin-top:14px; padding:12px 14px; background:var(--bg-subtle); border-left:2px solid var(--forest); font-family:var(--font-mono); font-size:10.5px; color:var(--ink); letter-spacing:0.04em; line-height:1.7;">
+            <span style="color:var(--forest); font-weight:700;">● Handgrip Daily Readiness</span> · 매일 훈련 전 15분 · 상시 운영 · 25명 자동 기록 · 기준선 ±10% 자동 경고
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-panel">
+        <div class="dp-top">
+          <span class="dp-type">● 측정 · Re-Test</span>
+          <div>
+            <div class="dp-title">RED 2명 재측정 · 강민준 · 박정민</div>
+            <div class="dp-meta">2026.05.12 (화) · 14:00~16:00 · 신평고 체조관 · 측정 후 2주차</div>
+          </div>
+        </div>
+        <div class="dp-body">
+          <strong>대상</strong> · 강민준 #17 FW (H:Q 0.51 RED) + 박정민 #24 FW (H:Q 0.48 RED) · <strong>집중 항목</strong> · H:Q 이중선 (ROM+이심성) + SLCMJ ASI + 햄스트링 ASI · <strong>장비</strong> · K-TDM · 3D-Deltas<br>
+          <strong>목표</strong> · H:Q TARGET 0.60 도달 여부 · ASI 10% 이하 · Croisier 프로토콜 준수<br>
+          <strong>담당</strong> · 이슬기 AT + 측정 보조 1명 · <strong>결과 발송</strong> · 5/13 학부모 + 코치 동시 · <strong>다음 재측정</strong> · Monthly Battery 5/26
+        </div>
+        <div class="dp-actions">
+          <button class="dp-btn primary" onclick="location.href='1_개인선수대시보드.html'">→ 개인 대시보드</button>
+          <button class="dp-btn" onclick="location.href='8_훈련플래너.html'">훈련 플래너 연결</button>
+          <button class="dp-btn" onclick="showActionPopup('memo_at')">AT 메모</button>
+          <button class="dp-btn" onclick="showActionPopup('schedule')">일정 변경</button>
+          <button class="dp-btn" onclick="showActionPopup('memo_add')">메모 추가</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="side-head">▲ 주의 · 지연 항목</div>
+
+      <div class="alert-card red" onclick="showActionPopup('retest_red')">
+        <div class="al-title red">■ RED 2명 재측정 · 5/12</div>
+        <div class="al-detail">강민준 #17 · 박정민 #24 · H:Q TARGET 0.60 도달 여부 · 측정 후 2주</div>
+        <div class="al-link">→ 개인 대시보드</div>
+      </div>
+
+      <div class="alert-card amber" onclick="showActionPopup('retest_caut_sm')">
+        <div class="al-title amber">▲ 윤성민 #12 간이 재측정 · 5/5</div>
+        <div class="al-detail">누적 피로 · 수면 6.1h · Handgrip -11.2% · 1주 후 재평가</div>
+        <div class="al-link">→ 컨디션·피로도</div>
+      </div>
+
+      <div class="alert-card amber" onclick="showActionPopup('retest_caut')">
+        <div class="al-title amber">▲ CAUT 3명 재측정 · 5/19</div>
+        <div class="al-detail">정한서·이재호·신동혁 · 항목별 개별 재측정 · 측정 후 3주</div>
+        <div class="al-link">→ 주의 선수 리스트</div>
+      </div>
+
+      <div class="alert-card ink" onclick="showActionPopup('monthly')">
+        <div class="al-title ink">● Monthly Battery · 5/26</div>
+        <div class="al-detail">25명 전원 간이 체크 · 5월 종합 리포트 마감 · 진행률 45%</div>
+        <div class="al-link">→ 리포트 화면</div>
+      </div>
+
+      <div class="side-head">● 다가오는 주요 일정</div>
+
+      <div class="alert-card forest" onclick="showActionPopup('journal')">
+        <div class="al-title forest">⊚ 윤희서 주장 감각일지 · 5/6</div>
+        <div class="al-detail">Safe A · 본인 호소 추적 · 주 1회 기록 · 측정 후 2주차</div>
+        <div class="al-link">→ 개인 대시보드</div>
+      </div>
+
+      <div class="alert-card ink" onclick="showActionPopup('feedback')">
+        <div class="al-title ink">● 학부모 1차 리포트 · 5/1</div>
+        <div class="al-detail">측정 결과 개인 리포트 · 25명 · 등급별 차등 공유</div>
+        <div class="al-link">→ 리포트 화면</div>
+      </div>
+
+      <div class="alert-card amber" onclick="showActionPopup('match')">
+        <div class="al-title amber">● 연습경기 · 5/2 · 대곡고</div>
+        <div class="al-detail">측정 직후 첫 경기 · RED 2명 출전 제한 · 주장 풀타임</div>
+        <div class="al-link">→ 경기 일정</div>
+      </div>
+
+      <div class="alert-card forest" onclick="showActionPopup('plan')">
+        <div class="al-title forest">● 6월 플랜 AT 검수 · 5/29</div>
+        <div class="al-detail">Monthly 결과 기반 6월 훈련 플랜 · AT 검수 → 감독 승인</div>
+        <div class="al-link">→ 훈련 플래너</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="actionPopup">
+  <div class="close-x" onclick="closeActionPopup()">✕</div>
+  <div id="actionIcon"></div>
+  <div id="actionTitle"></div>
+  <div id="actionBody"></div>
+  <div id="actionFooter"></div>
+</div>
+<div id="actionOverlay" onclick="closeActionPopup()"></div>
+
+<script>
+var _ac = {
+  measure: { icon: 'Measure', title: '1차 측정 · 2026.04.28',
+    body: '<div>신평고 U18 25명 전원 완료</div>'
+      + '<div class="info-block"><div class="info-head">측정 결과 요약</div>'
+      + '<div class="info-list">· RED 2명 · 강민준 · 박정민<br>· CAUT 4명 · 정한서·이재호·윤성민·신동혁<br>· 주장 Safe A · 윤희서 #21<br>· SAFE 18명 · 팀 공통 참여</div></div>'
+      + '<div class="info-block"><div class="info-head">측정 항목</div>'
+      + '<div class="info-list">CMJ · SJ · IMTP · Nordic · 30m Sprint · 505 COD · Hip Add/Abd · Handgrip · K-TDM · 3D-Deltas · K-Power · K-Grip</div></div>',
+    buttons: [['개인 대시보드', 'primary'], ['닫기', 'secondary']] },
+  retest_red: { icon: 'Retest', title: '■ RED 재측정 · 2026.05.12',
+    body: '<div>강민준 #17 · 박정민 #24 · 측정 후 2주</div>'
+      + '<div class="info-block" style="border-left-color:var(--red);"><div class="info-head">강민준 #17</div>'
+      + '<div class="info-list">H:Q 0.51 → 목표 0.60 TARGET<br>SLCMJ ASI 17.4% R → 목표 10% 이하<br>2주 Nordic 우측 4회 + Copenhagen 우측 3회</div></div>'
+      + '<div class="info-block" style="border-left-color:var(--red);"><div class="info-head">박정민 #24</div>'
+      + '<div class="info-list">H:Q 0.48 → 목표 0.60 TARGET<br>ASI 19.2% R → 목표 10% 이하<br>의료 상담 결과 반영</div></div>',
+    buttons: [['일정 확정', 'primary'], ['취소', 'secondary']] },
+  retest_caut_sm: { icon: 'Retest', title: '▲ 윤성민 간이 재측정 · 2026.05.05',
+    body: '<div>윤성민 #12 MF · 1주 후 조기 재평가</div>'
+      + '<div class="info-block" style="border-left-color:var(--amber);"><div class="info-head">체크 항목</div>'
+      + '<div class="info-list">· Handgrip · 기준선 회복 여부<br>· 수면 로그 7일 · 7h+ 유지<br>· RPE 평균 · 6.5 이하<br>· 1주간 훈련 강도 -10% 효과</div></div>'
+      + '<div class="info-block"><div class="info-head">담당</div>'
+      + '<div class="info-list">이슬기 AT · 오후 4시 · 15분 간이</div></div>',
+    buttons: [['확정', 'primary'], ['취소', 'secondary']] },
+  retest_caut: { icon: 'Retest', title: '▲ CAUT 3명 재측정 · 2026.05.19',
+    body: '<div>정한서·이재호·신동혁 · 측정 후 3주</div>'
+      + '<div class="info-block" style="border-left-color:var(--amber);"><div class="info-head">정한서 #11</div>'
+      + '<div class="info-list">H:Q 0.57 → 0.60 경계 도달 여부</div></div>'
+      + '<div class="info-block" style="border-left-color:var(--amber);"><div class="info-head">이재호 #5</div>'
+      + '<div class="info-list">CoP 우 8.2cm² → 6.5cm² 이하<br>발목 ROM 회복 여부</div></div>'
+      + '<div class="info-block" style="border-left-color:var(--amber);"><div class="info-head">신동혁 #16</div>'
+      + '<div class="info-list">SLCMJ ASI 13.4% → 10% 이하</div></div>',
+    buttons: [['확정', 'primary'], ['취소', 'secondary']] },
+  monthly: { icon: 'Monthly', title: '● Monthly Battery · 2026.05.26',
+    body: '<div>25명 전원 간이 체크 + 5월 종합 리포트</div>'
+      + '<div class="info-block"><div class="info-head">간이 항목</div>'
+      + '<div class="info-list">· Handgrip · 좌우 피크 + 30초 유지<br>· CMJ · 점프 높이 + 좌우<br>· 505 COD · 방향전환 시간<br>· 자가 보고 · 수면·RPE·DOMS</div></div>'
+      + '<div class="info-block"><div class="info-head">리포트</div>'
+      + '<div class="info-list">· 5월 종합 (진행률 45% → 100%)<br>· 등급 변동 요약<br>· 6월 플랜 초안 연계</div></div>',
+    buttons: [['진행 확인', 'primary'], ['닫기', 'secondary']] },
+  plan: { icon: 'Plan', title: '주간 훈련 플랜',
+    body: '<div>팀 공통 + 포지션 + 개인 예외</div>'
+      + '<div class="info-block"><div class="info-head">이번 주 구성</div>'
+      + '<div class="info-list">· 팀 공통 4 블록 (Copenhagen·Nordic·Hip Hinge·Grip)<br>· 포지션 그룹 4 (FW·CB·FB·MF)<br>· 개인 예외 7명 (RED 2 + CAUT 4 + 주장 1)<br>· SAFE 18명 팀 공통 참여</div></div>',
+    buttons: [['훈련 플래너', 'primary'], ['닫기', 'secondary']] },
+  match: { icon: 'Match', title: '경기 일정',
+    body: '<div>주말 리그 · 연습경기</div>'
+      + '<div class="info-block"><div class="info-head">출전 조정 · RED 2명</div>'
+      + '<div class="info-list">강민준 #17 · 박정민 #24<br>2주간 고강도 스프린트 제한<br>출전 제한 또는 교체 타이밍 조정</div></div>'
+      + '<div class="info-block" style="border-left-color:var(--ink);"><div class="info-head">⊚ 주장 풀타임</div>'
+      + '<div class="info-list">윤희서 #21 · Safe A · 풀타임 커버<br>후반 감속 구간 본인 호소 추적</div></div>',
+    buttons: [['감독 리뷰', 'primary'], ['취소', 'secondary']] },
+  approve: { icon: 'Approve', title: '플랜 승인 흐름',
+    body: '<div class="info-block"><div class="info-head">현재 흐름</div>'
+      + '<div class="info-list">● AI 초안 · 04.28 완료<br>● AT 검수 · 이슬기 · 04.28 완료<br>● 학술 감수 · 성균관대 SIS · 완료<br>▲ 코치 승인 대기 · 04.29 오전<br>⬜ 선수 공유 전송 예정</div></div>',
+    buttons: [['확인', 'primary']] },
+  feedback: { icon: 'Feedback', title: '피드백 전달',
+    body: '<div>등급별 차등 공유</div>'
+      + '<div class="info-block"><div class="info-head">전달 원칙</div>'
+      + '<div class="info-list">· RED · CAUT · 수치 비노출 · 방향성 언어<br>· 주장 Safe A · 수치 직접 공유 가능<br>· SAFE · 팀 공통 요약<br>· 학부모 · 강점 Top3 + 보완 1개</div></div>',
+    buttons: [['전달', 'primary'], ['취소', 'secondary']] },
+  report: { icon: 'Report', title: '종합 리포트',
+    body: '<div>2주 중간 리뷰 + 5월 종합</div>'
+      + '<div class="info-block"><div class="info-head">포함 내용</div>'
+      + '<div class="info-list">· 팀 평균 변화 · 4개 핵심 지표<br>· 등급 변동 (RED/CAUT/SAFE 이동)<br>· 주장 Safe A 트렌드<br>· 6월 플랜 초안 연계</div></div>',
+    buttons: [['리포트 열기', 'primary'], ['닫기', 'secondary']] },
+  journal: { icon: 'Journal', title: '⊚ 윤희서 주장 감각 일지',
+    body: '<div>본인 호소 추적 · 주 1회 기록</div>'
+      + '<div class="info-block" style="border-left-color:var(--ink);"><div class="info-head">최근 7일</div>'
+      + '<div class="info-list">04.22 · 당김 · RPE 6<br>04.23 · 소실 · RPE 5<br>04.24 · 당김 · RPE 7<br>04.25 · 소실 · RPE 6<br>04.26 · 경기 후반 당김 · RPE 8<br>04.27 · 회복 · RPE 4<br>04.28 · 측정일 · AT 브리프</div></div>'
+      + '<textarea placeholder="오늘의 감각..."></textarea>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']] },
+  director: { icon: 'Review', title: '감독 주간 리뷰',
+    body: '<div>주차별 감독 리뷰 · 전술 통합</div>'
+      + '<div class="info-block"><div class="info-head">논의 항목</div>'
+      + '<div class="info-list">· RED 2명 출전 조정<br>· CAUT 4명 강도 조절<br>· 주장 역할 · 후반 체력 유지<br>· 포지션 그룹 드릴 효과<br>· 경기 결과 + 개인 피로 연동</div></div>',
+    buttons: [['리뷰 시작', 'primary'], ['닫기', 'secondary']] },
+  memo_at: { icon: 'AT Memo', title: 'AT 메모',
+    body: '<div>Athletic Trainer 검수 메모</div>'
+      + '<textarea>5/12 RED 2명 재측정 · H:Q TARGET 0.60 도달 여부 집중 체크. 강민준 2주 Nordic 효과 + 박정민 의료 상담 결과 반영. Monthly 5/26 전원 간이.</textarea>'
+      + '<div class="meta-small">이슬기 AT · 2026.04.28</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']] },
+  pdf: { icon: 'Print', title: 'PDF 출력',
+    body: '<div class="success-box" style="border-left-color:var(--ink);"><div class="success-head" style="color:var(--ink);">5월 캘린더 PDF 준비</div>'
+      + '<div class="success-body">A4 가로 · 월간 일정 전체</div>'
+      + '<button onclick="closeActionPopup();setTimeout(function(){window.print()},300)" style="margin-top:14px;padding:9px 20px;background:var(--ink);color:var(--card);border:1px solid var(--ink);font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">인쇄 · PDF 저장</button></div>',
+    buttons: [['취소', 'secondary']] },
+  schedule: { icon: 'Schedule', title: '일정 변경',
+    body: '<div>재측정 일정 조정</div>'
+      + '<div style="margin-top:10px;"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">새 일자</div>'
+      + '<input type="date" value="2026-05-12" style="border:1px solid var(--rule);padding:8px 12px;font-family:var(--font-sans);font-size:12.5px;outline:none;"></div>'
+      + '<div style="margin-top:10px;"><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--mid);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">사유</div>'
+      + '<input type="text" style="width:100%;border:1px solid var(--rule);padding:8px 12px;font-family:var(--font-sans);font-size:12.5px;outline:none;" placeholder="예: 학사 일정 조정"></div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']] },
+  memo_add: { icon: 'Memo', title: '메모 추가',
+    body: '<textarea placeholder="일정 관련 메모..."></textarea>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']] }
+};
+
+function showActionPopup(t) {
+  var d = _ac[t]; if (!d) return;
+  document.getElementById('actionIcon').textContent = d.icon;
+  document.getElementById('actionTitle').textContent = d.title;
+  document.getElementById('actionBody').innerHTML = d.body;
+  var f = document.getElementById('actionFooter'); f.innerHTML = '';
+  d.buttons.forEach(function(btn) {
+    var b = document.createElement('button');
+    b.textContent = btn[0];
+    b.className = btn[1];
+    b.onclick = closeActionPopup;
+    f.appendChild(b);
+  });
+  document.getElementById('actionPopup').style.display = 'block';
+  document.getElementById('actionOverlay').style.display = 'block';
+}
+
+function closeActionPopup() {
+  document.getElementById('actionPopup').style.display = 'none';
+  document.getElementById('actionOverlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

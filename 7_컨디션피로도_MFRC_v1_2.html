@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이보릿리커버리 · 컨디션·피로도 · 윤희서 #21</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --card: #FFFFFF; --ink: #1A1A1A; --mid: #6B6B6B;
+    --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+  }
+  html, body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 13px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* SIDEBAR v1.2 */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: #EFECE4; border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 22px 20px; border-bottom: 1px solid var(--rule); }
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sidebar-role { padding: 12px 22px; border-bottom: 1px solid var(--rule); }
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+  .sidebar-nav { flex: 1; padding: 14px 0; overflow-y: auto; }
+  .nav-section { padding: 18px 22px 8px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: var(--light); text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; padding: 9px 22px; font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; transition: all 0.15s; letter-spacing: -0.01em; }
+  .nav-item:hover { color: var(--ink); background: var(--bg-subtle); }
+  .nav-item.active { color: var(--ink); background: var(--bg); border-left-color: var(--ink); font-weight: 700; }
+  .nav-num { font-family: var(--font-mono); font-size: 10px; color: var(--light); margin-right: 10px; letter-spacing: 0.05em; min-width: 16px; }
+  .nav-item.active .nav-num { color: var(--ink); font-weight: 700; }
+  .nav-sub { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-left: auto; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sidebar-footer { padding: 18px 22px 20px; border-top: 1px solid var(--rule); background: var(--bg-subtle); }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
+
+  /* MAIN */
+  .main { margin-left: 240px; min-height: 100vh; }
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245, 243, 238, 0.88); backdrop-filter: saturate(180%) blur(16px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); }
+  .breadcrumb .current { font-family: var(--font-sans); text-transform: none; letter-spacing: -0.01em; font-size: 13px; font-weight: 700; color: var(--ink); margin-left: 4px; }
+  .breadcrumb .sep { color: var(--light); margin: 0 8px; }
+  .topbar-right { display: flex; align-items: center; gap: 14px; }
+  .version-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); }
+  .device-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--ink); background: var(--bg); }
+
+  /* HERO */
+  .hero { padding: 24px 36px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 18px; background: var(--card); }
+  .hero-av { width: 60px; height: 60px; background: var(--ink); color: var(--card); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; font-size: 24px; letter-spacing: -1px; }
+  .hero-name { font-family: var(--font-sans); font-size: 22px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+  .hero-captain { display: inline-block; margin-left: 8px; padding: 2px 8px; background: var(--ink); color: var(--card); font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; vertical-align: 4px; }
+  .hero-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--mid); margin-top: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .hero-right { margin-left: auto; text-align: right; }
+  .hero-triage { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 12px; display: inline-block; border: 1px solid var(--ink); color: var(--ink); background: var(--bg); }
+  .hero-sub { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 6px; letter-spacing: 0.05em; }
+
+  /* CONTENT */
+  .content { padding: 24px 36px 48px; max-width: 1400px; }
+
+  /* v1.1 Info Strip */
+  .v11-strip { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; padding: 11px 18px; background: var(--card); border: 1px solid var(--ink); margin-bottom: 20px; }
+  .v11-strip-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 4px 10px; background: var(--ink); color: var(--card); }
+  .v11-strip-body { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.55; letter-spacing: -0.01em; }
+  .v11-strip-body strong { font-weight: 700; }
+  .v11-strip-body .k { font-family: var(--font-mono); font-size: 10.5px; background: var(--bg); padding: 1px 5px; border: 1px solid var(--rule); }
+
+  /* KPI 4 Grid */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
+  .kpi { padding: 16px 18px; background: var(--card); border: 1px solid var(--rule); border-left: 3px solid; }
+  .kpi.forest { border-left-color: var(--forest); }
+  .kpi.ink { border-left-color: var(--ink); }
+  .kpi-label { font-family: var(--font-mono); font-size: 10px; color: var(--mid); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+  .kpi-val { font-family: var(--font-display); font-size: 30px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; margin-bottom: 6px; }
+  .kpi-val.forest { color: var(--forest); }
+  .kpi-val.ink { color: var(--ink); }
+  .kpi-val .unit { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--mid); margin-left: 3px; letter-spacing: 0.02em; }
+  .kpi-change { font-family: var(--font-mono); font-size: 10px; color: var(--mid); letter-spacing: 0.04em; margin-bottom: 6px; }
+  .kpi-game { font-family: var(--font-sans); font-size: 11.5px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.4; }
+  .kpi-game.forest { color: var(--forest); }
+  .kpi-game.ink { color: var(--ink); }
+
+  /* Card */
+  .card { background: var(--card); border: 1px solid var(--rule); margin-bottom: 20px; }
+  .card-h { padding: 16px 22px 12px; border-bottom: 1px solid var(--rule); }
+  .card-t { font-family: var(--font-sans); font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+  .card-st { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 4px; letter-spacing: 0.05em; }
+  .cb { padding: 18px 22px 22px; }
+
+  /* Grid-2 for side-by-side cards */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .grid-2 .card { margin-bottom: 0; }
+
+  /* Legend */
+  .legend { display: flex; gap: 16px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 12px; flex-wrap: wrap; }
+  .legend-left { color: var(--forest); }
+  .legend-right { color: var(--ink); }
+  .legend-avg { color: var(--mid); }
+  .legend-threshold { color: var(--red); }
+
+  /* SVG Charts */
+  .chart-svg { width: 100%; height: auto; display: block; }
+
+  .chart-note { margin-top: 12px; padding: 12px 14px; background: var(--bg); border-left: 2px solid; font-family: var(--font-sans); font-size: 11.5px; line-height: 1.6; letter-spacing: -0.01em; }
+  .chart-note.forest { border-left-color: var(--forest); }
+  .chart-note.amber { border-left-color: var(--amber); }
+  .chart-note strong { font-weight: 700; }
+  .chart-note em { font-family: var(--font-serif); font-style: italic; color: var(--mid); }
+  .chart-note .game-line { display: block; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--rule); }
+  .chart-note .game-line.forest { color: var(--forest); font-weight: 600; }
+
+  /* LR Comparison */
+  .lr-row { display: grid; grid-template-columns: 68px 1fr 56px 1fr 68px; gap: 10px; align-items: center; padding: 8px 0; }
+  .lr-label { font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.02em; }
+  .lr-label.left { color: var(--forest); text-align: right; }
+  .lr-label.right { color: var(--ink); text-align: left; }
+  .lr-track { position: relative; height: 12px; background: var(--bg); border: 1px solid var(--rule); }
+  .lr-fill-l { position: absolute; right: 0; top: 0; bottom: 0; background: var(--forest); }
+  .lr-fill-r { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink); }
+  .lr-asi { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; text-align: center; padding: 3px 5px; border: 1px solid; letter-spacing: 0.02em; }
+  .lr-asi.forest { color: var(--forest); border-color: var(--forest); background: var(--forest-dim); }
+  .lr-center { text-align: center; font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; padding: 0 0 10px; }
+  .lr-center.forest { color: var(--forest); }
+
+  /* Yearly Trend Table */
+  .yr-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+  .yr-table th { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: var(--mid); letter-spacing: 0.1em; text-transform: uppercase; padding: 9px 10px; background: var(--bg); text-align: center; border-bottom: 1px solid var(--rule); }
+  .yr-table th:first-child { text-align: left; }
+  .yr-table td { padding: 10px 10px; border-bottom: 1px solid var(--rule); font-family: var(--font-mono); font-size: 11px; text-align: center; color: var(--ink); letter-spacing: 0.02em; }
+  .yr-table td:first-child { font-family: var(--font-sans); font-weight: 700; text-align: left; font-size: 12px; letter-spacing: -0.01em; }
+  .yr-table td.trend { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; }
+  .yr-table td.trend.forest { color: var(--forest); }
+
+  /* Alert Cards */
+  .alert-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .alert { padding: 14px 16px; background: var(--bg); border: 1px solid; }
+  .alert.forest { border-color: var(--forest); background: var(--forest-dim); }
+  .alert.amber { border-color: var(--amber); opacity: 0.55; }
+  .alert.red { border-color: var(--red); opacity: 0.5; }
+  .alert.ink { border-color: var(--ink); opacity: 0.4; background: var(--bg); }
+  .alert-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 5px; }
+  .alert-head.forest { color: var(--forest); }
+  .alert-head.amber { color: var(--amber); }
+  .alert-head.red { color: var(--red); }
+  .alert-head.ink { color: var(--ink); }
+  .alert-body { font-family: var(--font-sans); font-size: 11.5px; color: var(--ink); line-height: 1.5; letter-spacing: -0.01em; margin-bottom: 5px; }
+  .alert-note { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); letter-spacing: 0.04em; }
+
+  /* 3-column Subjective Readiness */
+  .subj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .subj-card { padding: 14px 16px; background: var(--bg); border: 1px solid var(--rule); border-top: 2px solid var(--forest); }
+  .subj-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--mid); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+  .subj-val { font-family: var(--font-display); font-size: 28px; font-weight: 900; letter-spacing: -1.2px; line-height: 1; color: var(--forest); margin-bottom: 6px; }
+  .subj-val .unit { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--mid); margin-left: 3px; letter-spacing: 0.02em; }
+  .subj-desc { font-family: var(--font-sans); font-size: 11.5px; color: var(--ink); line-height: 1.5; letter-spacing: -0.01em; }
+
+  /* AT Comment */
+  .at-comment-card { background: var(--card); border: 1px solid var(--rule); padding: 24px 28px; margin-bottom: 18px; }
+  .at-bridge { background: var(--bg); border-left: 2px solid var(--ink); padding: 14px 18px; margin-bottom: 22px; }
+  .at-bridge-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+  .at-bridge-body { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.7; letter-spacing: -0.01em; }
+  .at-bridge-body .tag { display: inline; font-family: var(--font-sans); font-size: 12px; font-weight: 700; margin-right: 2px; }
+  .at-bridge-body .tag.forest { color: var(--forest); }
+  .at-bridge-body .tag.amber { color: var(--amber); }
+  .at-bridge-body strong { font-weight: 700; }
+  .at-bridge-body em { font-family: var(--font-serif); font-style: italic; color: var(--mid); }
+
+  .at-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+  .at-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.2em; text-transform: uppercase; background: var(--ink); color: var(--card); }
+  .at-title { font-family: var(--font-sans); font-size: 13px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .at-cert { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); letter-spacing: 0.04em; margin-left: auto; }
+  .at-section-title { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin: 18px 0 10px; padding-top: 14px; border-top: 1px solid var(--rule); }
+  .at-section-title:first-of-type { margin-top: 4px; padding-top: 0; border-top: none; }
+  .at-item { display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 7px 0; align-items: baseline; }
+  .at-item-num { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--light); letter-spacing: 0.05em; }
+  .at-item-num.forest { color: var(--forest); }
+  .at-item-num.amber { color: var(--amber); }
+  .at-item strong { font-weight: 700; font-size: 12.5px; color: var(--ink); display: block; margin-bottom: 2px; letter-spacing: -0.01em; }
+  .at-item em { font-family: var(--font-serif); font-style: italic; font-size: 11.5px; color: var(--mid); letter-spacing: 0; }
+  .basis { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 1px 6px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--rule); color: var(--mid); margin: 0 2px; }
+  .at-sig { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule); text-align: right; font-family: var(--font-serif); font-style: italic; font-size: 12px; color: var(--mid); letter-spacing: 0.02em; }
+
+  /* Action Buttons */
+  .card-act { display: flex; gap: 6px; padding: 14px 22px; border-top: 1px solid var(--rule); flex-wrap: wrap; background: var(--bg); }
+  .abtn { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border: 1px solid var(--rule); background: var(--card); color: var(--mid); transition: all 0.15s; cursor: pointer; }
+  .abtn:hover { border-color: var(--ink); color: var(--ink); }
+  .abtn.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  .abtn.primary:hover { background: var(--mid); border-color: var(--mid); }
+
+  /* Popup */
+  #actionPopup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; background: var(--card); border: 1px solid var(--ink); padding: 28px 32px; min-width: 420px; max-width: 520px; box-shadow: 0 8px 40px rgba(0,0,0,.18); }
+  #actionPopup .close-x { position: absolute; top: 14px; right: 18px; font-family: var(--font-mono); font-size: 16px; cursor: pointer; color: var(--light); font-weight: 300; }
+  #actionIcon { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
+  #actionTitle { font-family: var(--font-sans); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.02em; }
+  #actionBody { font-family: var(--font-sans); font-size: 13px; color: var(--ink); line-height: 1.6; letter-spacing: -0.01em; }
+  #actionBody .info-block { padding: 12px 14px; background: var(--bg); margin: 12px 0 6px; border-left: 2px solid var(--ink); }
+  #actionBody .info-head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink); margin-bottom: 6px; }
+  #actionBody .info-list { font-size: 12px; color: var(--ink); line-height: 1.75; letter-spacing: -0.01em; }
+  #actionBody textarea { width: 100%; height: 100px; border: 1px solid var(--rule); padding: 10px; font-family: var(--font-sans); font-size: 13px; color: var(--ink); resize: vertical; outline: none; letter-spacing: -0.01em; }
+  #actionBody .meta-small { font-family: var(--font-mono); font-size: 9.5px; color: var(--light); margin-top: 6px; letter-spacing: 0.06em; }
+  #actionBody .success-box { padding: 22px 16px; background: var(--bg); border-left: 2px solid var(--forest); text-align: center; }
+  #actionBody .success-head { font-family: var(--font-sans); font-size: 14px; font-weight: 700; color: var(--forest); margin-bottom: 6px; letter-spacing: -0.01em; }
+  #actionBody .success-body { font-family: var(--font-mono); font-size: 11px; color: var(--mid); line-height: 1.7; letter-spacing: 0.03em; }
+  #actionFooter { margin-top: 22px; display: flex; gap: 8px; justify-content: flex-end; }
+  #actionFooter button { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px; border: 1px solid; cursor: pointer; }
+  #actionFooter button.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+  #actionFooter button.secondary { background: var(--card); color: var(--mid); border-color: var(--rule); }
+  #actionOverlay { display: none; position: fixed; inset: 0; background: rgba(26, 26, 26, 0.4); z-index: 9998; }
+
+  @media print {
+    .sidebar { display: none !important; }
+    .main { margin-left: 0 !important; }
+    .topbar { position: relative !important; }
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sb-ko">마이페이보릿리커버리</div>
+    <div class="sb-sub-line"></div>
+    <div class="sb-program">K리그 유소년<br>측정·분석 시스템</div>
+    <div class="sb-caption">2026 시즌 &nbsp;·&nbsp; v1.1</div>
+  </div>
+  <div class="sidebar-role">
+    <span class="role-badge">Coaching Staff</span>
+    <span class="role-team">신평고등학교 U18</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="홈_코칭스태프_MFRC_v1_2.html" class="nav-item"><span class="nav-num">00</span><span>홈</span></a>
+    <a href="선수목록_MFRC_v1_2.html" class="nav-item"><span class="nav-num">—</span><span>선수 목록</span></a>
+    <a href="1_개인선수대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">01</span><span>개인 선수</span></a>
+    <a href="2_팀대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">02</span><span>팀 대시보드</span></a>
+    <div class="nav-section">Analysis</div>
+    <a href="3_점프착지방향전환_MFRC_v1_2.html" class="nav-item"><span class="nav-num">03</span><span>점프·착지·전환</span><span class="nav-sub">3D-Deltas</span></a>
+    <a href="4_달리기가속감속_MFRC_v1_2.html" class="nav-item"><span class="nav-num">04</span><span>달리기·가감속</span><span class="nav-sub">K-Power</span></a>
+    <a href="근력좌우균형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">05</span><span>근력·균형</span><span class="nav-sub">K-TDM</span></a>
+    <a href="5_부상위험도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">06</span><span>부상 위험도</span><span class="nav-sub">통합</span></a>
+    <a href="6_플레이어유형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">07</span><span>플레이어 유형</span><span class="nav-sub">통합</span></a>
+    <a href="7_컨디션피로도_MFRC_v1_2.html" class="nav-item active"><span class="nav-num">08</span><span>컨디션·피로도</span><span class="nav-sub">K-Grip</span></a>
+    <div class="nav-section">Operations</div>
+    <a href="8_훈련플래너_MFRC_v1_2.html" class="nav-item"><span class="nav-num">09</span><span>훈련 플래너</span></a>
+    <a href="9_월별캘린더_MFRC_v1_2.html" class="nav-item"><span class="nav-num">10</span><span>캘린더</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sb-footer-logo">
+      <svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+      </svg>
+    </div>
+    <div class="sb-copy">© 2026 My Favorite Recovery<br>마이페이보릿리커버리</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">
+      분석 상세 <span class="sep">›</span> 08 컨디션·피로도 <span class="sep">›</span> <span class="current">윤희서 #21 · MF · 주장</span>
+    </div>
+    <div class="topbar-right">
+      <span class="device-badge">K-Grip · Handgrip Daily Readiness</span>
+      <span class="version-badge">Ref DB v1.1</span>
+    </div>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <div class="hero">
+    <div class="hero-av">21</div>
+    <div>
+      <div class="hero-name">윤희서<span class="hero-captain">Captain · C</span></div>
+      <div class="hero-meta">신평고등학교 U18 · MF · CM · 17세10개월 · Post-PHV · 2026.04.28 측정</div>
+    </div>
+    <div class="hero-right">
+      <span class="hero-triage">⊚ 주장 예외 · 우선 4분</span>
+      <div class="hero-sub">Safe 등급 A · 수치 직접 공유 가능</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== v1.1 INFO STRIP ===== -->
+    <div class="v11-strip">
+      <span class="v11-strip-label">v1.1 관리 등급 · Triage</span>
+      <div class="v11-strip-body">
+        <strong>컨디션·피로도 · Safe 등급 A</strong> · <span class="k">Handgrip 좌 46.8 / 우 44.9kg</span> ASI 4.1% · <span class="k">기준선 -2.3%</span> 정상 · <span class="k">수면 7.2h</span> 양호 · <span class="k">RPE 6.2</span> 적정 · 14일 누적 피로 신호 없음 · 중추 피로 없음
+      </div>
+    </div>
+
+    <!-- ===== KPI 4 Grid ===== -->
+    <div class="kpi-grid">
+      <div class="kpi forest">
+        <div class="kpi-label">Daily Readiness</div>
+        <div class="kpi-val forest">Ready<span class="unit"></span></div>
+        <div class="kpi-change">오늘 기준 · 2026.04.28</div>
+        <div class="kpi-game forest">● 정규 훈련 참여 가능</div>
+      </div>
+      <div class="kpi forest">
+        <div class="kpi-label">Handgrip 피크</div>
+        <div class="kpi-val forest">46.8<span class="unit">kg</span></div>
+        <div class="kpi-change">기준선 46.0 · +1.7% 상회</div>
+        <div class="kpi-game forest">● 말초 근력 양호</div>
+      </div>
+      <div class="kpi forest">
+        <div class="kpi-label">30초 유지력</div>
+        <div class="kpi-val forest">72<span class="unit">%</span></div>
+        <div class="kpi-change">전회차 대비 +4%p 개선</div>
+        <div class="kpi-game forest">● 피로 저항력 양호</div>
+      </div>
+      <div class="kpi ink">
+        <div class="kpi-label">추세 (Quarterly 대비)</div>
+        <div class="kpi-val ink">↑<span class="unit" style="font-size:13px;">개선</span></div>
+        <div class="kpi-change">피크 +3.1kg · 유지력 +4%p</div>
+        <div class="kpi-game ink">● 전반 상승 국면</div>
+      </div>
+    </div>
+
+    <!-- ===== 피로도 곡선 + 좌우 비교 ===== -->
+    <div class="grid-2">
+
+      <!-- 피로도 곡선 -->
+      <div class="card">
+        <div class="card-h">
+          <div class="card-t">피로도 곡선 · Grip Endurance Curve</div>
+          <div class="card-st">30초간 최대 악력 유지 · 힘 감소 패턴 · 좌 vs 우</div>
+        </div>
+        <div class="cb">
+          <div class="legend">
+            <span class="legend-left">━ 좌측 L</span>
+            <span class="legend-right">━ 우측 R</span>
+            <span class="legend-avg">┄ MF 평균</span>
+            <span class="legend-threshold">- - 기준선 -25%</span>
+          </div>
+          <svg class="chart-svg" viewBox="0 0 500 200">
+            <!-- 축 -->
+            <line x1="44" y1="170" x2="480" y2="170" stroke="#E5E3DE" stroke-width="0.6"/>
+            <line x1="44" y1="10" x2="44" y2="170" stroke="#E5E3DE" stroke-width="0.6"/>
+            <line x1="44" y1="90" x2="480" y2="90" stroke="#E5E3DE" stroke-width="0.3"/>
+            <line x1="44" y1="50" x2="480" y2="50" stroke="#E5E3DE" stroke-width="0.3"/>
+            <!-- Y 라벨 -->
+            <text x="38" y="174" text-anchor="end" font-size="9" font-family="JetBrains Mono" fill="#6B6B6B">0</text>
+            <text x="38" y="94" text-anchor="end" font-size="9" font-family="JetBrains Mono" fill="#6B6B6B">25kg</text>
+            <text x="38" y="54" text-anchor="end" font-size="9" font-family="JetBrains Mono" fill="#6B6B6B">40kg</text>
+            <text x="38" y="14" text-anchor="end" font-size="9" font-family="JetBrains Mono" fill="#6B6B6B">50kg</text>
+            <!-- X 라벨 -->
+            <text x="44" y="184" font-size="9" font-family="JetBrains Mono" fill="#6B6B6B">0s</text>
+            <text x="154" y="184" font-size="9" font-family="JetBrains Mono" fill="#6B6B6B">10s</text>
+            <text x="264" y="184" font-size="9" font-family="JetBrains Mono" fill="#6B6B6B">20s</text>
+            <text x="370" y="184" font-size="9" font-family="JetBrains Mono" fill="#6B6B6B">30s</text>
+
+            <!-- -25% threshold line -->
+            <line x1="44" y1="52" x2="480" y2="52" stroke="#E63946" stroke-width="1" stroke-dasharray="6 4" opacity="0.4"/>
+            <text x="485" y="56" font-size="8" fill="#E63946" font-weight="700">-25%</text>
+
+            <!-- MF avg (dashed) -->
+            <polyline points="44,22 90,24 140,28 190,34 230,42 280,52 330,60 380,66 430,70 480,74"
+                      fill="none" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="5 3" opacity="0.5"/>
+
+            <!-- Left (forest) · peak 46.8kg · drops -28% (Safe 범위) -->
+            <polyline points="44,18 90,20 140,24 190,30 230,38 280,48 330,58 380,66 430,74 480,82"
+                      fill="none" stroke="#006A3A" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="44" cy="18" r="4" fill="#006A3A" stroke="#FFFFFF" stroke-width="2"/>
+            <circle cx="480" cy="82" r="3.5" fill="#006A3A" stroke="#FFFFFF" stroke-width="1.5"/>
+
+            <!-- Right (ink) · peak 44.9kg · drops -29% (Safe) -->
+            <polyline points="44,24 90,26 140,32 190,38 230,46 280,56 330,66 380,76 430,86 480,94"
+                      fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="44" cy="24" r="3.5" fill="#1A1A1A" stroke="#FFFFFF" stroke-width="1.5"/>
+
+            <!-- Annotations -->
+            <rect x="400" y="72" width="80" height="14" fill="#FFFFFF" stroke="#006A3A" stroke-width="0.5"/>
+            <text x="440" y="82" text-anchor="middle" font-size="9" font-family="JetBrains Mono" fill="#006A3A" font-weight="700">좌 -28%</text>
+            <rect x="400" y="88" width="80" height="14" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="0.5"/>
+            <text x="440" y="98" text-anchor="middle" font-size="9" font-family="JetBrains Mono" fill="#1A1A1A" font-weight="700">우 -29%</text>
+          </svg>
+          <div class="chart-note forest">
+            <strong>● 패턴 해석</strong> · <em>피크 양측 정상 · 30초 감소폭 -28~-29% · 기준선 -25% 근처 정상 범위 유지</em> · 좌우 감소 패턴 일치하여 중추 피로 없음.
+            <span class="game-line forest">⚽ 경기에서 · 후반 그립·볼 컨트롤 유지 안정 · 주장 역할 풀타임 커버 가능</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 좌우 비교 + 연 추이 -->
+      <div class="card">
+        <div class="card-h">
+          <div class="card-t">좌우 비교 + 연 변화 추이</div>
+          <div class="card-st">최대 악력 · 유지력 · 피로도 · 전회차 대비</div>
+        </div>
+        <div class="cb">
+          <div class="legend">
+            <span class="legend-left">좌 · L</span>
+            <span class="legend-right">우 · R</span>
+          </div>
+
+          <div class="lr-row">
+            <div class="lr-label left">46.8kg</div>
+            <div class="lr-track"><div class="lr-fill-l" style="width:88%"></div></div>
+            <div class="lr-asi forest">4.1%</div>
+            <div class="lr-track"><div class="lr-fill-r" style="width:84%"></div></div>
+            <div class="lr-label right">44.9kg</div>
+          </div>
+          <div class="lr-center forest">● 최대 악력 · ASI 4.1% · TARGET (&lt;10%)</div>
+
+          <div class="lr-row">
+            <div class="lr-label left">72%</div>
+            <div class="lr-track"><div class="lr-fill-l" style="width:72%"></div></div>
+            <div class="lr-asi forest">2.8%</div>
+            <div class="lr-track"><div class="lr-fill-r" style="width:70%"></div></div>
+            <div class="lr-label right">70%</div>
+          </div>
+          <div class="lr-center forest">● 30초 유지력 · 좌우 대칭 양호</div>
+
+          <div class="lr-row">
+            <div class="lr-label left">-28%</div>
+            <div class="lr-track"><div class="lr-fill-l" style="width:72%"></div></div>
+            <div class="lr-asi forest">3.4%</div>
+            <div class="lr-track"><div class="lr-fill-r" style="width:71%"></div></div>
+            <div class="lr-label right">-29%</div>
+          </div>
+          <div class="lr-center forest">● 피로도 지수 · 좌우 차이 1%p</div>
+
+          <!-- Yearly Trend -->
+          <table class="yr-table">
+            <tr>
+              <th>지표</th>
+              <th>2025 H1</th>
+              <th>2025 H2</th>
+              <th>2026 H1</th>
+              <th>추세</th>
+            </tr>
+            <tr>
+              <td>피크 · Left</td>
+              <td>42.4</td>
+              <td>43.7</td>
+              <td>46.8</td>
+              <td class="trend forest">▲ 상승</td>
+            </tr>
+            <tr>
+              <td>피크 · Right</td>
+              <td>40.2</td>
+              <td>42.0</td>
+              <td>44.9</td>
+              <td class="trend forest">▲ 상승</td>
+            </tr>
+            <tr>
+              <td>30초 유지율</td>
+              <td>62%</td>
+              <td>68%</td>
+              <td>72%</td>
+              <td class="trend forest">▲ 개선</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 주관 지표 3카드 ===== -->
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">Subjective Readiness · 주관 컨디션 지표</div>
+        <div class="card-st">수면 · RPE · 근육 감각 · 훈련 전 15분 자가 기록 · 최근 7일 평균</div>
+      </div>
+      <div class="cb">
+        <div class="subj-grid">
+          <div class="subj-card">
+            <div class="subj-head">수면 · Sleep</div>
+            <div class="subj-val">7.2<span class="unit">h</span></div>
+            <div class="subj-desc">최근 7일 평균 · <strong>양호 범위</strong> (7~9h) · 수면 질 자가 평가 4.2/5</div>
+          </div>
+          <div class="subj-card">
+            <div class="subj-head">RPE · 자각 강도</div>
+            <div class="subj-val">6.2<span class="unit">/10</span></div>
+            <div class="subj-desc">최근 7일 평균 · <strong>적정 강도</strong> · 과훈련 징후 없음</div>
+          </div>
+          <div class="subj-card">
+            <div class="subj-head">근육 감각 · DOMS</div>
+            <div class="subj-val">2.1<span class="unit">/5</span></div>
+            <div class="subj-desc"><strong>경미한 긴장만</strong> · 우측 햄 당김 본인 호소는 별도 관찰</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 14일 일별 악력 추이 ===== -->
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">일별 악력 추이 · 최근 14일</div>
+        <div class="card-st">기준선 대비 ±10% 경고 · 누적 피로 패턴 감지</div>
+      </div>
+      <div class="cb">
+        <div class="legend">
+          <span class="legend-left">━ 좌측 L</span>
+          <span class="legend-right">━ 우측 R</span>
+          <span class="legend-avg">━ 기준선</span>
+          <span class="legend-threshold">-- -10% 경고</span>
+        </div>
+        <svg class="chart-svg" viewBox="0 0 560 180">
+          <line x1="44" y1="150" x2="540" y2="150" stroke="#E5E3DE" stroke-width="0.6"/>
+          <line x1="44" y1="10" x2="44" y2="150" stroke="#E5E3DE" stroke-width="0.6"/>
+
+          <!-- 기준선 46kg -->
+          <line x1="44" y1="48" x2="540" y2="48" stroke="#6B6B6B" stroke-width="1" opacity="0.45"/>
+          <text x="545" y="52" font-size="8" fill="#6B6B6B" font-weight="700">기준선 46kg</text>
+
+          <!-- -10% 경고선 -->
+          <line x1="44" y1="78" x2="540" y2="78" stroke="#E63946" stroke-width="1" stroke-dasharray="6 4" opacity="0.4"/>
+          <text x="545" y="82" font-size="8" fill="#E63946" font-weight="700">-10% 경고</text>
+
+          <!-- Left daily · 기준선 근처 안정 (±3%) -->
+          <polyline points="75,44 110,46 145,42 180,48 215,50 250,46 285,44 320,48 355,52 390,46 425,44 460,48 495,46 530,45"
+                    fill="none" stroke="#006A3A" stroke-width="2" stroke-linejoin="round"/>
+          <!-- Left dots -->
+          <g fill="#006A3A">
+            <circle cx="75" cy="44" r="2.5"/><circle cx="110" cy="46" r="2.5"/><circle cx="145" cy="42" r="2.5"/>
+            <circle cx="180" cy="48" r="2.5"/><circle cx="215" cy="50" r="2.5"/><circle cx="250" cy="46" r="2.5"/>
+            <circle cx="285" cy="44" r="2.5"/><circle cx="320" cy="48" r="2.5"/><circle cx="355" cy="52" r="2.5"/>
+            <circle cx="390" cy="46" r="2.5"/><circle cx="425" cy="44" r="2.5"/><circle cx="460" cy="48" r="2.5"/>
+            <circle cx="495" cy="46" r="2.5"/><circle cx="530" cy="45" r="3.5" stroke="#FFFFFF" stroke-width="1.5"/>
+          </g>
+
+          <!-- Right daily -->
+          <polyline points="75,50 110,52 145,48 180,54 215,56 250,52 285,50 320,54 355,58 390,52 425,50 460,54 495,52 530,51"
+                    fill="none" stroke="#1A1A1A" stroke-width="1.5" stroke-linejoin="round"/>
+          <g fill="#1A1A1A">
+            <circle cx="75" cy="50" r="2"/><circle cx="110" cy="52" r="2"/><circle cx="145" cy="48" r="2"/>
+            <circle cx="180" cy="54" r="2"/><circle cx="215" cy="56" r="2"/><circle cx="250" cy="52" r="2"/>
+            <circle cx="285" cy="50" r="2"/><circle cx="320" cy="54" r="2"/><circle cx="355" cy="58" r="2"/>
+            <circle cx="390" cy="52" r="2"/><circle cx="425" cy="50" r="2"/><circle cx="460" cy="54" r="2"/>
+            <circle cx="495" cy="52" r="2"/><circle cx="530" cy="51" r="3" stroke="#FFFFFF" stroke-width="1.5"/>
+          </g>
+
+          <!-- X 라벨 -->
+          <text x="75" y="165" font-size="8" font-family="JetBrains Mono" fill="#6B6B6B" text-anchor="middle">4/15</text>
+          <text x="180" y="165" font-size="8" font-family="JetBrains Mono" fill="#6B6B6B" text-anchor="middle">4/18</text>
+          <text x="285" y="165" font-size="8" font-family="JetBrains Mono" fill="#6B6B6B" text-anchor="middle">4/21</text>
+          <text x="390" y="165" font-size="8" font-family="JetBrains Mono" fill="#6B6B6B" text-anchor="middle">4/24</text>
+          <text x="495" y="165" font-size="8" font-family="JetBrains Mono" fill="#6B6B6B" text-anchor="middle">4/27</text>
+          <text x="530" y="165" font-size="8" font-family="JetBrains Mono" fill="#1A1A1A" font-weight="700" text-anchor="middle">오늘</text>
+        </svg>
+        <div class="chart-note forest">
+          <strong>● 14일 누적 피로 없음</strong> · <em>기준선 대비 ±3% 이내 유지 · 경고선 진입 0회</em> · 좌우 패턴 일치하여 특정 측 과부하 없음.
+          <span class="game-line forest">⚽ 훈련 강도 유지 또는 소폭 상향 가능 · 주장 역할 풀타임 +30분 추가 소화 가능</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 훈련 주의 알림 4단계 ===== -->
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">훈련 주의 알림 · Automatic Alert System</div>
+        <div class="card-st">기준선 대비 하락 % 자동 경고 · 코칭스태프 즉시 전달</div>
+      </div>
+      <div class="cb">
+        <div class="alert-grid">
+          <div class="alert forest">
+            <div class="alert-head forest">● 오늘 2026.04.28</div>
+            <div class="alert-body"><strong>정상 · -2.3%</strong><br>정규 훈련 가능</div>
+            <div class="alert-note">Current State</div>
+          </div>
+          <div class="alert amber">
+            <div class="alert-head amber">▲ 예시 · -12% 시</div>
+            <div class="alert-body">고강도 주의 · 회복 필요 경향<br>코치 알림 자동 발송</div>
+            <div class="alert-note">Threshold Example</div>
+          </div>
+          <div class="alert red">
+            <div class="alert-head red">■ 예시 · -20% 시</div>
+            <div class="alert-body">고강도 훈련 중단 권고<br>AT 개별 점검 요청</div>
+            <div class="alert-note">Threshold Example</div>
+          </div>
+          <div class="alert ink">
+            <div class="alert-head ink">▼ 예시 · -25%+ 시</div>
+            <div class="alert-body">훈련 제외 + 의료 상담<br>개별 회복 프로그램</div>
+            <div class="alert-note">Threshold Example</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AT COMMENT ===== -->
+    <div class="at-comment-card">
+
+      <!-- Bridge -->
+      <div class="at-bridge">
+        <div class="at-bridge-head">이 수치들이 경기에서 뜻하는 것</div>
+        <div class="at-bridge-body">
+          <span class="tag forest">●</span> <strong>Handgrip 좌 46.8 / 우 44.9kg · ASI 4.1%</strong> → 말초 근력 양측 양호 · 중추 피로 징후 없음.<br>
+          <span class="tag forest">●</span> <strong>30초 유지력 72% · 전회차 대비 +4%p</strong> → 피로 저항력 개선 · 후반 경기 체력 안정.<br>
+          <span class="tag forest">●</span> <strong>14일 기준선 대비 ±3% 유지</strong> → 누적 피로 없음 · 훈련 강도 소폭 상향 여력.<br>
+          <span class="tag forest">●</span> <strong>수면 7.2h · RPE 6.2 · DOMS 2.1</strong> → 주관 지표 모두 양호 범위 · 컨디션 종합 최적.
+        </div>
+      </div>
+
+      <!-- Header -->
+      <div class="at-head">
+        <span class="at-badge">AT Comment</span>
+        <span class="at-title">윤희서 #21 주장 · 컨디션·피로도 · Safe 등급 A</span>
+        <span class="at-cert">AT 이슬기 검수 · 성균관대 스포츠과학과 감수</span>
+      </div>
+
+      <!-- 해석 -->
+      <div class="at-section-title">해석 · Interpretation</div>
+      <div class="at-item">
+        <span class="at-item-num forest">01</span>
+        <span><strong>Handgrip Daily Readiness · Safe A</strong><em>좌 46.8 / 우 44.9kg · ASI 4.1% · 기준선 46.0 대비 -2.3% · 정상 범위 유지.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num forest">02</span>
+        <span><strong>30초 유지력 72% · Quarterly 대비 +4%p 개선</strong><em>피로 저항력 상승 국면 · 좌우 대칭 (좌 72 / 우 70) · 후반 경기 체력 확보.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num forest">03</span>
+        <span><strong>14일 기준선 ±3% 유지 · 누적 피로 신호 없음</strong><em>일별 변동 최소 · 경고선 진입 0회 · 훈련 강도 유지 또는 소폭 상향 가능.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num forest">04</span>
+        <span><strong>주관 지표 3종 모두 양호 · 중추 피로 없음</strong><em>수면 7.2h · RPE 6.2 · DOMS 2.1 · 과훈련 징후 없음 · 컨디션 종합 최적.</em></span>
+      </div>
+      <div class="at-item">
+        <span class="at-item-num forest">05</span>
+        <span><strong>연 추이 전반 상승 국면</strong><em>2025 H1 → H2 → 2026 H1 모든 지표 지속 상승 · Post-PHV 성숙도 + 훈련 적응 정상 경로.</em></span>
+      </div>
+
+      <!-- 이번 주 실행 -->
+      <div class="at-section-title">이번 주 실행 · This Week</div>
+      <div class="at-item"><span class="at-item-num">01</span><span>정규 훈련 참여 · <strong>현 프로그램 유지</strong> · Safe A 기준 제한 없음 <span class="basis">Safe A</span></span></div>
+      <div class="at-item"><span class="at-item-num">02</span><span><strong>Handgrip Daily Readiness 매일 기록</strong> · 훈련 전 15분 · 기준선 비교 <span class="basis">Daily</span></span></div>
+      <div class="at-item"><span class="at-item-num">03</span><span><strong>수면 7h+ 유지</strong> · 야간 자습 시 12:30 이전 취침 권장</span></div>
+      <div class="at-item"><span class="at-item-num">04</span><span><strong>강도 상향 시도 가능</strong> · 현재 여력 있음 · 감독 상의 후 ±5% 상향 가능 <span class="basis">Optional</span></span></div>
+
+      <!-- 다음 일정 -->
+      <div class="at-section-title">다음 일정 · Schedule</div>
+      <div class="at-item"><span class="at-item-num">—</span><span><strong>Handgrip Daily</strong> · 매일 상시 운영 · 기준선 하락 시 자동 경고</span></div>
+      <div class="at-item"><span class="at-item-num">—</span><span><strong>Monthly Battery · 2026.05.26</strong> · 간이 K-Grip + field 체크 <span class="basis">4주 후</span></span></div>
+      <div class="at-item"><span class="at-item-num">—</span><span><strong>Quarterly Battery · 2026.07.21</strong> · 전체 재측정 <span class="basis">12주 후</span></span></div>
+
+      <div class="at-sig">— 이슬기 AT &nbsp;·&nbsp; 마이페이보릿리커버리 &nbsp;·&nbsp; 성균관대 스포츠과학과 감수</div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card">
+      <div class="card-act">
+        <button class="abtn primary" onclick="showActionPopup('planner')">→ 훈련 플래너</button>
+        <button class="abtn" onclick="showActionPopup('daily_log')">Daily 기록</button>
+        <button class="abtn" onclick="showActionPopup('memo_at')">AT 메모</button>
+        <button class="abtn" onclick="showActionPopup('memo_coach')">코치 메모</button>
+        <button class="abtn" onclick="showActionPopup('memo_director')">감독 메모</button>
+        <button class="abtn" onclick="showActionPopup('save')">리포트 저장</button>
+        <button class="abtn" onclick="showActionPopup('pdf')">PDF 출력</button>
+        <button class="abtn" onclick="showActionPopup('schedule')">재측정 일정</button>
+        <button class="abtn" onclick="showActionPopup('approve')">코치 승인</button>
+        <button class="abtn" onclick="showActionPopup('alert')">알림 설정</button>
+        <button class="abtn" onclick="showActionPopup('upload')">자료 업로드</button>
+        <button class="abtn" onclick="showActionPopup('parent')">학부모 요약</button>
+        <button class="abtn" onclick="showActionPopup('calendar')">캘린더 등록</button>
+        <button class="abtn" onclick="showActionPopup('memo_add')">메모 추가</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== ACTION POPUP ===== -->
+<div id="actionPopup">
+  <div class="close-x" onclick="closeActionPopup()">✕</div>
+  <div id="actionIcon"></div>
+  <div id="actionTitle"></div>
+  <div id="actionBody"></div>
+  <div id="actionFooter"></div>
+</div>
+<div id="actionOverlay" onclick="closeActionPopup()"></div>
+
+<script>
+var _ac = {
+  planner: {
+    icon: 'Planner',
+    title: '훈련 플래너로 전송 · 컨디션 기반',
+    body: '<div>윤희서 #21 Safe A 컨디션 유지 + 강도 상향 옵션</div>'
+      + '<div class="info-block"><div class="info-head">생성될 플랜 · Safe A + 상향 여력</div>'
+      + '<div class="info-list">· 정규 훈련 참여 · 제한 없음<br>· 강도 상향 ±5% 옵션 · 감독 상의<br>· Handgrip Daily 매일 기록<br>· 수면 7h+ 유지<br>· 14일 기준선 자동 모니터링</div></div>',
+    buttons: [['플랜 생성', 'primary'], ['취소', 'secondary']]
+  },
+  daily_log: {
+    icon: 'Daily',
+    title: 'Handgrip Daily Readiness 기록',
+    body: '<div>오늘 훈련 전 15분 자가 기록</div>'
+      + '<div class="info-block"><div class="info-head">측정 프로토콜</div>'
+      + '<div class="info-list">· Handgrip · 좌 3회 최고치 + 우 3회 최고치<br>· 수면 시간 입력 (h)<br>· 주관 RPE 1~10<br>· 근육 감각 DOMS 0~5<br>· 30초 자동 산출 후 기준선 비교</div></div>'
+      + '<div class="info-block" style="border-left-color:var(--forest);"><div class="info-head" style="color:var(--forest);">최근 7일 기록 요약</div>'
+      + '<div class="info-list">평균 피크 46.5kg · 기준선 ±3%<br>평균 수면 7.2h · 평균 RPE 6.2<br>누적 피로 신호 0건</div></div>',
+    buttons: [['기록 시작', 'primary'], ['취소', 'secondary']]
+  },
+  memo_at: {
+    icon: 'AT Memo',
+    title: 'AT 메모 · 윤희서 #21',
+    body: '<div>Athletic Trainer 전문 소견 · 컨디션·피로도</div>'
+      + '<textarea>컨디션·피로도 Safe A. Handgrip 좌 46.8 / 우 44.9kg · ASI 4.1% · 기준선 -2.3% 정상. 30초 유지력 72% · Quarterly 대비 +4%p. 14일 기준선 ±3% 유지 · 누적 피로 신호 없음. 수면 7.2h · RPE 6.2 · DOMS 2.1 모두 양호 범위. 중추 피로 없음. 연 추이 전반 상승 국면 · Post-PHV 훈련 적응 정상 경로. 강도 +5% 상향 옵션 가능. Daily 지속 운영.</textarea>'
+      + '<div class="meta-small">이슬기 AT · 2026.04.28</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  memo_coach: {
+    icon: 'Memo',
+    title: '코치 메모',
+    body: '<div>코칭스태프 관찰 기록 · 컨디션</div>'
+      + '<textarea placeholder="훈련 중 컨디션 관찰 · 야간 자습 영향 · 감독 상의 사항..."></textarea>'
+      + '<div class="meta-small">마지막 저장 : —</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  memo_director: {
+    icon: 'Memo',
+    title: '감독 메모 · 강도 조절',
+    body: '<div>훈련 강도 ±5% 조절 관련 감독 의견</div>'
+      + '<textarea placeholder="강도 상향 시점 · 주장 역할 시간 · 개별 조절 의견..."></textarea>'
+      + '<div class="meta-small">마지막 저장 : —</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  save: {
+    icon: 'Save',
+    title: '리포트 저장',
+    body: '<div class="success-box"><div class="success-head">✓ 컨디션·피로도 리포트 저장 완료</div>'
+      + '<div class="success-body">신평고 U18 · 2026 1차 측정 · 윤희서 #21<br>저장 시각 : 2026.04.28 16:40<br>형식 : PDF (A4) · 14일 누적 + 주관 지표</div></div>',
+    buttons: [['확인', 'primary']]
+  },
+  pdf: {
+    icon: 'Print',
+    title: 'PDF 출력',
+    body: '<div class="success-box" style="border-left-color:var(--ink);"><div class="success-head" style="color:var(--ink);">컨디션·피로도 PDF 준비 완료</div>'
+      + '<div class="success-body">아래 버튼으로 인쇄 대화상자 열기</div>'
+      + '<button onclick="closeActionPopup();setTimeout(function(){window.print()},300)" style="margin-top:14px;padding:9px 20px;background:var(--ink);color:var(--card);border:1px solid var(--ink);font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">인쇄 · PDF 저장</button></div>',
+    buttons: [['취소', 'secondary']]
+  },
+  schedule: {
+    icon: 'Schedule',
+    title: '재측정 일정',
+    body: '<div>컨디션·피로도 재평가 주기</div>'
+      + '<div class="info-block"><div class="info-head">Daily Readiness · 상시</div>'
+      + '<div class="info-list">매일 훈련 전 15분 · 자동 기준선 비교</div></div>'
+      + '<div class="info-block"><div class="info-head">Monthly · 간이</div>'
+      + '<div class="info-list">2026.05.26 · 30초 피로곡선 재측정</div></div>'
+      + '<div class="info-block"><div class="info-head">Quarterly · 전체</div>'
+      + '<div class="info-list">2026.07.21 · 전 항목 재측정</div></div>',
+    buttons: [['등록', 'primary'], ['취소', 'secondary']]
+  },
+  approve: {
+    icon: 'Approve',
+    title: '코치 승인',
+    body: '<div class="success-box"><div class="success-head">✓ 코치 승인 완료</div>'
+      + '<div class="success-body">승인자 : 코칭스태프<br>승인 시각 : 2026.04.29 09:45<br>컨디션 모니터링 프로그램 적용</div></div>',
+    buttons: [['확인', 'primary']]
+  },
+  alert: {
+    icon: 'Alert',
+    title: '알림 임계값 설정',
+    body: '<div>기준선 대비 하락 % 자동 경고 임계값</div>'
+      + '<div style="padding:10px 14px;background:var(--bg);border-left:2px solid var(--amber);margin:10px 0;">'
+      + '<div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--amber);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">▲ 주의 · 기본 -10%</div>'
+      + '<input type="number" value="10" style="border:1px solid var(--rule);padding:6px 10px;font-family:var(--font-sans);font-size:12px;width:80px;outline:none;"> %</div>'
+      + '<div style="padding:10px 14px;background:var(--bg);border-left:2px solid var(--red);margin:10px 0;">'
+      + '<div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--red);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">■ 위험 · 기본 -20%</div>'
+      + '<input type="number" value="20" style="border:1px solid var(--rule);padding:6px 10px;font-family:var(--font-sans);font-size:12px;width:80px;outline:none;"> %</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  upload: {
+    icon: 'Upload',
+    title: '자료 업로드',
+    body: '<div>수면 로그 · 의료 기록 업로드</div>'
+      + '<div style="border:1.5px dashed var(--rule);padding:32px;text-align:center;margin-top:10px;">'
+      + '<div style="font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--ink);letter-spacing:0.1em;text-transform:uppercase;">Drop Files Here</div>'
+      + '<div style="font-family:var(--font-sans);font-size:11.5px;color:var(--mid);margin-top:6px;letter-spacing:-0.01em;">CSV · PDF · JPG (최대 500MB)</div></div>',
+    buttons: [['업로드', 'primary'], ['취소', 'secondary']]
+  },
+  parent: {
+    icon: 'Export',
+    title: '학부모 요약 카드',
+    body: '<div>학부모 전달용 요약 · Safe A 직접 공유 가능</div>'
+      + '<div class="info-block"><div class="info-head">포함 내용</div>'
+      + '<div class="info-list">· Handgrip 양측 양호 · ASI 4.1%<br>· 30초 유지력 72% · 개선 추세<br>· 14일 누적 피로 없음<br>· 수면·RPE·근육 감각 모두 양호<br>· 연간 상승 국면 지속</div></div>',
+    buttons: [['요약 생성', 'primary'], ['취소', 'secondary']]
+  },
+  calendar: {
+    icon: 'Calendar',
+    title: '캘린더 등록',
+    body: '<div class="success-box"><div class="success-head">✓ 캘린더 등록 완료</div>'
+      + '<div class="success-body">Daily Readiness · 상시 운영<br>Monthly · 2026.05.26<br>Quarterly · 2026.07.21</div></div>',
+    buttons: [['확인', 'primary']]
+  },
+  memo_add: {
+    icon: 'Memo',
+    title: '메모 추가',
+    body: '<textarea placeholder="메모를 입력하세요..."></textarea>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  }
+};
+
+function showActionPopup(t) {
+  var d = _ac[t]; if (!d) return;
+  document.getElementById('actionIcon').textContent = d.icon;
+  document.getElementById('actionTitle').textContent = d.title;
+  document.getElementById('actionBody').innerHTML = d.body;
+  var f = document.getElementById('actionFooter'); f.innerHTML = '';
+  d.buttons.forEach(function(btn) {
+    var b = document.createElement('button');
+    b.textContent = btn[0];
+    b.className = btn[1];
+    b.onclick = closeActionPopup;
+    f.appendChild(b);
+  });
+  document.getElementById('actionPopup').style.display = 'block';
+  document.getElementById('actionOverlay').style.display = 'block';
+}
+
+function closeActionPopup() {
+  document.getElementById('actionPopup').style.display = 'none';
+  document.getElementById('actionOverlay').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

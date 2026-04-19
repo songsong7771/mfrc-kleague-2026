@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>구단별 분석 보고서 · 신평고 U18 · 2026 1차</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  a { text-decoration: none; color: inherit; }
+
+  @page { size: A4 portrait; margin: 0; }
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white; }
+    .no-print { display: none !important; }
+    .page { box-shadow: none; margin: 0; page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+  }
+
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --card: #FFFFFF;
+    --ink: #1A1A1A; --mid: #6B6B6B; --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+  }
+
+  body { font-family: var(--font-sans); background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 16px; color: var(--ink); font-size: 10.5px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+
+  .print-btn { margin-bottom: 16px; padding: 12px 28px; background: var(--ink); color: var(--card); font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--ink); cursor: pointer; transition: all 0.15s; }
+  .print-btn:hover { background: var(--mid); }
+
+  .page { width: 210mm; height: 297mm; background: var(--card); box-shadow: 0 2px 16px rgba(0,0,0,.08); position: relative; overflow: hidden; margin-bottom: 12px; flex-shrink: 0; }
+  .pi { padding: 16mm 16mm 12mm; }
+
+  /* ===== COVER ===== */
+  .cover { display: flex; flex-direction: column; align-items: center; height: 100%; background: linear-gradient(170deg, var(--ink) 0%, #0F0F0F 60%, #0A0A0A 100%); color: var(--card); text-align: center; padding: 0 24mm; position: relative; }
+  .cover::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; border: 1px solid rgba(245,243,238,0.06); border-radius: 50%; }
+  .cover::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 240px; height: 240px; border: 1px solid rgba(245,243,238,0.1); border-radius: 50%; }
+  .cv-top { margin-top: 32mm; position: relative; z-index: 2; }
+  .cv-brand { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.3em; color: #B8D4C7; margin-bottom: 8px; text-transform: uppercase; }
+  .cv-sub { font-family: var(--font-sans); font-size: 11px; color: rgba(245,243,238,0.55); font-weight: 500; letter-spacing: 0.02em; }
+  .cv-line { width: 48px; height: 1.5px; background: #B8D4C7; margin: 24mm auto 22mm; position: relative; z-index: 2; }
+  .cv-title { font-family: var(--font-sans); font-size: 32px; font-weight: 800; line-height: 1.15; margin-bottom: 14px; letter-spacing: -0.04em; position: relative; z-index: 2; }
+  .cv-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: #B8D4C7; }
+  .cv-team { font-family: var(--font-sans); font-size: 22px; font-weight: 700; color: var(--card); margin-bottom: 20mm; letter-spacing: -0.02em; position: relative; z-index: 2; }
+  .cv-info { font-family: var(--font-sans); font-size: 11px; color: rgba(245,243,238,0.65); line-height: 2.1; margin-bottom: auto; position: relative; z-index: 2; letter-spacing: -0.005em; }
+  .cv-info strong { color: var(--card); font-weight: 700; }
+  .cv-ft { position: absolute; bottom: 16mm; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-size: 8px; color: rgba(245,243,238,0.4); letter-spacing: 0.15em; text-transform: uppercase; z-index: 2; }
+
+  /* ===== TYPOGRAPHY ===== */
+  h1 { font-family: var(--font-sans); font-size: 17px; font-weight: 800; color: var(--ink); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); letter-spacing: -0.03em; }
+  h2 { font-family: var(--font-sans); font-size: 12.5px; font-weight: 700; color: var(--ink); margin: 14px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--rule); letter-spacing: -0.02em; }
+  h3 { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--forest); margin: 10px 0 5px; letter-spacing: 0.12em; text-transform: uppercase; }
+  p, li { font-family: var(--font-sans); font-size: 10.5px; line-height: 1.6; color: var(--ink); letter-spacing: -0.01em; }
+
+  /* ===== UTILITY BOXES ===== */
+  .sb { background: var(--bg-subtle); border-left: 3px solid var(--ink); padding: 10px 14px; margin-bottom: 12px; }
+  .sb-t { font-family: var(--font-sans); font-size: 10.5px; font-weight: 800; color: var(--ink); margin-bottom: 4px; letter-spacing: -0.01em; }
+  .sb-b { font-family: var(--font-sans); font-size: 10.5px; color: var(--ink); font-weight: 500; line-height: 1.6; letter-spacing: -0.01em; }
+
+  .ab { background: var(--forest-dim); border-left: 3px solid var(--forest); padding: 10px 14px; margin-bottom: 10px; }
+  .ab-t { font-family: var(--font-sans); font-size: 10.5px; font-weight: 800; color: var(--forest); margin-bottom: 3px; letter-spacing: -0.01em; }
+
+  .wb { background: var(--amber-dim); border-left: 3px solid var(--amber); padding: 10px 14px; margin-bottom: 10px; }
+  .wb-t { font-family: var(--font-sans); font-size: 10.5px; font-weight: 800; color: var(--amber); margin-bottom: 3px; letter-spacing: -0.01em; }
+
+  .rb { background: var(--red-dim); border-left: 3px solid var(--red); padding: 10px 14px; margin-bottom: 10px; }
+  .rb-t { font-family: var(--font-sans); font-size: 10.5px; font-weight: 800; color: var(--red); margin-bottom: 3px; letter-spacing: -0.01em; }
+
+  /* ===== TABLES ===== */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 9.5px; }
+  th { background: var(--ink); color: var(--card); padding: 6px 8px; text-align: left; font-family: var(--font-mono); font-weight: 700; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; }
+  td { padding: 6px 8px; border-bottom: 1px solid var(--rule); font-family: var(--font-sans); font-size: 9.5px; letter-spacing: -0.005em; }
+  tr:nth-child(even) { background: var(--bg-subtle); }
+
+  .tg { color: var(--forest); font-weight: 700; }
+  .tw { color: var(--amber); font-weight: 700; }
+  .td-r { color: var(--red); font-weight: 700; }
+  .mono { font-family: var(--font-mono); font-weight: 600; }
+
+  /* ===== STAT ROW ===== */
+  .sr { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 12px; }
+  .sc { background: var(--bg-subtle); border: 1px solid var(--rule); padding: 10px; text-align: center; }
+  .sc-v { font-family: var(--font-display); font-size: 20px; font-weight: 800; display: block; line-height: 1; letter-spacing: -0.03em; }
+  .sc-l { font-family: var(--font-mono); font-size: 8.5px; color: var(--mid); font-weight: 700; display: block; margin-top: 6px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ===== BAR ===== */
+  .br { display: grid; grid-template-columns: 100px 1fr 42px 42px; gap: 6px; align-items: center; margin-bottom: 4px; }
+  .bl { font-family: var(--font-sans); font-size: 9.5px; font-weight: 600; letter-spacing: -0.01em; }
+  .bt { height: 12px; background: var(--bg-subtle); border: 1px solid var(--rule); position: relative; overflow: hidden; }
+  .bf1 { position: absolute; left: 0; top: 0; height: 50%; background: var(--ink); }
+  .bf2 { position: absolute; left: 0; top: 50%; height: 50%; background: var(--light); }
+  .bv { font-family: var(--font-mono); font-size: 9px; font-weight: 700; text-align: right; letter-spacing: 0; }
+
+  /* ===== RISK BADGES ===== */
+  .rbg { font-family: var(--font-mono); font-size: 8.5px; font-weight: 700; padding: 2px 7px; display: inline-block; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; }
+  .rbg-r { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+  .rbg-w { background: var(--amber-dim); color: var(--amber); border-color: var(--amber); }
+  .rbg-g { background: var(--forest-dim); color: var(--forest); border-color: var(--forest); }
+  .rbg-c { background: var(--ink); color: var(--card); border-color: var(--ink); }
+
+  /* ===== POSITION CARD GRID ===== */
+  .pc-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 6px; margin-bottom: 10px; }
+  .pc { background: var(--bg-subtle); border: 1px solid var(--rule); padding: 10px 8px; text-align: center; font-family: var(--font-sans); font-size: 9px; }
+  .pc-n { font-family: var(--font-mono); font-size: 10px; font-weight: 800; margin-bottom: 4px; color: var(--mid); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ===== PAGE FOOTER ===== */
+  .pf { position: absolute; bottom: 8mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 7.5px; color: var(--light); letter-spacing: 0.1em; text-transform: uppercase; }
+  .pf-l { font-family: var(--font-mono); font-size: 8px; font-weight: 700; color: var(--mid); letter-spacing: 0.15em; }
+
+  /* ===== GRADE GRID ===== */
+  .gg { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 12px; }
+  .gc { padding: 10px; text-align: center; border: 1px solid; }
+  .gc-g { background: var(--forest-dim); border-color: var(--forest); }
+  .gc-w { background: var(--amber-dim); border-color: var(--amber); }
+  .gc-d { background: var(--red-dim); border-color: var(--red); }
+  .gc-c { background: var(--bg-subtle); border-color: var(--ink); }
+
+  /* ===== QR BOX ===== */
+  .qr-box { display: inline-flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--bg-subtle); border: 1px solid var(--ink); margin-bottom: 10px; margin-right: 6px; }
+  .qr-ph { width: 48px; height: 48px; background: var(--card); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 9px; color: var(--light); text-align: center; letter-spacing: 0.1em; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">● PDF 출력 · 16페이지</button>
+
+<!-- ====== P1: COVER ====== -->
+<div class="page cover">
+  <div class="cv-top">
+    <div class="cv-brand">마이페이보릿리커버리</div>
+    <div class="cv-sub">K리그 유소년 2026 · 피지컬 측정·분석 시스템</div>
+  </div>
+  <div class="cv-line"></div>
+  <div class="cv-title">구단별 측정<br>분석 <em>보고서</em></div>
+  <div class="cv-team">신평고등학교 U18 축구부</div>
+  <div class="cv-info">
+    <strong>측정 일시</strong><br>
+    2026년 1차 측정 · 2026.04.28<br><br>
+    <strong>측정 대상</strong><br>
+    등록 선수 25명 · 측정 완료 25명 (100%)<br>
+    U18 (고3 · 고2 · 고1 · 예비고1)<br><br>
+    <strong>측정기관</strong><br>
+    마이페이보릿리커버리<br><br>
+    <strong>검수</strong><br>
+    AT 검수: 이슬기 AT<br>
+    학술 감수: 성균관대학교 스포츠과학과 (Sports Interaction Science)
+  </div>
+  <div class="cv-ft">본 보고서의 데이터 소유권은 한국프로축구연맹에 100% 귀속됩니다 · CONFIDENTIAL</div>
+</div>
+
+<!-- ====== P2: TOC ====== -->
+<div class="page"><div class="pi">
+  <h1>목차</h1>
+  <table>
+    <tr><th>페이지</th><th>구분</th><th>내용</th></tr>
+    <tr><td class="mono">3</td><td>①</td><td><strong>보고서 확인 방법 안내 및 용어 정의</strong> — 대시보드 QR, 모바일 안내, 측정 용어, 등급 기준, 장비 설명</td></tr>
+    <tr><td class="mono">4</td><td>②</td><td><strong>측정 개요</strong> — 측정일/장소/대상, 프로토콜, 장비-측정항목 매핑표</td></tr>
+    <tr><td class="mono">5~6</td><td>③-1</td><td><strong>결과 종합: 팀 전체</strong> — 팀 결론, RED/CAUT/SAFE/Captain, 팀 vs K리그, 취약 Top 3, 27구단 벤치마킹</td></tr>
+    <tr><td class="mono">7</td><td>③-2</td><td><strong>결과 종합: 학년 및 성숙도(Bio-Banding)별 분석</strong></td></tr>
+    <tr><td class="mono">8~9</td><td>③-3</td><td><strong>결과 종합: 포지션별 상세</strong> — GK/CB/FB/MF/FW</td></tr>
+    <tr><td class="mono">10</td><td>④</td><td><strong>과거 데이터 추이 ('19~'25 + '26)</strong> — A/B/C 분류, 연도별 변화</td></tr>
+    <tr><td class="mono">11</td><td>⑤</td><td><strong>데이터 활용 사례</strong> — 3축 분석 인사이트, 1축 불가 항목</td></tr>
+    <tr><td class="mono">12~13</td><td>⑥-1</td><td><strong>부상 고위험군(RED/CAUT) 심층 분석 및 AT 처방</strong></td></tr>
+    <tr><td class="mono">14</td><td>⑥-2</td><td><strong>개인별 전원 요약표</strong> — 25명 1줄 요약, 대면 피드백 내역</td></tr>
+    <tr><td class="mono">15</td><td>⑦</td><td><strong>발전방안 + 훈련 권장</strong> — 팀/포지션/개인, 2차 측정 목표</td></tr>
+    <tr><td class="mono">16</td><td>부록</td><td><strong>검수·데이터 관리</strong> — AI+AT+학술 검수, 데이터 소유권, 문의처</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 2/16</span></div></div>
+
+<!-- ====== P3: 용어 정의 ====== -->
+<div class="page"><div class="pi">
+  <h1>① 보고서 확인 방법 안내 및 용어 정의</h1>
+
+  <h2>온라인 대시보드 접속</h2>
+  <div class="qr-box">
+    <div class="qr-ph">QR</div>
+    <div><strong style="font-family:var(--font-sans);font-size:11px;letter-spacing:-0.02em">코칭스태프 대시보드</strong><br><span style="font-size:9.5px;color:var(--mid);letter-spacing:-0.005em">QR 스캔 또는 URL 접속 → 로그인 → 실시간 데이터 확인<br>선수별 · 팀별 · 포지션별 · 훈련 플래너 · 캘린더</span></div>
+  </div>
+  <div class="qr-box">
+    <div class="qr-ph">QR</div>
+    <div><strong style="font-family:var(--font-sans);font-size:11px;letter-spacing:-0.02em">선수·학부모 모바일 뷰</strong><br><span style="font-size:9.5px;color:var(--mid);letter-spacing:-0.005em">QR 스캔 → PASS 본인 확인 → 성장 카드, 강점, 이번 주 훈련 확인<br>앱 설치 불필요 · 모바일 웹</span></div>
+  </div>
+
+  <h2>v1.1 관리 등급 기준</h2>
+  <div class="gg">
+    <div class="gc gc-g"><strong style="font-family:var(--font-sans);font-size:11px;color:var(--forest);letter-spacing:-0.02em">● SAFE</strong><br><span style="font-size:9px;color:var(--ink);letter-spacing:-0.005em">기준 범위 내<br>정상 훈련 진행</span></div>
+    <div class="gc gc-w"><strong style="font-family:var(--font-sans);font-size:11px;color:var(--amber);letter-spacing:-0.02em">▲ CAUT</strong><br><span style="font-size:9px;color:var(--ink);letter-spacing:-0.005em">주간 모니터링<br>보강 훈련 권장</span></div>
+    <div class="gc gc-d"><strong style="font-family:var(--font-sans);font-size:11px;color:var(--red);letter-spacing:-0.02em">■ RED</strong><br><span style="font-size:9px;color:var(--ink);letter-spacing:-0.005em">즉시 개별 개입<br>고강도 훈련 제한 + AT 상담</span></div>
+    <div class="gc gc-c"><strong style="font-family:var(--font-sans);font-size:11px;color:var(--ink);letter-spacing:-0.02em">⊚ Captain</strong><br><span style="font-size:9px;color:var(--ink);letter-spacing:-0.005em">Safe A 예외<br>수치 직접 공유 가능</span></div>
+  </div>
+
+  <h2>핵심 용어</h2>
+  <table>
+    <tr><th>용어</th><th>의미</th><th>기준</th></tr>
+    <tr><td>점프(CMJ)</td><td>반동 점프 높이 — 폭발력·점프 경합</td><td>높을수록 우수</td></tr>
+    <tr><td>SJ</td><td>정지 점프 높이 — 순수 근력</td><td>높을수록 우수</td></tr>
+    <tr><td>IMTP</td><td>등척성 최대근력 (체중비) — 몸싸움·지면 반력</td><td>높을수록 우수</td></tr>
+    <tr><td>폭발력 균형(DSI)</td><td>동적근력지수 (점프(CMJ)÷몸싸움(IMTP)) — 폭발력/근력 균형</td><td>0.6~0.8 정상</td></tr>
+    <tr><td>RSI</td><td>반응근력지수 — 착지 후 재도약 효율</td><td>높을수록 우수</td></tr>
+    <tr><td>ASI (LSI)</td><td>좌우 비대칭 지수 — 약측÷강측</td><td>10% 이내 SAFE</td></tr>
+    <tr><td>뒷허벅지 보호력(H:Q)</td><td>햄스트링÷대퇴사두근 비율 · Croisier Protocol</td><td>≥0.60 TARGET</td></tr>
+    <tr><td>내전:외전 비</td><td>내전근÷외전근 — 사타구니 안정성</td><td>≥0.90 권장</td></tr>
+    <tr><td>급정지(COD)</td><td>방향전환 시간 — 급정지·꺾기 속도</td><td>낮을수록 우수</td></tr>
+    <tr><td>탑스피드(Vmax)</td><td>최대 달리기 속도</td><td>높을수록 우수</td></tr>
+    <tr><td>RFD</td><td>힘 발현 속도 — 힘이 얼마나 빨리 나오는가</td><td>높을수록 우수</td></tr>
+    <tr><td>CoP</td><td>압력중심 궤적 — 착지 안정성</td><td>면적 작을수록 안정</td></tr>
+    <tr><td>Bio-Banding</td><td>성숙도 기반 그룹화 · Mirwald Maturity Offset (좌고 기반) · 선택: Khamis-Roche</td><td>조숙/적정/만숙 분류</td></tr>
+  </table>
+
+  <h2>측정 장비 · 3대 생태계</h2>
+  <table>
+    <tr><th>장비</th><th>역할</th><th>핵심 스펙</th></tr>
+    <tr><td><strong>Kinvent · 3D-Deltas</strong></td><td>3축 지면반력기 — 점프·착지·방향전환</td><td>3축 동시, ±0.1%, 4,000Hz</td></tr>
+    <tr><td><strong>Kinvent · K-Power</strong></td><td>VBT·속도 측정기 — 달리기·가속·감속</td><td>IMU+UWB, 800Hz, 30g</td></tr>
+    <tr><td><strong>Kinvent · K-TDM</strong></td><td>다관절 등척성 측정기 — 7대 부상 예측 + 근력 좌우 균형</td><td>프레임+K-Push×2, 1,000Hz</td></tr>
+    <tr><td><strong>Kinvent · K-Grip</strong></td><td>악력 측정기 — 컨디션·피로도</td><td>BLE, 170g</td></tr>
+    <tr><td><strong>Kinvent · K-Myo</strong></td><td>비침습 EMG — 근활성도 (선별 심층)</td><td>sEMG, 1,000Hz, 30g</td></tr>
+    <tr><td><strong>Kinvent · K-Move</strong></td><td>ROM 측정기 — 관절 가동범위</td><td>IMU, 민감도 1°</td></tr>
+    <tr><td><strong>Ronfic · FITVISOR</strong></td><td>등속성 스마트 풀리 — 1RM·좌우 밸런스·편심 근력</td><td>Isokinetic, REMS, ACSM 기준</td></tr>
+    <tr><td><strong>Catapult</strong></td><td>GPS 웨어러블 — 경기 중 부하·HSR·가속/감속</td><td>10Hz GPS + IMU, PlayerLoad</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 3/16</span></div></div>
+
+<!-- ====== P4: 측정 개요 ====== -->
+<div class="page"><div class="pi">
+  <h1>② 측정 개요</h1>
+
+  <h2>기본 정보</h2>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><td>구단</td><td>신평고등학교 U18 축구부</td></tr>
+    <tr><td>측정일</td><td>2026년 4월 28일 (화) 09:00~15:00</td></tr>
+    <tr><td>장소</td><td>신평고등학교 체육관 (실내)</td></tr>
+    <tr><td>대상</td><td>등록 선수 25명 (고3: 8명, 고2: 7명, 고1: 8명, 예비고1: 2명)</td></tr>
+    <tr><td>완료율</td><td>25/25명 (100%)</td></tr>
+    <tr><td>측정팀</td><td>과업책임자(이슬기 AT) + 김창현(측정총괄) + 오윤재(현장운영) + 이태수(측정실행) + 김형민(장비·데이터)</td></tr>
+    <tr><td>장비 검교정</td><td>측정 당일 09:00 캘리브레이션 완료 · 백업 장비 대기</td></tr>
+  </table>
+
+  <h2>측정 프로토콜 흐름</h2>
+  <table>
+    <tr><th>순서</th><th>블록</th><th>항목</th><th>장비</th><th>소요</th></tr>
+    <tr><td>1</td><td>신체 계측</td><td>키, 체중, 좌고, 다리 길이</td><td>신장계·체중계</td><td>3분</td></tr>
+    <tr><td>2</td><td>관절 가동범위</td><td>고관절·발목·어깨 ROM</td><td>Kinvent K-Move</td><td>5분</td></tr>
+    <tr><td>3</td><td>등척성 근력</td><td>고관절 내외전·굴곡, 햄스트링, 어깨(GK)</td><td>Kinvent K-TDM</td><td>8분</td></tr>
+    <tr><td>4</td><td>점프·착지</td><td>CMJ, SJ, 리바운드 점프, IMTP</td><td>Kinvent 3D-Deltas</td><td>10분</td></tr>
+    <tr><td>5</td><td>스프린트</td><td>5/10/30m, 급정지(COD), Turn & Accel</td><td>Kinvent K-Power</td><td>12분</td></tr>
+    <tr><td>6</td><td>1RM·좌우 밸런스</td><td>편심 근력, 등속성 1RM</td><td>Ronfic FITVISOR</td><td>8분</td></tr>
+    <tr><td>7</td><td>악력</td><td>최대 악력, 유지력 곡선</td><td>Kinvent K-Grip</td><td>3분</td></tr>
+    <tr><td>8</td><td>심층 (선별)</td><td>근전도 (위험군만)</td><td>Kinvent K-Myo</td><td>5분</td></tr>
+  </table>
+  <p style="font-size:9px;color:var(--mid);margin-top:4px;letter-spacing:-0.005em">※ 1인당 총 소요시간 약 54분 · 3인 동시 진행으로 1일 최대 25명 완료 · Catapult는 추후 경기 주간 별도 부착</p>
+
+  <h2>장비 → 측정항목 매핑</h2>
+  <table>
+    <tr><th>장비</th><th>측정 항목</th><th>대상</th></tr>
+    <tr><td>Kinvent 3D-Deltas</td><td>CMJ, SJ, IMTP, 리바운드점프, 급정지(COD) 3축, 편심성 근력, 착지 CoP, 피로도 패턴</td><td>전원</td></tr>
+    <tr><td>Kinvent K-Power</td><td>5/10/30m 구간별 속도·가속도·파워, Vmax, Turn & Accel, F-V 프로파일</td><td>전원</td></tr>
+    <tr><td>Kinvent K-TDM</td><td>고관절 내외전·굴곡, 무릎 굴곡·신전, 어깨 IR/ER(GK), Peak Force, Fatigue Index, RFD, LSI</td><td>전원</td></tr>
+    <tr><td>Kinvent K-Grip</td><td>최대 악력, 좌우 비대칭, 30초 유지력 곡선</td><td>전원</td></tr>
+    <tr><td>Kinvent K-Move</td><td>고관절·발목·어깨 ROM, 좌우 차이</td><td>전원</td></tr>
+    <tr><td>Kinvent K-Myo</td><td>근활성도(%), 동원 순서, 활성 지연</td><td>위험군 선별</td></tr>
+    <tr><td>Ronfic FITVISOR</td><td>등속성 1RM, 편심 근력, 좌우 밸런스 (ACSM 기준)</td><td>전원</td></tr>
+    <tr><td>Catapult</td><td>경기 중 HSR, 가속/감속, Sprint Count, PlayerLoad</td><td>경기 주간 · 별도 운영</td></tr>
+  </table>
+
+  <h2>데이터 처리 일정</h2>
+  <table>
+    <tr><th>시점</th><th>내용</th></tr>
+    <tr><td>측정 당일 (04.28)</td><td>현장 1차 QC · 간이 결과카드 배포 · 팀 집단 브리핑</td></tr>
+    <tr><td>D+3 (05.01)</td><td>AI 자동 분석 초안 생성 · 이상치 자동 탐지</td></tr>
+    <tr><td>D+7 (05.05)</td><td>이슬기 AT 검수 완료 · 처방 조정</td></tr>
+    <tr><td>D+10 (05.08)</td><td>성균관대 SIS 학술 감수 · 최종 승인</td></tr>
+    <tr><td>D+14 (05.12)</td><td>코치 승인 · 팀/학부모 공식 보고서 발송</td></tr>
+    <tr><td>재측정 (05.12)</td><td>RED 2명 2주 후 재측정 · 처방 효과 검증</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 4/16</span></div></div>
+
+<!-- ====== P5: 결과 종합 팀 전체 (1/2) ====== -->
+<div class="page"><div class="pi">
+  <h1>③-1 결과 종합: 팀 전체</h1>
+
+  <div class="sb">
+    <div class="sb-t">● 팀 핵심 결론</div>
+    <div class="sb-b">신평고 U18은 점프 파워와 직선 속도에서 K리그 유소년 상위권(상위 22~30%)에 위치하며, 특히 FW진의 직선 스피드가 팀의 핵심 공격 무기입니다. 반면 사타구니(내전근) 균형과 급정지 능력은 리그 평균 이하로, 측면 컷팅과 수비 전환 시 부상 위험 및 퍼포먼스 저하 가능성이 있습니다. 즉시 사타구니 강화(Copenhagen) 전체 적용과 감속 드릴 추가가 권장됩니다.</div>
+  </div>
+
+  <div class="sr">
+    <div class="sc"><span class="sc-v" style="color:var(--forest)">18</span><span class="sc-l">● SAFE · 정상 관리</span></div>
+    <div class="sc"><span class="sc-v" style="color:var(--amber)">4</span><span class="sc-l">▲ CAUT · 모니터링</span></div>
+    <div class="sc"><span class="sc-v" style="color:var(--red)">2</span><span class="sc-l">■ RED · 즉시 개입</span></div>
+    <div class="sc"><span class="sc-v" style="color:var(--ink)">1</span><span class="sc-l">⊚ Captain · Safe A</span></div>
+  </div>
+
+  <h2>팀 평균 vs K리그 U18 전체 평균</h2>
+  <div style="display:flex;gap:12px;margin-bottom:6px;font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase"><span style="color:var(--ink)">━ 신평고 U18</span><span style="color:var(--light)">━ K리그 평균</span></div>
+  <div class="br"><div class="bl">점프 높이(CMJ) (cm) ↑</div><div class="bt"><div class="bf1" style="width:82%"></div><div class="bf2" style="width:75%"></div></div><div class="bv" style="color:var(--ink)">34.8</div><div class="bv" style="color:var(--light)">32.1</div></div>
+  <div class="br"><div class="bl">정지 점프(SJ) (cm) ↑</div><div class="bt"><div class="bf1" style="width:78%"></div><div class="bf2" style="width:72%"></div></div><div class="bv" style="color:var(--ink)">30.2</div><div class="bv" style="color:var(--light)">28.4</div></div>
+  <div class="br"><div class="bl">30m (초) ↓</div><div class="bt"><div class="bf1" style="width:76%"></div><div class="bf2" style="width:74%"></div></div><div class="bv" style="color:var(--ink)">4.28</div><div class="bv" style="color:var(--light)">4.35</div></div>
+  <div class="br"><div class="bl">몸싸움(IMTP) (N/kg) ↑</div><div class="bt"><div class="bf1" style="width:68%"></div><div class="bf2" style="width:72%"></div></div><div class="bv tw">2.41</div><div class="bv" style="color:var(--light)">2.55</div></div>
+  <div class="br"><div class="bl">급정지(COD) (초) ↓</div><div class="bt"><div class="bf1" style="width:68%"></div><div class="bf2" style="width:76%"></div></div><div class="bv tw">2.58</div><div class="bv" style="color:var(--light)">2.46</div></div>
+  <div class="br"><div class="bl">폭발력 균형(DSI) ↑</div><div class="bt"><div class="bf1" style="width:72%"></div><div class="bf2" style="width:70%"></div></div><div class="bv" style="color:var(--ink)">0.72</div><div class="bv" style="color:var(--light)">0.70</div></div>
+  <div class="br"><div class="bl">탑스피드(Vmax) (m/s) ↑</div><div class="bt"><div class="bf1" style="width:78%"></div><div class="bf2" style="width:74%"></div></div><div class="bv" style="color:var(--ink)">8.52</div><div class="bv" style="color:var(--light)">8.34</div></div>
+  <div class="br"><div class="bl">Nordic 좌 (N) ↑</div><div class="bt"><div class="bf1" style="width:74%"></div><div class="bf2" style="width:70%"></div></div><div class="bv" style="color:var(--ink)">278</div><div class="bv" style="color:var(--light)">265</div></div>
+  <div class="br"><div class="bl">내전:외전 비 ≥0.90</div><div class="bt"><div class="bf1" style="width:58%"></div><div class="bf2" style="width:72%"></div></div><div class="bv td-r">0.87</div><div class="bv" style="color:var(--light)">0.94</div></div>
+  <div class="br"><div class="bl">감속 효율 ↑</div><div class="bt"><div class="bf1" style="width:55%"></div><div class="bf2" style="width:68%"></div></div><div class="bv tw">-0.34</div><div class="bv" style="color:var(--light)">-0.52</div></div>
+
+  <h2>▲ 취약 지표 Top 3</h2>
+  <table>
+    <tr><th>#</th><th>항목</th><th>팀</th><th>리그</th><th>차이</th><th>경기 영향</th><th>권장 조치</th></tr>
+    <tr><td>1</td><td>내전:외전 비</td><td class="mono td-r">0.87</td><td class="mono">0.94</td><td class="td-r">-7.4%</td><td>컷팅 시 사타구니 부담</td><td>Copenhagen 전체</td></tr>
+    <tr><td>2</td><td>몸싸움(IMTP) 최대근력</td><td class="mono tw">2.41</td><td class="mono">2.55</td><td class="tw">-5.5%</td><td>몸싸움·공중볼 약세</td><td>Ronfic 중하중 블록 2주</td></tr>
+    <tr><td>3</td><td>COD 방향전환</td><td class="mono tw">2.58s</td><td class="mono">2.46s</td><td class="tw">-4.9%</td><td>급정지 후 전환 느림</td><td>감속-재가속 드릴</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 5/16</span></div></div>
+
+<!-- ====== P6: 결과 종합 팀 전체 (2/2) ====== -->
+<div class="page"><div class="pi">
+  <h1 style="border:none;padding:0;margin-bottom:8px">③-1 결과 종합: 팀 전체 (계속)</h1>
+
+  <h2>K리그 27구단 내 위치 (익명 벤치마킹)</h2>
+  <table>
+    <tr><th>항목</th><th>위치</th><th>등급</th><th>경기 의미</th></tr>
+    <tr><td>점프(CMJ)</td><td class="mono tg">상위 22%</td><td><span class="rbg rbg-g">상위권</span></td><td>점프 경합에서 리그 상위</td></tr>
+    <tr><td>30m 스프린트</td><td class="mono tg">상위 30%</td><td><span class="rbg rbg-g">상위권</span></td><td>직선 달리기 경쟁력 확보</td></tr>
+    <tr><td>IMTP</td><td class="mono tw">중하위</td><td><span class="rbg rbg-w">보통</span></td><td>몸싸움 보강 필요</td></tr>
+    <tr><td>급정지(COD)</td><td class="mono tw">하위 30%</td><td><span class="rbg rbg-w">보강</span></td><td>급정지 전환 느림</td></tr>
+    <tr><td>내전:외전 비</td><td class="mono td-r">하위 18%</td><td><span class="rbg rbg-r">시급</span></td><td>사타구니 부상 위험</td></tr>
+    <tr><td>폭발력 균형(DSI)</td><td class="mono tg">중상위</td><td><span class="rbg rbg-g">양호</span></td><td>폭발력/근력 균형 적정</td></tr>
+    <tr><td>탑스피드(Vmax)</td><td class="mono tg">상위 25%</td><td><span class="rbg rbg-g">상위권</span></td><td>탑스피드 경쟁력</td></tr>
+  </table>
+
+  <div class="ab">
+    <div class="ab-t">● 팀 강점 요약</div>
+    <div style="font-size:10.5px;color:var(--ink);letter-spacing:-0.005em">점프 파워(점프(CMJ) 상위 22%)와 직선 스피드(30m 상위 30%, 탑스피드(Vmax) 상위 25%)는 K리그 유소년에서 확실한 강점입니다. 특히 FW진의 직선 가속이 뛰어나 측면 공격과 역습 전술에서 팀의 핵심 무기가 됩니다. 세트피스(코너킥) 공격에서도 공중볼 우위를 살릴 수 있습니다. DSI가 중상위로 폭발력과 근력의 균형도 양호합니다.</div>
+  </div>
+
+  <div class="wb">
+    <div class="wb-t">▲ 팀 취약점 요약</div>
+    <div style="font-size:10.5px;color:var(--ink);letter-spacing:-0.005em">내전근:외전근 비율 0.87(리그 평균 0.94)은 팀 차원의 사타구니 부상 위험 신호입니다. 25명 중 8명(32%)이 기준 미달입니다. COD 제동력(하위 30%)은 수비 전환 시 급정지 능력 부족으로 이어집니다. IMTP 최대근력도 리그 평균 이하로 몸싸움과 공중볼 경합에서 밀릴 수 있습니다.</div>
+  </div>
+
+  <div class="rb">
+    <div class="rb-t">■ 즉시 조치 필요 (RED 2명)</div>
+    <div style="font-size:10.5px;color:var(--ink);letter-spacing:-0.005em">강민준(FW #17) 및 박정민(CB #24) 두 명이 H:Q 비율 Croisier 기준 미달(<0.55)로 RED 등급입니다. 고강도 스프린트 및 경합 훈련 즉시 제한하고 개별 Nordic + Copenhagen 프로그램을 시작해야 합니다. 2주 후(05.12) 재측정으로 효과를 검증합니다.</div>
+  </div>
+
+  <h2>팀 강점 vs 취약점 한눈 요약</h2>
+  <table>
+    <tr><th>영역</th><th>수준</th><th>경기에서의 의미</th></tr>
+    <tr><td>점프·파워</td><td class="tg">리그 상위</td><td>공중볼 경합과 짧은 스프린트 출발에서 우위</td></tr>
+    <tr><td>직선 스피드</td><td class="tg">리그 상위</td><td>역습과 측면 돌파에서 핵심 무기</td></tr>
+    <tr><td>폭발력/근력 균형</td><td class="tg">양호</td><td>DSI 적정, 훈련 방향 균형 잡힘</td></tr>
+    <tr><td>최대근력</td><td class="tw">리그 이하</td><td>몸싸움과 공중볼에서 밀릴 수 있음</td></tr>
+    <tr><td>방향전환</td><td class="tw">리그 이하</td><td>급정지 후 전환이 상대보다 느림</td></tr>
+    <tr><td>사타구니 균형</td><td class="td-r">리그 하위</td><td>컷팅 시 사타구니 부상 위험 높음</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 6/16</span></div></div>
+
+<!-- ====== P7: 학년 및 성숙도별 ====== -->
+<div class="page"><div class="pi">
+  <h1>③-2 결과 종합: 학년 및 성숙도(Bio-Banding)별 분석</h1>
+
+  <div class="sb">
+    <div class="sb-t">학년별 + 성숙도별 분석이 필요한 이유</div>
+    <div class="sb-b">같은 U18이라도 고3과 예비고1은 성숙도가 크게 다릅니다. 단순 나이(학년) 비교만으로는 조숙 선수(Early Maturer)와 만숙 선수(Late Maturer)의 차이를 구별할 수 없습니다. 성숙도(Mirwald Maturity Offset — 나이+키+좌고+체중 기반)를 활용하여 Bio-Banding 분석을 하면, "이 선수가 또래보다 늦게 크는 건지, 아니면 실제로 체력이 부족한 건지"를 구별할 수 있습니다. 부모 키를 제공한 선수는 Khamis-Roche법으로 예측 성인 신장을 추가 산출합니다.</div>
+  </div>
+
+  <h2>학년별 핵심 지표 비교</h2>
+  <table>
+    <tr><th>항목</th><th>고3 (8명)</th><th>고2 (7명)</th><th>고1 (8명)</th><th>예비고1 (2명)</th><th>팀 평균</th></tr>
+    <tr><td>점프 높이(CMJ) (cm)</td><td class="mono tg">36.8</td><td class="mono">34.5</td><td class="mono">33.2</td><td class="mono">31.0</td><td class="mono">34.8</td></tr>
+    <tr><td>30m (초)</td><td class="mono tg">4.18</td><td class="mono">4.25</td><td class="mono">4.34</td><td class="mono">4.48</td><td class="mono">4.28</td></tr>
+    <tr><td>몸싸움(IMTP) (N/kg)</td><td class="mono">2.58</td><td class="mono">2.42</td><td class="mono">2.28</td><td class="mono tw">2.12</td><td class="mono">2.41</td></tr>
+    <tr><td>내전:외전 비</td><td class="mono">0.90</td><td class="mono tw">0.86</td><td class="mono tw">0.84</td><td class="mono td-r">0.82</td><td class="mono td-r">0.87</td></tr>
+    <tr><td>성숙도 평균</td><td class="mono">96%</td><td class="mono">92%</td><td class="mono">87%</td><td class="mono">78%</td><td class="mono">91%</td></tr>
+  </table>
+
+  <h2>학년별 핵심 결론</h2>
+  <div class="ab"><div class="ab-t">● 고3 (8명) — 팀의 주축</div><div style="font-size:10.5px;letter-spacing:-0.005em">파워·스피드 모든 지표에서 팀 내 최고. 성숙도 96%로 거의 성인 수준. 내전근 비율도 기준선(0.90) 달성. 다만 몸싸움(IMTP)는 여전히 리그 평균 이하로 Ronfic 기반 최대근력 보강이 마지막 과제.</div></div>
+  <div class="wb"><div class="wb-t">▲ 고2 (7명) — 성장 중, 균형 주의</div><div style="font-size:10.5px;letter-spacing:-0.005em">점프·스피드가 빠르게 발달 중이나, 내전근 비율 0.86으로 기준 미달. 성장기 근력 불균형이 나타나는 시기. 사타구니 예방 훈련이 가장 시급한 학년.</div></div>
+  <div class="wb"><div class="wb-t">▲ 고1 (8명) — 발달 가속기</div><div style="font-size:10.5px;letter-spacing:-0.005em">성숙도 87%, 아직 성장 중. 절대값보다 성숙도 보정 후 순위가 중요. 만숙 선수 2명은 보정 시 잠재력이 높게 평가됨. 몸싸움(IMTP)와 내전근 비율 모두 보강 필요.</div></div>
+  <div class="sb"><div class="sb-t">● 예비고1 (2명) — 월반 선수, 개별 관리</div><div class="sb-b">중학생에서 올라온 월반 선수. 성숙도 78%로 아직 성장 급등기 진행 중. 절대값이 낮아 보이지만 성숙도 보정 시 정상 발달. 성장판 보호를 위해 고강도 훈련량 조절이 필요하며, 6개월 후 급격한 발달이 예상됨.</div></div>
+
+  <h2>성숙도(Bio-Banding) 분류</h2>
+  <table>
+    <tr><th>분류</th><th>성숙도</th><th>인원</th><th>특징</th><th>관리 포인트</th></tr>
+    <tr><td class="tg">조숙 (Early)</td><td>≥95%</td><td>6명</td><td>체격·근력 우세, 또래보다 빨리 성숙</td><td>절대값 높지만 향후 성장폭 제한적</td></tr>
+    <tr><td>적정 (On-time)</td><td>85~94%</td><td>15명</td><td>표준 발달 경로</td><td>균형 잡힌 훈련 유지</td></tr>
+    <tr><td class="tw">만숙 (Late)</td><td>≤84%</td><td>4명</td><td>체격 불리하나 장기 잠재력 높음</td><td>성숙도 보정 평가 필수 · 과부하 주의</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 7/16</span></div></div>
+
+<!-- ====== P8: 포지션별 (1/2) ====== -->
+<div class="page"><div class="pi">
+  <h1>③-3 결과 종합: 포지션별 상세</h1>
+
+  <h2>포지션별 인원 및 핵심 지표</h2>
+  <div class="pc-grid">
+    <div class="pc"><div class="pc-n">GK</div><strong style="font-family:var(--font-display);font-size:14px;color:var(--ink);letter-spacing:-0.02em">3명</strong><br><span style="color:var(--mid)">어깨 회전(ER:IR) 0.78</span><br><span style="color:var(--amber);font-weight:700">리그 0.82 미달</span></div>
+    <div class="pc"><div class="pc-n">CB</div><strong style="font-family:var(--font-display);font-size:14px;color:var(--ink);letter-spacing:-0.02em">5명</strong><br><span style="color:var(--mid)">몸싸움(IMTP) 2.62</span><br><span style="color:var(--forest);font-weight:700">리그 평균 이상</span></div>
+    <div class="pc"><div class="pc-n">FB</div><strong style="font-family:var(--font-display);font-size:14px;color:var(--ink);letter-spacing:-0.02em">4명</strong><br><span style="color:var(--mid)">급정지(COD) 2.42s</span><br><span style="color:var(--forest);font-weight:700">리그 평균 이상</span></div>
+    <div class="pc"><div class="pc-n">MF</div><strong style="font-family:var(--font-display);font-size:14px;color:var(--ink);letter-spacing:-0.02em">8명</strong><br><span style="color:var(--mid)">내전:외전 0.91</span><br><span style="color:var(--amber);font-weight:700">리그 0.95 미달</span></div>
+    <div class="pc"><div class="pc-n">FW</div><strong style="font-family:var(--font-display);font-size:14px;color:var(--ink);letter-spacing:-0.02em">5명</strong><br><span style="color:var(--mid)">탑스피드(Vmax) 8.72</span><br><span style="color:var(--forest);font-weight:700">리그 상위</span></div>
+  </div>
+
+  <h2>GK (3명) — 반응은 좋지만 어깨 보강 필요</h2>
+  <table>
+    <tr><th>항목</th><th>팀 GK 평균</th><th>리그 GK 평균</th><th>판정</th></tr>
+    <tr><td>기립 반응속도</td><td class="mono tg">0.38s</td><td class="mono">0.42s</td><td><span class="rbg rbg-g">우수</span></td></tr>
+    <tr><td>측면 가속</td><td class="mono">3.1 m/s²</td><td class="mono">3.0</td><td><span class="rbg rbg-g">양호</span></td></tr>
+    <tr><td>어깨 회전(ER:IR)</td><td class="mono tw">0.78</td><td class="mono">0.82</td><td><span class="rbg rbg-w">보강</span></td></tr>
+  </table>
+  <p>● 다이빙·세이빙 반응은 빠르지만, 어깨 외회전:내회전 비율이 기준 미달입니다. 반복 세이빙 시 어깨 부상 위험이 있으므로 Ronfic 기반 회전근 강화(주 3회)를 권장합니다. 목표: 0.85 이상.</p>
+
+  <h2>CB (5명) — 근력 양호, 백스텝→전환 보강</h2>
+  <table>
+    <tr><th>항목</th><th>팀 CB 평균</th><th>리그 CB 평균</th><th>판정</th></tr>
+    <tr><td>몸싸움(IMTP) (N/kg)</td><td class="mono tg">2.62</td><td class="mono">2.55</td><td><span class="rbg rbg-g">양호</span></td></tr>
+    <tr><td>5m 폭발 가속</td><td class="mono">1.01s</td><td class="mono">1.03s</td><td><span class="rbg rbg-g">양호</span></td></tr>
+    <tr><td>백스텝→전환</td><td class="mono tw">1.42s</td><td class="mono">1.35s</td><td><span class="rbg rbg-w">보강</span></td></tr>
+  </table>
+  <p>● 몸싸움과 짧은 거리 폭발 가속은 리그 평균 이상입니다. 다만 뒤로 물러나다 돌아서 쫓아가는 동작(백스텝→전환)이 리그 평균보다 느립니다. CB 전용 Turn & Accel 훈련을 권장합니다.</p>
+
+  <h2>FB (4명) — 직선 가속 우수, 반복 감속 보통</h2>
+  <table>
+    <tr><th>항목</th><th>팀 FB 평균</th><th>리그 FB 평균</th><th>판정</th></tr>
+    <tr><td>직선 가속 (0~10m)</td><td class="mono tg">4.52 m/s²</td><td class="mono">4.30</td><td><span class="rbg rbg-g">우수</span></td></tr>
+    <tr><td>반복 감속</td><td class="mono">-0.48</td><td class="mono">-0.51</td><td><span class="rbg rbg-g">양호</span></td></tr>
+    <tr><td>회전→복귀</td><td class="mono">1.38s</td><td class="mono">1.35s</td><td><span class="rbg rbg-g">양호</span></td></tr>
+  </table>
+  <p>● 측면 돌파에 필요한 직선 가속이 리그 상위입니다. 오버래핑→크로스 전술에서 강점을 최대한 살리세요. 역습 복귀 시 Turn & Sprint 속도도 양호합니다.</p>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 8/16</span></div></div>
+
+<!-- ====== P9: 포지션별 (2/2) ====== -->
+<div class="page"><div class="pi">
+  <h1 style="border:none;padding:0;margin-bottom:8px">③-3 결과 종합: 포지션별 상세 (계속)</h1>
+
+  <h2>MF (8명) — 파워 상위, 반복 전환 보강 시급 · 주장 윤희서 포함</h2>
+  <table>
+    <tr><th>항목</th><th>팀 MF 평균</th><th>리그 MF 평균</th><th>판정</th></tr>
+    <tr><td>점프 높이(CMJ) (cm)</td><td class="mono tg">35.2</td><td class="mono">33.8</td><td><span class="rbg rbg-g">상위</span></td></tr>
+    <tr><td>반복 가감속 전환</td><td class="mono tw">0.62</td><td class="mono">0.74</td><td><span class="rbg rbg-w">보강</span></td></tr>
+    <tr><td>피로 후 감속 유지</td><td class="mono td-r">38%</td><td class="mono">55%</td><td><span class="rbg rbg-r">시급</span></td></tr>
+    <tr><td>내전:외전 비</td><td class="mono tw">0.91</td><td class="mono">0.95</td><td><span class="rbg rbg-w">보강</span></td></tr>
+    <tr><td>회전→전환</td><td class="mono tw">1.56s</td><td class="mono">1.40s</td><td><span class="rbg rbg-w">보강</span></td></tr>
+  </table>
+  <p>● 점프와 직선 속도는 강하지만, MF에 필수적인 반복 가감속 전환과 피로 후 유지력이 약합니다. 90분간 수백 번 가속-감속-재가속을 반복해야 하는 중앙 역할에서, 후반부 급정지 능력이 떨어지면 수비 전환이 무너집니다. 반복 스프린트 with braking(주 1회)과 감속 드릴(주 2회) 추가가 시급합니다. 주장 <strong>윤희서 #21</strong>는 MF 평균을 선도하는 역할이며 Safe A 등급으로 수치 직접 공유가 가능합니다.</p>
+
+  <h2>FW (5명) — 직선 스피드 탑클래스, 감속 보강</h2>
+  <table>
+    <tr><th>항목</th><th>팀 FW 평균</th><th>리그 FW 평균</th><th>판정</th></tr>
+    <tr><td>Peak accel</td><td class="mono tg">4.88 m/s²</td><td class="mono">4.65</td><td><span class="rbg rbg-g">상위</span></td></tr>
+    <tr><td>탑스피드(Vmax) (m/s)</td><td class="mono tg">8.72</td><td class="mono">8.55</td><td><span class="rbg rbg-g">상위</span></td></tr>
+    <tr><td>10m 도달</td><td class="mono tg">1.74s</td><td class="mono">1.78s</td><td><span class="rbg rbg-g">우수</span></td></tr>
+    <tr><td>감속 제어</td><td class="mono tw">-0.38</td><td class="mono">-0.50</td><td><span class="rbg rbg-w">보강</span></td></tr>
+  </table>
+  <p>● FW진의 직선 가속과 탑스피드는 팀의 핵심 무기입니다. 쓰루패스를 받고 골대까지 전력질주하는 상황에서 리그 상위 스피드를 보유합니다. 다만 고속 주행 후 급정지가 약해서 프레싱 후 수비 전환 시 제동이 느립니다. 감속 드릴을 추가하되, 직선 스피드는 유지하면서 브레이크만 보강하는 방향으로 훈련합니다. <strong>강민준 #17</strong>은 H:Q 좌측 0.48로 RED 등급 · 고강도 스프린트 제한 상태입니다.</p>
+
+  <h2>포지션별 우선 훈련 방향 요약</h2>
+  <table>
+    <tr><th>포지션</th><th>강점 유지</th><th>보강 필요</th><th>경기 언어</th></tr>
+    <tr><td>GK</td><td>반응 속도</td><td>어깨 회전근 (Ronfic)</td><td>다이빙 후 어깨 보호</td></tr>
+    <tr><td>CB</td><td>근력·폭발 가속</td><td>백스텝→전환</td><td>뒷걸음치다 돌아서 쫓아가기</td></tr>
+    <tr><td>FB</td><td>직선 가속</td><td>반복 감속</td><td>오버래핑 후 복귀 시 급정지</td></tr>
+    <tr><td>MF</td><td>점프·파워</td><td>반복 전환·피로 유지</td><td>후반에도 급정지·방향전환 유지</td></tr>
+    <tr><td>FW</td><td>탑스피드·가속</td><td>감속 제어</td><td>전속력 후 멈추는 거리 줄이기</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 9/16</span></div></div>
+
+<!-- ====== P10: 과거 추이 ====== -->
+<div class="page"><div class="pi">
+  <h1>④ 과거 데이터 추이 ('19~'25 + '26)</h1>
+
+  <div class="sb">
+    <div class="sb-t">데이터 연속성 확보 방법론</div>
+    <div class="sb-b">2019~2025년에는 타 측정업체가 다른 장비(1축 포스플레이트, 타이밍게이트)로 측정했습니다. 2026년부터 마이페이보릿리커버리(My Favorite Recovery)가 3축 장비(Kinvent 3D-Deltas)로 전환하면서, 기존 데이터와의 연속성을 확보하기 위해 아래 3단계 방법론을 적용했습니다.</div>
+  </div>
+
+  <h2>3단계 데이터 분류</h2>
+  <table>
+    <tr><th>분류</th><th>기준</th><th>처리 방법</th><th>해당 항목</th></tr>
+    <tr><td class="tg"><strong>A (직접 비교)</strong></td><td>장비·프로토콜 동일/호환</td><td>연도별 추이 직접 산출</td><td>키, 체중, 30m 시간, 악력</td></tr>
+    <tr><td class="tw"><strong>B (변환 후 비교)</strong></td><td>장비 다르나 동일 항목</td><td>학술 문헌 기반 변환 계수 적용</td><td>점프(CMJ)(flight time→impulse 변환), COD</td></tr>
+    <tr><td class="td-r"><strong>C (비교 불가)</strong></td><td>프로토콜 차이 과대</td><td>"해당 연도 데이터 없음" 명시</td><td>3축 전단력, CoP, Y/X축 분석, DSI</td></tr>
+  </table>
+
+  <h2>연도별 팀 평균 추이 (A·B 분류)</h2>
+  <table>
+    <tr><th>항목</th><th>'22</th><th>'23</th><th>'24</th><th>'25</th><th>'26</th><th>추세</th></tr>
+    <tr><td>점프 높이(CMJ) (cm) <span style="color:var(--amber);font-size:8px">B</span></td><td class="mono">30.5</td><td class="mono">31.2</td><td class="mono">32.0</td><td class="mono">33.1</td><td class="mono tg">34.8</td><td class="tg">▲ 꾸준히 상승</td></tr>
+    <tr><td>30m (초) <span style="color:var(--forest);font-size:8px">A</span></td><td class="mono">4.48</td><td class="mono">4.42</td><td class="mono">4.38</td><td class="mono">4.32</td><td class="mono tg">4.28</td><td class="tg">▲ 꾸준히 개선</td></tr>
+    <tr><td>악력 (kg) <span style="color:var(--forest);font-size:8px">A</span></td><td class="mono">38.2</td><td class="mono">39.5</td><td class="mono">40.8</td><td class="mono">42.1</td><td class="mono">43.4</td><td class="tg">▲ 꾸준히 상승</td></tr>
+    <tr><td>COD (초) <span style="color:var(--amber);font-size:8px">B</span></td><td class="mono">2.68</td><td class="mono">2.65</td><td class="mono">2.62</td><td class="mono">2.60</td><td class="mono tw">2.58</td><td>→ 개선 둔화</td></tr>
+  </table>
+  <p style="font-size:9px;color:var(--mid);letter-spacing:-0.005em">A = 직접 비교 · B = 변환 계수 적용 (오차 ±3% 이내) · 2022년 이전 데이터는 프로토콜 확인 후 추가 가능</p>
+
+  <h2>2026년 신규 측정 항목 (C 분류 — 올해 첫 측정)</h2>
+  <table>
+    <tr><th>항목</th><th>2026 팀 평균</th><th>의미</th><th>비고</th></tr>
+    <tr><td>급정지(COD) 3축 전단력</td><td class="mono">Y축 382N / X축 128N</td><td>방향전환 시 전후·좌우 힘</td><td>Kinvent 3D-Deltas · '25 이전 데이터 없음</td></tr>
+    <tr><td>착지 CoP 면적</td><td class="mono">좌 3.8cm² / 우 5.2cm²</td><td>착지 안정성</td><td>Kinvent 3D-Deltas</td></tr>
+    <tr><td>폭발력 균형(DSI)</td><td class="mono">0.72</td><td>폭발력/근력 균형</td><td>점프(CMJ)÷몸싸움(IMTP) 산출</td></tr>
+    <tr><td>F-V 프로파일</td><td class="mono">V-dominant 62%</td><td>힘-속도 성향</td><td>3D-Deltas + K-Power 통합</td></tr>
+    <tr><td>피로 시 축별 감소</td><td class="mono">Y축 -52% 최우선</td><td>감속 피로 유형</td><td>Kinvent 3D-Deltas 3축</td></tr>
+    <tr><td>등속성 1RM 프로파일</td><td class="mono">하지 평균 1.8×체중</td><td>최대근력 · 좌우 밸런스</td><td>Ronfic FITVISOR · 신규</td></tr>
+  </table>
+  <p>● C 분류 항목들은 올해부터 축적이 시작됩니다. 2차 측정(05.12 RED 재측정, 09~10월 2차)부터 전후 비교가 가능하며, 내년부터는 연도별 추이도 산출됩니다. 이 항목들이야말로 3축 장비와 Ronfic 등속성 시스템에서만 나오는 핵심 인사이트입니다.</p>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 10/16</span></div></div>
+
+<!-- ====== P11: 데이터 활용 사례 ====== -->
+<div class="page"><div class="pi">
+  <h1>⑤ 데이터 활용 사례</h1>
+
+  <div class="sb">
+    <div class="sb-t">3축 분석 + Ronfic 통합에서만 발견된 인사이트</div>
+    <div class="sb-b">아래 사례들은 모두 신평고 U18 실제 측정 데이터에서 발견된 것입니다. 기존 1축(수직력만 측정) 시스템에서는 산출이 불가능한 항목이며, 3축(수직+전후+좌우) 동시 측정 + Ronfic 등속성 프로파일 연계에서만 도출 가능합니다.</div>
+  </div>
+
+  <h2>사례 1: "급정지(COD)가 느린 이유"를 특정한 사례</h2>
+  <div class="wb">
+    <div class="wb-t">▲ 1축에서 보이는 것</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em">선수 A의 좌측 급정지(COD) 2.42초 vs 우측 급정지(COD) 2.46초 → 좌우 차이 0.04초. "약간 우측이 느리다" 수준.</div>
+  </div>
+  <div class="ab">
+    <div class="ab-t">● 3축에서 추가로 보이는 것</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em">우측 전환 시 Y축(전후) 제동력이 좌측 대비 <strong>18% 부족</strong>. 단순히 "우측이 느린 것"이 아니라 <strong>"우측 감속 시 후방 전단력이 부족하여 제동이 안 되는 것"</strong>이 원인으로 특정됨. → 감속 드릴(우측 집중) 처방으로 직접 연결.</div>
+  </div>
+
+  <h2>사례 2: "착지 후 다음 동작이 느린 이유"를 발견한 사례</h2>
+  <div class="wb">
+    <div class="wb-t">▲ 1축에서 보이는 것</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em">선수 B의 CMJ 점프 높이 35.8cm. 양호한 수준. 좌우 수직력 비대칭 6%. 정상.</div>
+  </div>
+  <div class="ab">
+    <div class="ab-t">● 3축에서 추가로 보이는 것</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em">착지 시 우측 CoP(압력중심) 면적이 좌측의 <strong>2.7배</strong>. 안정화 시간도 340ms vs 180ms. <strong>"점프는 잘 뛰지만 착지 후 몸이 크게 흔들려서 다음 동작 연결이 0.16초 느려지는"</strong> 패턴. → SL landing 안정화 훈련 처방.</div>
+  </div>
+
+  <h2>사례 3: "피로 시 가장 먼저 무너지는 능력"을 축별로 특정한 사례</h2>
+  <div class="wb">
+    <div class="wb-t">▲ 1축에서 보이는 것</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em">반복 CMJ 5회 시행. 5회차에서 점프 높이 -15%. "피로하면 점프가 낮아진다." 이상의 정보 없음.</div>
+  </div>
+  <div class="ab">
+    <div class="ab-t">● 3축 + Ronfic에서 추가로 보이는 것</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em">Z축(수직) -27%, Y축(전후) <strong>-58%</strong>, X축(좌우) -26%. Y축이 가장 빠르게 감소 → <strong>"피로 시 감속 능력이 가장 먼저 무너진다"</strong>는 패턴 확인. Ronfic 편심 근력 프로파일에서도 동일 방향 약화 확인됨. → 반복 감속 내성 훈련 + 편심 저항 훈련 처방.</div>
+  </div>
+
+  <h2>3축 + Ronfic 통합이 만드는 차이 — 요약</h2>
+  <table>
+    <tr><th>분석 영역</th><th>1축에서 보이는 것</th><th>3축 + Ronfic에서 추가로 보이는 것</th></tr>
+    <tr><td>급정지(COD)</td><td>통과 시간</td><td>제동 방향성, 전단력 비대칭, 추진 누수</td></tr>
+    <tr><td>착지</td><td>수직 충격, 점프 높이</td><td>CoP 궤적, 안정화 시간, 흔들림 방향</td></tr>
+    <tr><td>피로</td><td>점프 높이 감소</td><td>축별 감소 순서 → 피로 유형 자동 분류 + 편심 근력 동시 추적</td></tr>
+    <tr><td>비대칭</td><td>좌우 수직력 차이</td><td>방향별(전후/내외측) 비대칭 + 등속성 1RM 좌우 차이 교차 검증</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 11/16</span></div></div>
+
+<!-- ====== P12: 고위험군 (1/2) ====== -->
+<div class="page"><div class="pi">
+  <h1>⑥-1 부상 고위험군(RED/CAUT) 심층 분석 및 AT 처방</h1>
+
+  <div class="rb">
+    <div class="rb-t">■ RED — 강민준 (FW #17)</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em"><strong>핵심 신호:</strong> H:Q 좌측 0.48 (Croisier 기준 <0.55 RED) · Nordic 좌우 비대칭 22%<br><strong>경기 영향:</strong> 전속력 달리기 후 급정지할 때 좌측 뒷허벅지에 부상 위험이 매우 높습니다. 고강도 스프린트 즉시 제한이 필요합니다.</div>
+  </div>
+  <table>
+    <tr><th>판단 근거</th><th>수치</th><th>기준</th><th>장비</th></tr>
+    <tr><td>Nordic 신장성 비대칭</td><td class="mono td-r">22%</td><td>≤10%</td><td>Kinvent 3D-Deltas</td></tr>
+    <tr><td>뒷허벅지 보호력(H:Q) 좌측</td><td class="mono td-r">0.48</td><td>≥0.60</td><td>Kinvent K-TDM</td></tr>
+    <tr><td>Y축 제동력 비대칭</td><td class="mono td-r">24%</td><td>≤10%</td><td>Kinvent 3D-Deltas 3축</td></tr>
+    <tr><td>피로 후 Y축 감소</td><td class="mono td-r">-68%</td><td>-</td><td>Kinvent 3D-Deltas 3축</td></tr>
+    <tr><td>Ronfic 편심 근력 좌측</td><td class="mono td-r">-28%</td><td>±10%</td><td>Ronfic FITVISOR</td></tr>
+  </table>
+  <h3>● AT 처방 (이슬기 AT)</h3>
+  <table>
+    <tr><th>운동</th><th>빈도</th><th>세트×회</th><th>주의사항</th></tr>
+    <tr><td>Single-leg Nordic curl (좌측 집중)</td><td>주 4회</td><td>3×6</td><td>통증 시 즉시 중단</td></tr>
+    <tr><td>Ronfic 편심 저항 (30% 1RM)</td><td>주 3회</td><td>3×8</td><td>좌측 집중 · 점진적 증량</td></tr>
+    <tr><td>감각운동 통합 훈련</td><td>주 3회</td><td>2×10</td><td>불안정 면에서 실시</td></tr>
+    <tr><td>고강도 스프린트</td><td colspan="3" class="td-r">즉시 제한 — 재측정(05.12) 후 재평가</td></tr>
+  </table>
+  <p style="font-size:9px;color:var(--mid);letter-spacing:-0.005em">검수: AI 초안 → AT 검수(이슬기) → 학술 감수(성균관대 Sports Interaction Science) · 재측정: 2026.05.12</p>
+
+  <hr style="margin:12px 0;border:none;border-top:1px solid var(--rule)">
+
+  <div class="rb">
+    <div class="rb-t">■ RED — 박정민 (CB #24)</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em"><strong>핵심 신호:</strong> H:Q 양측 0.51/0.53 (Croisier 기준 <0.55 RED · 양측 미달)<br><strong>경기 영향:</strong> 공중볼 경합 후 착지와 스프린트 복귀 시 양측 햄스트링 모두 위험. 고강도 경합 훈련 제한 + Nordic 이중 프로그램 필수.</div>
+  </div>
+  <table>
+    <tr><th>판단 근거</th><th>수치</th><th>기준</th><th>장비</th></tr>
+    <tr><td>뒷허벅지 보호력(H:Q) 좌</td><td class="mono td-r">0.51</td><td>≥0.60</td><td>Kinvent K-TDM</td></tr>
+    <tr><td>뒷허벅지 보호력(H:Q) 우</td><td class="mono td-r">0.53</td><td>≥0.60</td><td>Kinvent K-TDM</td></tr>
+    <tr><td>내전:외전 비</td><td class="mono td-r">0.78</td><td>≥0.90</td><td>Kinvent K-TDM</td></tr>
+    <tr><td>Ronfic 등속성 햄스트링</td><td class="mono td-r">-22%</td><td>리그 평균</td><td>Ronfic FITVISOR</td></tr>
+  </table>
+  <h3>● AT 처방</h3>
+  <p>Nordic curl 양측 균등 주 4회 + Copenhagen 주 3회 + Ronfic 편심 저항 주 3회. 고강도 경합 훈련 제한. 재측정: 05.12 · 목표: H:Q 양측 0.60 이상.</p>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 12/16</span></div></div>
+
+<!-- ====== P13: 고위험군 (2/2) ====== -->
+<div class="page"><div class="pi">
+  <h1 style="border:none;padding:0;margin-bottom:8px">⑥-1 부상 고위험군 심층 분석 (계속)</h1>
+
+  <div class="wb">
+    <div class="wb-t">▲ CAUT — 정한서 (MF #11)</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em"><strong>핵심 신호:</strong> SLCMJ ASI 14% (CAUT 기준 10~15%) · 우측 착지 CoP 1.9배<br><strong>경기 영향:</strong> 점프 후 착지 시 우측 무릎에 부하 집중. 착지 안정화 훈련 + 주간 재측정.</div>
+  </div>
+
+  <div class="wb">
+    <div class="wb-t">▲ CAUT — 이재호 (FB #5)</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em"><strong>핵심 신호:</strong> 내전:외전 비 0.82 (CAUT) · Copenhagen 우측 약화<br><strong>경기 영향:</strong> 측면 돌파 후 컷팅에서 우측 사타구니 부담. Copenhagen 우측 집중 주 3회.</div>
+  </div>
+
+  <div class="wb">
+    <div class="wb-t">▲ CAUT — 윤성민 (MF #12)</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em"><strong>핵심 신호:</strong> 고관절 굴곡근 13% 비대칭 · 반복 전환 0.58<br><strong>경기 영향:</strong> 킥 동작과 무릎 인상에서 우측 고관절 부담. Hip flexor 보강 + 반복 전환 드릴 주 2회.</div>
+  </div>
+
+  <div class="wb">
+    <div class="wb-t">▲ CAUT — 신동혁 (CB #16)</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em"><strong>핵심 신호:</strong> 내전근 11% 비대칭 · 전회차 대비 악화<br><strong>경기 영향:</strong> 컷팅 시 사타구니 부담 증가 추세. Copenhagen + Ronfic 편심 저항 재측정 예약.</div>
+  </div>
+
+  <h2>수술 선수 현황</h2>
+  <table>
+    <tr><th>선수</th><th>수술명</th><th>수술일</th><th>현재 단계</th><th>복귀 예상</th></tr>
+    <tr><td colspan="5" style="text-align:center;color:var(--mid)">현재 수술 이력 선수 없음</td></tr>
+  </table>
+
+  <h2>재활 선수 현황</h2>
+  <table>
+    <tr><th>선수</th><th>부상 분류</th><th>재활 시작일</th><th>현재 진행도</th><th>복귀 예상</th></tr>
+    <tr><td colspan="5" style="text-align:center;color:var(--mid)">현재 재활 중인 선수 없음 (부상 예방 관리 단계)</td></tr>
+  </table>
+
+  <h2>대면 피드백 실시 내역</h2>
+  <table>
+    <tr><th>구분</th><th>일시</th><th>대상</th><th>내용</th></tr>
+    <tr><td>현장 즉시</td><td>2026.04.28</td><td>25명 전원</td><td>간이 결과카드 배포 + 팀 집단 브리핑(15분)</td></tr>
+    <tr><td>개별 상담</td><td>2026.05.01</td><td>RED 2명 + CAUT 4명</td><td>개인별 상세 결과 설명 + 보강 훈련 안내</td></tr>
+    <tr><td>코칭스태프</td><td>2026.05.05</td><td>감독 + 코치 2명</td><td>팀 전체 분석 보고 + 훈련 방향 협의</td></tr>
+    <tr><td>학부모</td><td>2026.05.08</td><td>RED/CAUT 선수 보호자</td><td>관리 포인트 안내 (전화/대면)</td></tr>
+    <tr><td>주장 특별 세션</td><td>2026.05.10</td><td>윤희서 #21 (Safe A)</td><td>수치 직접 공유 · Player Voice 반영 논의</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 13/16</span></div></div>
+
+<!-- ====== P14: 전원 요약표 ====== -->
+<div class="page"><div class="pi">
+  <h1>⑥-2 개인별 전원 요약표</h1>
+  <p style="margin-bottom:8px;font-size:10px;color:var(--mid);letter-spacing:-0.005em">25명 전원 · Captain → RED → CAUT → SAFE 순 정렬 · 1줄 코멘트 포함 · 이 페이지를 코팅하여 전술 보드 옆에 비치하시면 편리합니다.</p>
+
+  <table style="font-size:9px">
+    <tr><th>#</th><th>이름</th><th>포지션</th><th>학년</th><th>등급</th><th>핵심 강점</th><th>보완 포인트</th><th>1줄 코멘트</th></tr>
+    <tr><td>1</td><td><strong>윤희서</strong></td><td>MF #21</td><td>고3</td><td><span class="rbg rbg-c">Captain</span></td><td>전 영역 상위</td><td>우측 햄 관찰 (Voice)</td><td>Safe A · 수치 직접 공유 · 선제 관리</td></tr>
+    <tr style="background:var(--red-dim)"><td>2</td><td><strong>강민준</strong></td><td>FW #17</td><td>고3</td><td><span class="rbg rbg-r">RED</span></td><td>탑스피드</td><td>H:Q 좌 0.48</td><td>고강도 제한 · Nordic 즉시</td></tr>
+    <tr style="background:var(--red-dim)"><td>3</td><td><strong>박정민</strong></td><td>CB #24</td><td>고2</td><td><span class="rbg rbg-r">RED</span></td><td>몸싸움(IMTP)</td><td>H:Q 양측 미달</td><td>경합 제한 · Nordic 이중</td></tr>
+    <tr><td>4</td><td><strong>정한서</strong></td><td>MF #11</td><td>고2</td><td><span class="rbg rbg-w">CAUT</span></td><td>점프·가속</td><td>SLCMJ ASI 14%</td><td>착지 안정화 · 주간 재측정</td></tr>
+    <tr><td>5</td><td><strong>이재호</strong></td><td>FB #5</td><td>고2</td><td><span class="rbg rbg-w">CAUT</span></td><td>직선 가속</td><td>내전:외전 0.82</td><td>Copenhagen 우측 집중</td></tr>
+    <tr><td>6</td><td><strong>윤성민</strong></td><td>MF #12</td><td>고3</td><td><span class="rbg rbg-w">CAUT</span></td><td>점프(CMJ) 상위</td><td>고관절 굴곡 13%</td><td>Hip flexor 보강</td></tr>
+    <tr><td>7</td><td><strong>신동혁</strong></td><td>CB #16</td><td>고2</td><td><span class="rbg rbg-w">CAUT</span></td><td>몸싸움(IMTP) 양호</td><td>내전근 11% 악화</td><td>Copenhagen + Ronfic 편심</td></tr>
+    <tr style="background:var(--bg-subtle)"><td colspan="8" style="text-align:center;color:var(--mid);font-family:var(--font-mono);font-weight:700;padding:6px;letter-spacing:0.1em;text-transform:uppercase;font-size:8.5px">── 이하 SAFE (18명) ──</td></tr>
+    <tr><td>8</td><td>선수 H</td><td>CB #4</td><td>고3</td><td><span class="rbg rbg-g">SAFE</span></td><td>몸싸움(IMTP) 상위</td><td>-</td><td>정상 훈련 유지</td></tr>
+    <tr><td>9</td><td>선수 I</td><td>MF #8</td><td>고2</td><td><span class="rbg rbg-g">SAFE</span></td><td>점프+스피드</td><td>-</td><td>전체 균형 우수</td></tr>
+    <tr><td>10</td><td>선수 J</td><td>FW #9</td><td>고3</td><td><span class="rbg rbg-g">SAFE</span></td><td>탑스피드(Vmax) 최고</td><td>-</td><td>팀 내 최고 스피드</td></tr>
+    <tr><td>11</td><td>선수 K</td><td>FB #2</td><td>고1</td><td><span class="rbg rbg-g">SAFE</span></td><td>급정지(COD) 우수</td><td>-</td><td>방향전환 센스 좋음</td></tr>
+    <tr><td>12</td><td>선수 L</td><td>GK #1</td><td>고3</td><td><span class="rbg rbg-g">SAFE</span></td><td>반응 빠름</td><td>어깨 회전(ER:IR) 관찰</td><td>회전근 강화 유지</td></tr>
+    <tr><td>13</td><td>선수 M</td><td>MF #6</td><td>고1</td><td><span class="rbg rbg-g">SAFE</span></td><td>지구력</td><td>-</td><td>꾸준한 성장 추세</td></tr>
+    <tr><td>14</td><td>선수 N</td><td>CB #15</td><td>고1</td><td><span class="rbg rbg-g">SAFE</span></td><td>근력 발달</td><td>-</td><td>성숙도 보정 시 잠재력 높음</td></tr>
+    <tr><td>15</td><td>선수 O</td><td>FW #18</td><td>고2</td><td><span class="rbg rbg-g">SAFE</span></td><td>가속</td><td>-</td><td>정상 발달</td></tr>
+    <tr><td>16</td><td>선수 P</td><td>MF #14</td><td>고1</td><td><span class="rbg rbg-g">SAFE</span></td><td>균형</td><td>-</td><td>만숙 선수 · 보정 시 상위</td></tr>
+    <tr><td>17</td><td>선수 Q</td><td>FB #10</td><td>고1</td><td><span class="rbg rbg-g">SAFE</span></td><td>민첩성</td><td>-</td><td>정상 발달</td></tr>
+    <tr><td>18</td><td>선수 R</td><td>GK #19</td><td>고2</td><td><span class="rbg rbg-g">SAFE</span></td><td>측면 가속</td><td>-</td><td>GK 중 최고 민첩성</td></tr>
+    <tr><td>19</td><td>선수 S</td><td>CB #7</td><td>고1</td><td><span class="rbg rbg-g">SAFE</span></td><td>5m 폭발</td><td>-</td><td>짧은 거리 반응 우수</td></tr>
+    <tr><td>20</td><td>선수 T</td><td>MF #20</td><td>고2</td><td><span class="rbg rbg-g">SAFE</span></td><td>DSI 우수</td><td>-</td><td>폭발력/근력 균형 최고</td></tr>
+    <tr><td>21</td><td>선수 U</td><td>FW #23</td><td>고1</td><td><span class="rbg rbg-g">SAFE</span></td><td>순간 스피드</td><td>-</td><td>정상 발달</td></tr>
+    <tr><td>22</td><td>선수 V</td><td>MF #3</td><td>고1</td><td><span class="rbg rbg-g">SAFE</span></td><td>전환 효율</td><td>-</td><td>MF 중 전환 가장 우수</td></tr>
+    <tr><td>23</td><td>선수 W</td><td>CB #22</td><td>고3</td><td><span class="rbg rbg-g">SAFE</span></td><td>근력</td><td>-</td><td>CB 중 최고 IMTP</td></tr>
+    <tr><td>24</td><td>선수 X</td><td>FB #25</td><td>고2</td><td><span class="rbg rbg-g">SAFE</span></td><td>급정지(COD)</td><td>-</td><td>방향전환 팀 내 1위</td></tr>
+    <tr><td>25</td><td>선수 Y</td><td>MF #13</td><td>예비고1</td><td><span class="rbg rbg-g">SAFE</span></td><td>잠재력</td><td>성장판 보호</td><td>월반 · 성숙도 78% · 과부하 주의</td></tr>
+  </table>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 14/16</span></div></div>
+
+<!-- ====== P15: 발전방안 ====== -->
+<div class="page"><div class="pi">
+  <h1>⑦ 발전방안 + 훈련 권장</h1>
+
+  <h2>팀 공통 보강 (25명 전원)</h2>
+  <table>
+    <tr><th>내용</th><th>빈도</th><th>장비·프로토콜</th><th>경기 목표</th></tr>
+    <tr><td>Copenhagen adductor + Adductor squeeze</td><td>주 3회</td><td>체중 기반</td><td>컷팅 시 사타구니 보호 · 내전:외전 비 0.90 이상</td></tr>
+    <tr><td>Nordic hamstring</td><td>주 3회</td><td>체중 기반</td><td>H:Q Croisier 0.60 TARGET 전환율 확대</td></tr>
+  </table>
+
+  <h2>포지션별 훈련 방향</h2>
+  <table>
+    <tr><th>포지션</th><th>훈련</th><th>빈도</th><th>장비·프로토콜</th></tr>
+    <tr><td>FB·FW</td><td>감속-재가속 드릴 (20~30m)</td><td>주 2회</td><td>Kinvent K-Power 속도 측정 연동</td></tr>
+    <tr><td>CB</td><td>중하중 최대근력 블록</td><td>주 2회</td><td>Ronfic FITVISOR 등속성 프로그램</td></tr>
+    <tr><td>MF</td><td>반복 스프린트 with braking</td><td>주 1회</td><td>Kinvent K-Power + Catapult (경기 주간)</td></tr>
+    <tr><td>GK</td><td>어깨 회전근(ER:IR) 강화</td><td>주 3회</td><td>Ronfic FITVISOR 회전근 프로그램</td></tr>
+  </table>
+
+  <h2>개별 관리 (RED/CAUT)</h2>
+  <table>
+    <tr><th>선수</th><th>조치</th><th>재측정</th><th>목표</th></tr>
+    <tr><td class="td-r">강민준 (RED)</td><td>고강도 제한 + Nordic 즉시 + Ronfic 편심 저항</td><td>05.12</td><td>H:Q 좌 0.48 → 0.60</td></tr>
+    <tr><td class="td-r">박정민 (RED)</td><td>경합 제한 + Nordic 이중 + Copenhagen</td><td>05.12</td><td>H:Q 양측 0.60 이상</td></tr>
+    <tr><td class="tw">정한서 (CAUT)</td><td>착지 안정화 + 주간 재측정</td><td>05.19</td><td>SLCMJ ASI 10% 이하</td></tr>
+    <tr><td class="tw">이재호 (CAUT)</td><td>Copenhagen 우측 집중</td><td>05.19</td><td>내전:외전 0.90 이상</td></tr>
+    <tr><td class="tw">윤성민 (CAUT)</td><td>Hip flexor 보강</td><td>05.19</td><td>고관절 비대칭 10% 이하</td></tr>
+    <tr><td class="tw">신동혁 (CAUT)</td><td>Copenhagen + Ronfic 편심</td><td>05.19</td><td>내전근 비대칭 10% 이하</td></tr>
+  </table>
+
+  <h2>2차 측정 목표 (2026년 9~10월)</h2>
+  <table>
+    <tr><th>항목</th><th>현재</th><th>목표</th><th>의미</th></tr>
+    <tr><td>내전:외전 비</td><td class="mono td-r">0.87</td><td class="mono tg">≥0.92</td><td>사타구니 부상 위험 해소</td></tr>
+    <tr><td>COD 제동력</td><td class="mono tw">하위 30%</td><td>중위 이상</td><td>수비 전환 급정지 개선</td></tr>
+    <tr><td>IMTP</td><td class="mono tw">2.41</td><td class="mono">≥2.55</td><td>리그 평균 달성</td></tr>
+    <tr><td>RED 선수</td><td>2명</td><td class="tg">0명</td><td>전원 SAFE 전환</td></tr>
+    <tr><td>CAUT 선수</td><td>4명</td><td class="tg">≤2명</td><td>대폭 감소</td></tr>
+  </table>
+
+  <h2>장기 육성 제안</h2>
+  <div class="ab">
+    <div class="ab-t">● K리그 유소년 피지컬 기준값(Normative Data) DB 구축 제안</div>
+    <div style="font-size:10.5px;letter-spacing:-0.005em">올해 27구단 약 2,500명의 측정 데이터는 단년도 결과에 그치지 않고, K리그 유소년의 포지션별·연령별·성숙도별 기준값 데이터베이스(Normative DB)로 축적될 수 있습니다. 매년 데이터가 쌓일수록 "K리그 유소년 U18 MF의 점프(CMJ) 상위 20%는 몇 cm인가?"에 대한 한국 축구만의 고유 기준이 만들어집니다. 이는 유소년 선수 발굴, 포지션 배치, 장기 육성 전략의 핵심 자산이 됩니다.</div>
+  </div>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 15/16</span></div></div>
+
+<!-- ====== P16: 부록 ====== -->
+<div class="page"><div class="pi">
+  <h1>부록: 검수·데이터 관리</h1>
+
+  <h2>검수 체계 (3중 검증)</h2>
+  <table>
+    <tr><th>단계</th><th>주체</th><th>내용</th></tr>
+    <tr><td>1단계</td><td>AI 자동 생성</td><td>측정 데이터 기반 자동 분석·처방 초안 · 이상치 자동 탐지</td></tr>
+    <tr><td>2단계</td><td>AT 검수 (이슬기 AT)</td><td>현장 경험 기반 실무 검수 · 처방 적절성 확인 · 선수 특이사항 반영</td></tr>
+    <tr><td>3단계</td><td>학술 감수<br>(성균관대 스포츠과학과<br>Sports Interaction Science)</td><td>학술적 타당성 검증 · 산출 방법론 검토 · 최신 연구 반영</td></tr>
+  </table>
+
+  <h2>데이터 소유권 및 보안</h2>
+  <div class="sb">
+    <div class="sb-t">● 데이터 소유권</div>
+    <div class="sb-b">본 사업에서 수집·생성되는 모든 데이터의 소유권은 <strong>한국프로축구연맹</strong>에 100% 귀속됩니다. 제3자 접근은 원천 차단되며, 사업 종료 후 데이터 이관·보존은 연맹과의 협의에 따라 수행합니다.</div>
+  </div>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><td>저장</td><td>Kinvent Cloud (프랑스 서버) + Ronfic REMS + 국내 이중 백업</td></tr>
+    <tr><td>접근 권한</td><td>연맹 관리자 / 구단 코칭스태프 / 선수·학부모 — 3계층 분리</td></tr>
+    <tr><td>개인정보</td><td>개인정보보호법 준수 · 14세 미만 보호자 동의 절차</td></tr>
+    <tr><td>암호화</td><td>전송 시 TLS 1.3 · 저장 시 AES-256</td></tr>
+    <tr><td>삭제</td><td>연맹 요청 시 30일 이내 완전 삭제</td></tr>
+  </table>
+
+  <h2>연맹 플랫폼 연동</h2>
+  <p>RFP에 따라 연맹이 요청 시 자체 플랫폼에 데이터를 제공합니다. API 연동 또는 표준 포맷(CSV/JSON) 내보내기를 지원하며, 연동 방식은 연맹과 협의하여 결정합니다.</p>
+
+  <h2>품질 관리</h2>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><td>장비 캘리브레이션</td><td>매 측정 전 실시 · 캘리브레이션 로그 기록</td></tr>
+    <tr><td>백업 장비</td><td>Kinvent·Ronfic 전 장비 1세트 추가 상시 대기</td></tr>
+    <tr><td>측정자 교육</td><td>핵심인력 3명 전원 동일 SOP 교육 완료</td></tr>
+    <tr><td>이중 검수</td><td>현장 1차 검수 → 중앙 서버 2차 QC</td></tr>
+    <tr><td>일정 지연 대응</td><td>악천후·학사 일정 충돌 시 72시간 내 대체일 확정</td></tr>
+  </table>
+
+  <h2>문의처</h2>
+  <table>
+    <tr><th>구분</th><th>담당</th><th>연락처</th></tr>
+    <tr><td>과업 총괄</td><td>이슬기 (마이페이보릿리커버리 대표 · AT 검수)</td><td>[연락처]</td></tr>
+    <tr><td>측정 총괄</td><td>김창현</td><td>[연락처]</td></tr>
+    <tr><td>데이터·장비</td><td>김형민</td><td>[연락처]</td></tr>
+  </table>
+
+  <div style="margin-top:16px;padding:14px;background:var(--ink);color:var(--card);text-align:center;font-family:var(--font-sans);font-size:10px;letter-spacing:-0.005em">
+    <strong style="font-family:var(--font-mono);font-size:10.5px;color:#B8D4C7;letter-spacing:0.2em;text-transform:uppercase">K리그 유소년 · Powered by My Favorite Recovery</strong><br><br>
+    <span style="color:rgba(245,243,238,0.75)">본 보고서는 AI 자동 생성 → AT 검수(이슬기) → 학술 감수(성균관대 SIS) 절차를 거쳤습니다.<br>
+    데이터 소유권: 한국프로축구연맹 · CONFIDENTIAL</span>
+  </div>
+</div><div class="pf"><span class="pf-l">K리그 유소년 · 마이페이보릿리커버리</span><span>신평고 U18 · 2026 1차 · 16/16</span></div></div>
+
+</body>
+</html>

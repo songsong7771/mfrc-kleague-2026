@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이보릿리커버리 · 선수 목록 · 신평고 U18</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F3EE; --card: #FFFFFF; --ink: #1A1A1A; --mid: #6B6B6B;
+    --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+  }
+  html, body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); font-size: 13px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; min-height: 100vh; padding-bottom: 60px; }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* SIDEBAR (동일 공통) */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: var(--card); border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 22px 20px; border-bottom: 1px solid var(--rule); }
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sidebar-role { padding: 12px 22px; border-bottom: 1px solid var(--rule); }
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+  .sidebar-nav { flex: 1; padding: 14px 0; overflow-y: auto; }
+  .nav-section { padding: 18px 22px 8px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: var(--light); text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; padding: 9px 22px; font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; transition: all 0.15s; letter-spacing: -0.01em; }
+  .nav-item:hover { color: var(--ink); background: var(--bg); }
+  .nav-item.active { color: var(--ink); background: var(--bg); border-left-color: var(--ink); font-weight: 700; }
+  .nav-num { font-family: var(--font-mono); font-size: 10px; color: var(--light); margin-right: 10px; letter-spacing: 0.05em; min-width: 16px; }
+  .nav-item.active .nav-num { color: var(--ink); font-weight: 700; }
+  .nav-sub { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-left: auto; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sidebar-footer { padding: 18px 22px 20px; border-top: 1px solid var(--rule); }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
+
+  /* MAIN */
+  .main { margin-left: 240px; min-height: 100vh; }
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245, 243, 238, 0.88); backdrop-filter: saturate(180%) blur(16px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); }
+  .breadcrumb .current { font-family: var(--font-sans); text-transform: none; letter-spacing: -0.01em; font-size: 13px; font-weight: 700; color: var(--ink); margin-left: 4px; }
+  .breadcrumb .sep { color: var(--light); margin: 0 8px; }
+  .topbar-right { display: flex; align-items: center; gap: 14px; }
+  .version-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); }
+  .today-date { font-family: var(--font-mono); font-size: 12px; color: var(--ink); font-weight: 700; letter-spacing: 0.05em; }
+
+  .content { padding: 24px 36px 48px; }
+
+  /* v1.1 Info Strip */
+  .v11-strip { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; padding: 11px 18px; background: var(--card); border: 1px solid var(--ink); margin-bottom: 18px; }
+  .v11-strip-label { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 4px 10px; background: var(--ink); color: var(--card); }
+  .v11-strip-body { font-family: var(--font-sans); font-size: 12px; color: var(--ink); line-height: 1.55; letter-spacing: -0.01em; }
+  .v11-strip-body strong { font-weight: 700; }
+  .v11-strip-body .k { font-family: var(--font-mono); font-size: 10.5px; background: var(--bg); padding: 1px 5px; border: 1px solid var(--rule); }
+
+  /* Search & Filter Bar */
+  .filter-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+  .search-box { flex: 1; min-width: 240px; display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--rule); padding: 8px 14px; }
+  .search-box:focus-within { border-color: var(--ink); }
+  .search-box .search-icon { font-family: var(--font-mono); font-weight: 700; font-size: 11px; color: var(--mid); letter-spacing: 0.15em; }
+  .search-box input { background: transparent; border: none; color: var(--ink); font-size: 13px; font-family: var(--font-sans); width: 100%; outline: none; letter-spacing: -0.01em; }
+  .search-box input::placeholder { color: var(--light); }
+  .filter-btn { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 12px; border: 1px solid var(--rule); background: var(--card); color: var(--mid); cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .filter-btn.active { border-color: var(--ink); background: var(--ink); color: var(--card); }
+  .filter-btn.red { border-color: var(--red); color: var(--red); }
+  .filter-btn.red.active, .filter-btn.red:hover { background: var(--red); color: var(--card); }
+  .filter-btn.amber { border-color: var(--amber); color: var(--amber); }
+  .filter-btn.amber.active, .filter-btn.amber:hover { background: var(--amber); color: var(--card); }
+  .sort-label { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); font-weight: 600; margin-left: auto; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* Signal filters */
+  .signal-filters { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+  .sf-label { font-family: var(--font-mono); font-size: 9px; color: var(--light); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-right: 4px; }
+  .sf-btn { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 9px; border: 1px solid var(--rule); background: var(--bg); color: var(--mid); cursor: pointer; transition: all 0.15s; }
+  .sf-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .sf-btn.active { border-color: var(--amber); background: var(--amber); color: var(--card); }
+
+  /* Player list */
+  .player-list { background: var(--card); border: 1px solid var(--rule); overflow: hidden; }
+  /* 10열: Triage / # / 이름 / 포지션 / 학년 / 주요신호 / H:Q / ASI (test-specific) / 변화 / 퀵액션 */
+  .pl-header { display: grid; grid-template-columns: 70px 36px 160px 50px 50px 1fr 80px 150px 90px 140px; gap: 8px; padding: 10px 18px; background: var(--bg); border-bottom: 1px solid var(--ink); font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--mid); letter-spacing: 0.15em; text-transform: uppercase; align-items: center; }
+  .pl-row { display: grid; grid-template-columns: 70px 36px 160px 50px 50px 1fr 80px 150px 90px 140px; gap: 8px; padding: 12px 18px; border-bottom: 1px solid var(--rule); align-items: center; cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
+  .pl-row:hover { background: var(--bg); }
+  .pl-row:last-child { border-bottom: none; }
+  .pl-row.red { border-left-color: var(--red); }
+  .pl-row.amber { border-left-color: var(--amber); }
+  .pl-row.captain { border-left-color: var(--ink); background: rgba(26,26,26,0.02); }
+
+  /* Triage badge */
+  .triage { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 7px; letter-spacing: 0.1em; border: 1px solid; text-transform: uppercase; text-align: center; line-height: 1.1; display: flex; flex-direction: column; align-items: center; gap: 1px; }
+  .triage-sym { font-size: 11px; letter-spacing: 0; }
+  .triage.red { color: var(--red); border-color: var(--red); background: var(--red-dim); }
+  .triage.amber { color: var(--amber); border-color: var(--amber); background: var(--amber-dim); }
+  .triage.safe { color: var(--forest); border-color: var(--forest); background: var(--forest-dim); }
+  .triage.captain { color: var(--ink); border-color: var(--ink); background: var(--bg); }
+
+  .pl-num { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: 0.02em; }
+  .pl-name { font-family: var(--font-sans); font-size: 13.5px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+  .pl-name-sub { font-family: var(--font-mono); font-size: 9.5px; color: var(--mid); font-weight: 500; margin-top: 2px; letter-spacing: 0.05em; }
+  .captain-mark { display: inline-block; font-family: var(--font-mono); font-size: 8.5px; font-weight: 700; padding: 1px 5px; background: var(--ink); color: var(--card); letter-spacing: 0.1em; margin-left: 5px; vertical-align: 1px; }
+  .pl-pos { font-family: var(--font-sans); font-size: 11.5px; font-weight: 700; color: var(--ink); letter-spacing: 0.02em; }
+  .pl-grade { font-family: var(--font-mono); font-size: 10px; color: var(--mid); font-weight: 500; letter-spacing: 0.05em; }
+
+  .pl-signal { font-family: var(--font-sans); font-size: 11px; line-height: 1.35; letter-spacing: -0.01em; }
+  .pl-signal.red { color: var(--red); font-weight: 600; }
+  .pl-signal.amber { color: var(--amber); font-weight: 600; }
+  .pl-signal.muted { color: var(--light); }
+
+  /* H:Q 이중선 배지 */
+  .hq-val { font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; letter-spacing: 0.02em; text-align: center; padding: 3px 0; border: 1px solid; line-height: 1.2; }
+  .hq-val.red { color: var(--red); border-color: var(--red); background: var(--red-dim); }
+  .hq-val.amber { color: var(--amber); border-color: var(--amber); background: var(--amber-dim); }
+  .hq-val.target { color: var(--forest); border-color: var(--forest); background: var(--forest-dim); }
+  .hq-val.na { color: var(--light); border-color: var(--rule); background: var(--bg); font-weight: 500; }
+
+  /* ASI test-specific */
+  .asi-block { font-family: var(--font-mono); font-size: 10.5px; line-height: 1.35; }
+  .asi-row { display: flex; justify-content: space-between; align-items: center; padding: 1px 0; }
+  .asi-test { font-size: 8.5px; color: var(--light); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; }
+  .asi-val { font-weight: 700; letter-spacing: 0; }
+  .asi-val.red { color: var(--red); }
+  .asi-val.amber { color: var(--amber); }
+  .asi-val.forest { color: var(--forest); }
+  .asi-val.na { color: var(--light); font-weight: 500; }
+  .asi-lim { font-family: var(--font-sans); font-size: 8.5px; color: var(--light); font-style: italic; margin-left: 2px; letter-spacing: -0.01em; }
+
+  /* Change */
+  .pl-change { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .ch-up { color: var(--forest); }
+  .ch-down { color: var(--red); }
+  .ch-worse { color: var(--red); }
+  .ch-new { color: var(--mid); }
+  .ch-maint { color: var(--mid); }
+
+  /* Actions */
+  .pl-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+  .pa-btn { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 7px; border: 1px solid var(--rule); background: var(--card); color: var(--mid); cursor: pointer; transition: all 0.15s; }
+  .pa-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* Fixed footer */
+  .fixed-footer { position: fixed; bottom: 0; left: 240px; right: 0; background: var(--card); border-top: 1px solid var(--ink); padding: 10px 36px; display: flex; align-items: center; gap: 20px; z-index: 50; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .ff-stat { display: flex; align-items: center; gap: 7px; }
+  .ff-sym { font-family: var(--font-mono); font-size: 12px; line-height: 1; }
+  .ff-sym.red { color: var(--red); }
+  .ff-sym.amber { color: var(--amber); }
+  .ff-sym.forest { color: var(--forest); }
+  .ff-sym.ink { color: var(--ink); }
+  .ff-stat strong { color: var(--ink); }
+  .ff-sep { color: var(--light); }
+  .ff-meta { margin-left: auto; color: var(--mid); font-weight: 600; }
+
+  @media print {
+    .sidebar { display: none !important; }
+    .main { margin-left: 0 !important; }
+    .topbar, .fixed-footer { position: relative !important; }
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sb-ko">마이페이보릿리커버리</div>
+    <div class="sb-sub-line"></div>
+    <div class="sb-program">K리그 유소년<br>측정·분석 시스템</div>
+    <div class="sb-caption">2026 시즌 &nbsp;·&nbsp; v1.1</div>
+  </div>
+  <div class="sidebar-role">
+    <span class="role-badge">Coaching Staff</span>
+    <span class="role-team">신평고등학교 U18</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="홈_코칭스태프_MFRC_v1_2.html" class="nav-item"><span class="nav-num">00</span><span>홈</span></a>
+    <a href="선수목록_MFRC_v1_2.html" class="nav-item active"><span class="nav-num">—</span><span>선수 목록</span></a>
+    <a href="1_개인선수대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">01</span><span>개인 선수</span></a>
+    <a href="2_팀대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">02</span><span>팀 대시보드</span></a>
+    <div class="nav-section">Analysis</div>
+    <a href="3_점프착지방향전환_MFRC_v1_2.html" class="nav-item"><span class="nav-num">03</span><span>점프·착지·전환</span><span class="nav-sub">3D-Deltas</span></a>
+    <a href="4_달리기가속감속_MFRC_v1_2.html" class="nav-item"><span class="nav-num">04</span><span>달리기·가감속</span><span class="nav-sub">K-Power</span></a>
+    <a href="근력좌우균형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">05</span><span>근력·균형</span><span class="nav-sub">K-TDM</span></a>
+    <a href="5_부상위험도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">06</span><span>부상 위험도</span><span class="nav-sub">통합</span></a>
+    <a href="6_플레이어유형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">07</span><span>플레이어 유형</span><span class="nav-sub">통합</span></a>
+    <a href="7_컨디션피로도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">08</span><span>컨디션·피로도</span><span class="nav-sub">K-Grip</span></a>
+    <div class="nav-section">Operations</div>
+    <a href="8_훈련플래너_MFRC_v1_2.html" class="nav-item"><span class="nav-num">09</span><span>훈련 플래너</span></a>
+    <a href="9_월별캘린더_MFRC_v1_2.html" class="nav-item"><span class="nav-num">10</span><span>캘린더</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sb-footer-logo">
+      <svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+      </svg>
+    </div>
+    <div class="sb-copy">© 2026 My Favorite Recovery<br>마이페이보릿리커버리</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">
+      선수 목록 <span class="sep">›</span> <span class="current">신평고등학교 U18 · 25명</span>
+    </div>
+    <div class="topbar-right">
+      <span class="version-badge">Ref DB v1.1</span>
+      <span class="today-date">2026.04.28 화 · D-DAY</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== v1.1 INFO STRIP ===== -->
+    <div class="v11-strip">
+      <span class="v11-strip-label">v1.1 관리 등급 · Triage</span>
+      <div class="v11-strip-body">
+        <strong>AT 브리프 대상 자동 분류</strong> · <span class="k">◐ RED LINE 6분</span> H:Q &lt;0.55 or ASI ≥15%(TS) · <span class="k">◓ CAUTION 3분</span> H:Q 0.55~0.59 or ASI 10~14.9%(TS) · <span class="k">⊚ 주장 4분</span> Safe도 예외 유지 · <span class="k">○ SAFE</span> 리포트만
+      </div>
+    </div>
+
+    <!-- Search & Filter -->
+    <div class="filter-bar">
+      <div class="search-box">
+        <span class="search-icon">SEARCH</span>
+        <input type="text" placeholder="이름 또는 등번호로 검색" id="playerSearch" oninput="searchPlayers()">
+      </div>
+      <button class="filter-btn active">전체</button>
+      <button class="filter-btn">GK</button>
+      <button class="filter-btn">CB</button>
+      <button class="filter-btn">FB</button>
+      <button class="filter-btn">MF</button>
+      <button class="filter-btn">FW</button>
+      <button class="filter-btn red">■ RED</button>
+      <button class="filter-btn amber">▲ CAUTION</button>
+      <span class="sort-label">Sort : 관리 등급 → 악화순 → 등번호순</span>
+    </div>
+
+    <!-- Signal-based filters -->
+    <div class="signal-filters">
+      <span class="sf-label">Signal</span>
+      <button class="sf-btn">햄스트링</button>
+      <button class="sf-btn">내전근</button>
+      <button class="sf-btn">착지 불안정</button>
+      <button class="sf-btn">감속 취약</button>
+      <button class="sf-btn">고관절</button>
+      <button class="sf-btn">발목</button>
+      <button class="sf-btn">컨디션 저하</button>
+      <button class="sf-btn">재측정 대상</button>
+    </div>
+
+    <!-- Player List -->
+    <div class="player-list">
+      <div class="pl-header">
+        <span>관리 등급</span>
+        <span>#</span>
+        <span>이름</span>
+        <span>포지션</span>
+        <span>학년</span>
+        <span>주요 신호 · AT 브리프 포인트</span>
+        <span>H:Q</span>
+        <span>ASI · Test-Specific</span>
+        <span>변화</span>
+        <span>퀵 액션</span>
+      </div>
+
+      <!-- ===== RED LINE 2명 ===== -->
+      <div class="pl-row red">
+        <div class="triage red"><span class="triage-sym">◐</span><span>RED 6분</span></div>
+        <div class="pl-num">17</div>
+        <div><div class="pl-name">강민준</div><div class="pl-name-sub">FW · #17 · 18세 Post-PHV</div></div>
+        <div class="pl-pos">FW</div>
+        <div class="pl-grade">고3</div>
+        <div class="pl-signal red">발목 염좌 회복 14일차 · H:Q 이전 0.51 · 고강도 스프린트 제한</div>
+        <div class="hq-val red">0.51</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val red">17.4% R</span></div>
+          <div class="asi-row"><span class="asi-test">등속성</span><span class="asi-val red">16.2% R</span></div>
+        </div>
+        <div class="pl-change ch-worse">▼ 신규 RED</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_at')">AT 메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='8_훈련플래너.html'">Nordic</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row red">
+        <div class="triage red"><span class="triage-sym">◐</span><span>RED 6분</span></div>
+        <div class="pl-num">24</div>
+        <div><div class="pl-name">박정민</div><div class="pl-name-sub">FW · #24 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">FW</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal red">햄스트링 재발 우려 · 회복 21일차 · 컷팅 시 우측 당김 호소</div>
+        <div class="hq-val red">0.48</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val red">18.7% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val red">15.1% R</span></div>
+        </div>
+        <div class="pl-change ch-worse">▼ RED 유지</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_at')">AT 메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='8_훈련플래너.html'">Nordic</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <!-- ===== CAUTION 4명 ===== -->
+      <div class="pl-row amber">
+        <div class="triage amber"><span class="triage-sym">◓</span><span>CAUT 3분</span></div>
+        <div class="pl-num">11</div>
+        <div><div class="pl-name">정한서</div><div class="pl-name-sub">MF · #11 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">MF</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal amber">우측 비대칭 · 컷팅·감속 시 우측 모니터링 · 증상 없음</div>
+        <div class="hq-val amber">0.57</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val amber">14.2% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val amber">11.8% R</span></div>
+        </div>
+        <div class="pl-change ch-maint">— 유지</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_at')">AT 메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='8_훈련플래너.html'">플래너</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row amber">
+        <div class="triage amber"><span class="triage-sym">◓</span><span>CAUT 3분</span></div>
+        <div class="pl-num">5</div>
+        <div><div class="pl-name">이재호</div><div class="pl-name-sub">DF · #5 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">CB</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal amber">발목 ROM 좌우 12.8% · 복귀 60일차 · 우측 축발 부담 지속</div>
+        <div class="hq-val amber">0.58</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val amber">12.8% R</span></div>
+          <div class="asi-row"><span class="asi-test">등속성</span><span class="asi-val forest">9.1% R</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 개선</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_at')">AT 메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='8_훈련플래너.html'">플래너</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row amber">
+        <div class="triage amber"><span class="triage-sym">◓</span><span>CAUT 3분</span></div>
+        <div class="pl-num">12</div>
+        <div><div class="pl-name">윤성민</div><div class="pl-name-sub">MF · #12 · 17세 Circa-PHV</div></div>
+        <div class="pl-pos">MF</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal amber">Handgrip −11.2% baseline 대비 · 중추 피로 의심 · 수면 질 확인</div>
+        <div class="hq-val target">0.62</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">7.8% L</span></div>
+          <div class="asi-row"><span class="asi-test">Grip</span><span class="asi-val amber">−11.2%</span></div>
+        </div>
+        <div class="pl-change ch-down">▼ 컨디션 저하</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_at')">AT 메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='8_훈련플래너.html'">플래너</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row amber">
+        <div class="triage amber"><span class="triage-sym">◓</span><span>CAUT 3분</span></div>
+        <div class="pl-num">16</div>
+        <div><div class="pl-name">신동혁</div><div class="pl-name-sub">FW · #16 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">FW</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal amber">착지 패턴 CoP 2.3cm² · 우측 불안정 · 재가속 시 주의</div>
+        <div class="hq-val amber">0.59</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val amber">13.4% R</span></div>
+          <div class="asi-row"><span class="asi-test">CoP</span><span class="asi-val amber">L/R 2.3×</span></div>
+        </div>
+        <div class="pl-change ch-new">— 신규</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_at')">AT 메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='8_훈련플래너.html'">플래너</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <!-- ===== 주장 (SAFE + 예외 4분) ===== -->
+      <div class="pl-row captain">
+        <div class="triage captain"><span class="triage-sym">⊚</span><span>주장 4분</span></div>
+        <div class="pl-num">21</div>
+        <div><div class="pl-name">윤희서<span class="captain-mark">C</span></div><div class="pl-name-sub">MF · #21 · 17세10개월 Post-PHV</div></div>
+        <div class="pl-pos">MF</div>
+        <div class="pl-grade">고3</div>
+        <div class="pl-signal">Safe 등급 A · 주장 예외 유지 · 급정지 우측 햄 미세 당김 본인 호소</div>
+        <div class="hq-val target">0.64</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">8.3% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">6.1% R</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 안정</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_at')">AT 메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='3_점프착지방향전환.html'">3D 분석</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <!-- ===== SAFE 18명 ===== -->
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">1</div>
+        <div><div class="pl-name">김태영</div><div class="pl-name-sub">GK · #1 · 18세 Post-PHV</div></div>
+        <div class="pl-pos">GK</div>
+        <div class="pl-grade">고3</div>
+        <div class="pl-signal muted">Handgrip 절대값 양호 · 전체 균형 우수</div>
+        <div class="hq-val target">0.63</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">6.8% L</span></div>
+          <div class="asi-row"><span class="asi-test">Grip</span><span class="asi-val forest">±2%</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 안정</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">2</div>
+        <div><div class="pl-name">김민성</div><div class="pl-name-sub">DF · #2 · 18세 Post-PHV</div></div>
+        <div class="pl-pos">FB</div>
+        <div class="pl-grade">고3</div>
+        <div class="pl-signal muted">전체 지표 Safe · 측면 공격 가담 우수</div>
+        <div class="hq-val target">0.61</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">7.2% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">5.4% R</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 안정</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">3</div>
+        <div><div class="pl-name">이준혁</div><div class="pl-name-sub">DF · #3 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">CB</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">공중 경합 CMJ 48cm · 팀 내 상위 16%</div>
+        <div class="hq-val target">0.65</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">5.7% L</span></div>
+          <div class="asi-row"><span class="asi-test">등속성</span><span class="asi-val forest">4.9% L</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 안정</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">4</div>
+        <div><div class="pl-name">정우준</div><div class="pl-name-sub">DF · #4 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">CB</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">IMTP 46.2 N/kg · 안정적 수비</div>
+        <div class="hq-val target">0.62</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">8.6% R</span></div>
+          <div class="asi-row"><span class="asi-test">IMTP</span><span class="asi-val forest">7.4% R</span></div>
+        </div>
+        <div class="pl-change ch-maint">— 유지</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">6</div>
+        <div><div class="pl-name">한지원</div><div class="pl-name-sub">DF · #6 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">FB</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">30m 4.31s · 측면 스피드 상위</div>
+        <div class="hq-val target">0.60</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">7.1% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">6.8% L</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 향상</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">7</div>
+        <div><div class="pl-name">조현우</div><div class="pl-name-sub">MF · #7 · 18세 Post-PHV</div></div>
+        <div class="pl-pos">MF</div>
+        <div class="pl-grade">고3</div>
+        <div class="pl-signal muted">YoYo 2280m · 후반 체력 우수</div>
+        <div class="hq-val target">0.61</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">6.3% R</span></div>
+          <div class="asi-row"><span class="asi-test">등속성</span><span class="asi-val forest">5.8% R</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 안정</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">8</div>
+        <div><div class="pl-name">박상민</div><div class="pl-name-sub">MF · #8 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">MF</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">CMJ 42cm · 박스-투-박스 MF</div>
+        <div class="hq-val target">0.64</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">5.2% L</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">4.8% L</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 향상</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">9</div>
+        <div><div class="pl-name">최준영</div><div class="pl-name-sub">FW · #9 · 18세 Post-PHV</div></div>
+        <div class="pl-pos">FW</div>
+        <div class="pl-grade">고3</div>
+        <div class="pl-signal muted">30m 4.18s · 팀 내 최고 스피드</div>
+        <div class="hq-val target">0.62</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">8.9% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">7.2% R</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 안정</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">10</div>
+        <div><div class="pl-name">임재훈</div><div class="pl-name-sub">MF · #10 · 18세 Post-PHV</div></div>
+        <div class="pl-pos">MF</div>
+        <div class="pl-grade">고3</div>
+        <div class="pl-signal muted">전체 균형 우수 · 플레이메이커</div>
+        <div class="hq-val target">0.63</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">5.9% L</span></div>
+          <div class="asi-row"><span class="asi-test">등속성</span><span class="asi-val forest">5.1% L</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 향상</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">13</div>
+        <div><div class="pl-name">오승준</div><div class="pl-name-sub">DF · #13 · 17세 Circa-PHV</div></div>
+        <div class="pl-pos">FB</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">성숙도 Circa · 연령 대비 양호</div>
+        <div class="hq-val target">0.60</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">8.1% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">7.5% R</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 향상</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">14</div>
+        <div><div class="pl-name">강현우</div><div class="pl-name-sub">MF · #14 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">MF</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">수비형 MF · 안정적 활동량</div>
+        <div class="hq-val target">0.61</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">6.7% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">5.9% R</span></div>
+        </div>
+        <div class="pl-change ch-maint">— 유지</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">15</div>
+        <div><div class="pl-name">백지훈</div><div class="pl-name-sub">FW · #15 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">FW</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">포처형 FW · 박스 안 움직임 양호</div>
+        <div class="hq-val target">0.60</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">7.8% R</span></div>
+          <div class="asi-row"><span class="asi-test">등속성</span><span class="asi-val forest">6.4% R</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 향상</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">18</div>
+        <div><div class="pl-name">양현준</div><div class="pl-name-sub">FW · #18 · 17세 Circa-PHV</div></div>
+        <div class="pl-pos">FW</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">성숙도 Circa · 성장기 Target 달성</div>
+        <div class="hq-val target">0.61</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">9.2% L</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">8.1% L</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 향상</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">19</div>
+        <div><div class="pl-name">노태석</div><div class="pl-name-sub">MF · #19 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">MF</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">측면 MF · 크로스 능력 우수</div>
+        <div class="hq-val target">0.62</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">7.4% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">6.8% R</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 안정</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">20</div>
+        <div><div class="pl-name">송민준</div><div class="pl-name-sub">DF · #20 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">CB</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">빌드업 능력 · 후방 전개 안정</div>
+        <div class="hq-val target">0.63</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">6.1% L</span></div>
+          <div class="asi-row"><span class="asi-test">등속성</span><span class="asi-val forest">5.7% L</span></div>
+        </div>
+        <div class="pl-change ch-maint">— 유지</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">22</div>
+        <div><div class="pl-name">김성훈</div><div class="pl-name-sub">GK · #22 · 17세 Post-PHV</div></div>
+        <div class="pl-pos">GK</div>
+        <div class="pl-grade">고2</div>
+        <div class="pl-signal muted">Handgrip 44kg · GK 절대값 상위</div>
+        <div class="hq-val target">0.60</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">7.9% R</span></div>
+          <div class="asi-row"><span class="asi-test">Grip</span><span class="asi-val forest">±3%</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 안정</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">23</div>
+        <div><div class="pl-name">조용진</div><div class="pl-name-sub">MF · #23 · 16세 Circa-PHV</div></div>
+        <div class="pl-pos">MF</div>
+        <div class="pl-grade">고1</div>
+        <div class="pl-signal muted">Pre/Circa 경계 · 성숙도 보정 후 Target</div>
+        <div class="hq-val target">0.60</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">9.4% R</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">8.7% R</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 성장</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+      <div class="pl-row">
+        <div class="triage safe"><span class="triage-sym">○</span><span>SAFE</span></div>
+        <div class="pl-num">25</div>
+        <div><div class="pl-name">한동현</div><div class="pl-name-sub">DF · #25 · 16세 Circa-PHV</div></div>
+        <div class="pl-pos">FB</div>
+        <div class="pl-grade">고1</div>
+        <div class="pl-signal muted">성숙도 Circa · 연령 대비 양호</div>
+        <div class="hq-val target">0.60</div>
+        <div class="asi-block">
+          <div class="asi-row"><span class="asi-test">SLCMJ</span><span class="asi-val forest">8.5% L</span></div>
+          <div class="asi-row"><span class="asi-test">505</span><span class="asi-val forest">7.9% L</span></div>
+        </div>
+        <div class="pl-change ch-up">▲ 성장</div>
+        <div class="pl-actions">
+          <button class="pa-btn" onclick="event.stopPropagation();showActionPopup('memo_coach')">메모</button>
+          <button class="pa-btn" onclick="event.stopPropagation();location.href='1_개인선수대시보드.html'">카드</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Fixed Footer -->
+<div class="fixed-footer">
+  <div class="ff-stat"><span class="ff-sym red">◐</span><span>RED LINE <strong>2</strong></span></div>
+  <span class="ff-sep">/</span>
+  <div class="ff-stat"><span class="ff-sym amber">◓</span><span>CAUTION <strong>4</strong></span></div>
+  <span class="ff-sep">/</span>
+  <div class="ff-stat"><span class="ff-sym ink">⊚</span><span>주장 예외 <strong>1</strong></span></div>
+  <span class="ff-sep">/</span>
+  <div class="ff-stat"><span class="ff-sym forest">○</span><span>SAFE <strong>18</strong></span></div>
+  <div class="ff-meta">관리 대상 6명 × 3~7분 · 30분 운영 · AT 이슬기 전담</div>
+</div>
+
+<!-- ===== ACTION POPUP ===== -->
+<div id="actionPopup" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;background:var(--card);border:1px solid var(--ink);padding:28px 32px;min-width:420px;max-width:520px">
+  <div onclick="closeActionPopup()" style="position:absolute;top:14px;right:18px;font-family:var(--font-mono);font-size:16px;cursor:pointer;color:var(--light);font-weight:300">✕</div>
+  <div id="actionIcon" style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--mid);margin-bottom:8px"></div>
+  <div id="actionTitle" style="font-family:var(--font-sans);font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;letter-spacing:-0.02em"></div>
+  <div id="actionBody" style="font-family:var(--font-sans);font-size:13px;color:var(--ink);line-height:1.6;letter-spacing:-0.01em"></div>
+  <div id="actionFooter" style="margin-top:22px;display:flex;gap:8px;justify-content:flex-end"></div>
+</div>
+<div id="actionOverlay" style="display:none;position:fixed;inset:0;background:rgba(26,26,26,0.4);z-index:9998" onclick="closeActionPopup()"></div>
+
+<script>
+// ===== 검색 =====
+function searchPlayers() {
+  var q = document.getElementById('playerSearch').value.trim();
+  var rows = document.querySelectorAll('.pl-row');
+  for (var i = 0; i < rows.length; i++) {
+    if (!q) { rows[i].style.display = ''; continue; }
+    var name = rows[i].querySelector('.pl-name');
+    var num = rows[i].querySelector('.pl-num');
+    var nameText = name ? name.textContent : '';
+    var numText = num ? num.textContent : '';
+    rows[i].style.display = (nameText.indexOf(q) >= 0 || numText.indexOf(q) >= 0) ? '' : 'none';
+  }
+}
+
+// ===== 포지션·등급 필터 =====
+document.querySelectorAll('.filter-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.getElementById('playerSearch').value = '';
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    this.classList.add('active');
+    var filter = this.textContent.trim();
+    var rows = document.querySelectorAll('.pl-row');
+    for (var i = 0; i < rows.length; i++) {
+      var posEl = rows[i].querySelector('.pl-pos');
+      var pos = posEl ? posEl.textContent.trim() : '';
+      var triageEl = rows[i].querySelector('.triage');
+      var triage = triageEl ? triageEl.className : '';
+      if (filter === '전체') { rows[i].style.display = ''; continue; }
+      if (filter.indexOf('RED') >= 0) { rows[i].style.display = triage.indexOf(' red') >= 0 ? '' : 'none'; continue; }
+      if (filter.indexOf('CAUTION') >= 0) { rows[i].style.display = (triage.indexOf(' amber') >= 0 || triage.indexOf(' red') >= 0) ? '' : 'none'; continue; }
+      rows[i].style.display = (pos === filter) ? '' : 'none';
+    }
+  });
+});
+
+// ===== Signal 필터 (토글) =====
+document.querySelectorAll('.sf-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    this.classList.toggle('active');
+    var active = Array.from(document.querySelectorAll('.sf-btn.active')).map(function(b) { return b.textContent.trim(); });
+    var rows = document.querySelectorAll('.pl-row');
+    for (var i = 0; i < rows.length; i++) {
+      if (active.length === 0) { rows[i].style.display = ''; continue; }
+      var sigEl = rows[i].querySelector('.pl-signal');
+      var sig = sigEl ? sigEl.textContent : '';
+      var match = false;
+      for (var j = 0; j < active.length; j++) {
+        if (sig.indexOf(active[j]) >= 0) { match = true; break; }
+      }
+      rows[i].style.display = match ? '' : 'none';
+    }
+  });
+});
+
+// ===== Action Popup =====
+var _ac = {
+  memo_at: {
+    icon: 'AT Memo',
+    title: 'AT 메모',
+    body: '<div style="margin-bottom:10px;color:var(--mid);font-size:12px;">Athletic Trainer 전문 소견 · 이슬기 AT</div>'
+      + '<textarea style="width:100%;height:100px;border:1px solid var(--rule);padding:10px;font-size:13px;font-family:var(--font-sans);resize:vertical;outline:none;letter-spacing:-0.01em" placeholder="임상 소견을 입력하세요..."></textarea>'
+      + '<div style="font-family:var(--font-mono);font-size:9.5px;color:var(--light);margin-top:6px;letter-spacing:0.06em">이슬기 AT · 2026.04.28</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  },
+  memo_coach: {
+    icon: 'Memo',
+    title: '코치 메모',
+    body: '<div style="margin-bottom:10px;color:var(--mid);font-size:12px;">코칭스태프 관찰 기록</div>'
+      + '<textarea style="width:100%;height:100px;border:1px solid var(--rule);padding:10px;font-size:13px;font-family:var(--font-sans);resize:vertical;outline:none;letter-spacing:-0.01em" placeholder="훈련 관찰 사항, 경기 중 특이점 등을 기록하세요..."></textarea>'
+      + '<div style="font-family:var(--font-mono);font-size:9.5px;color:var(--light);margin-top:6px;letter-spacing:0.06em">마지막 저장 : —</div>',
+    buttons: [['저장', 'primary'], ['취소', 'secondary']]
+  }
+};
+
+function showActionPopup(t) {
+  var d = _ac[t]; if (!d) return;
+  document.getElementById('actionIcon').textContent = d.icon;
+  document.getElementById('actionTitle').textContent = d.title;
+  document.getElementById('actionBody').innerHTML = d.body;
+  var f = document.getElementById('actionFooter'); f.innerHTML = '';
+  d.buttons.forEach(function(btn) {
+    var b = document.createElement('button');
+    b.textContent = btn[0];
+    b.style.cssText = btn[1] === 'primary'
+      ? 'font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:8px 18px;background:var(--ink);color:var(--card);border:1px solid var(--ink);cursor:pointer'
+      : 'font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:8px 18px;background:var(--card);color:var(--mid);border:1px solid var(--rule);cursor:pointer';
+    b.onclick = closeActionPopup;
+    f.appendChild(b);
+  });
+  document.getElementById('actionPopup').style.display = 'block';
+  document.getElementById('actionOverlay').style.display = 'block';
+}
+
+function closeActionPopup() {
+  document.getElementById('actionPopup').style.display = 'none';
+  document.getElementById('actionOverlay').style.display = 'none';
+}
+
+// ===== 행 클릭 시 개인 대시보드 이동 =====
+document.querySelectorAll('.pl-row').forEach(function(row) {
+  row.addEventListener('click', function(e) {
+    if (e.target.closest('.pa-btn')) return; // 버튼 클릭은 무시
+    location.href = '1_개인선수대시보드.html';
+  });
+});
+</script>
+
+</body>
+</html>

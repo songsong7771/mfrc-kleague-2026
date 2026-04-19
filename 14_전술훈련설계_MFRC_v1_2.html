@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K리그 유소년 · 전술 훈련 설계 · 신평고 U18 · MFRC</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  a { text-decoration: none; color: inherit; }
+
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --bg-sidebar: #EFECE4; --card: #FFFFFF;
+    --ink: #1A1A1A; --mid: #6B6B6B; --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+    --shadow-card: 0 1px 4px rgba(26,26,26,0.04);
+  }
+
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 20px 20px; border-bottom: 1px solid var(--rule); }
+  .sb-logo-mark { margin-bottom: 12px; }
+  .sb-logo-mark svg { width: 42px; height: auto; display: block; }
+  .sidebar-logo h1 { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--ink); text-transform: uppercase; }
+  .sidebar-logo p { font-family: var(--font-sans); font-size: 11px; color: var(--mid); margin-top: 6px; letter-spacing: -0.005em; line-height: 1.55; }
+  .sidebar-logo p strong { color: var(--ink); font-weight: 700; }
+  .sidebar-logo p .tag { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-top: 3px; }
+
+  .sidebar-nav { flex: 1; padding: 16px 0; overflow-y: auto; }
+  .nav-section { padding: 16px 20px 6px; font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.15em; color: var(--light); text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 11px 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; cursor: pointer; letter-spacing: -0.01em; transition: all 0.15s; }
+  .nav-item:hover { color: var(--ink); background: rgba(26,26,26,0.03); }
+  .nav-item.active { background: var(--forest-dim); color: var(--forest); border-left-color: var(--forest); font-weight: 700; }
+  .nav-item .ni-mark { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--light); margin-right: 4px; letter-spacing: 0.05em; }
+  .nav-item .ni-tag { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-left: auto; letter-spacing: 0.05em; }
+
+  .sidebar-footer { padding: 14px 20px; border-top: 1px solid var(--rule); font-family: var(--font-mono); font-size: 9px; color: var(--light); line-height: 1.6; letter-spacing: 0.05em; }
+
+  /* ===== MAIN ===== */
+  .main { margin-left: 240px; min-height: 100vh; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245,243,238,0.82); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-sans); font-size: 12px; color: var(--mid); letter-spacing: -0.005em; }
+  .breadcrumb span { color: var(--ink); font-weight: 700; }
+  .tb-right { display: flex; gap: 10px; align-items: center; }
+  .print-btn { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 14px; background: var(--ink); color: var(--card); border: 1px solid var(--ink); cursor: pointer; transition: all 0.15s; }
+  .print-btn:hover { background: var(--mid); }
+
+  /* ===== TAB BAR ===== */
+  .tab-bar { display: flex; border-bottom: 1px solid var(--rule); padding: 0 36px; background: var(--card); }
+  .tab { padding: 12px 20px; font-family: var(--font-sans); font-size: 12.5px; font-weight: 600; color: var(--mid); cursor: pointer; border-bottom: 2px solid transparent; letter-spacing: -0.01em; transition: all 0.15s; }
+  .tab:hover { color: var(--ink); }
+  .tab.active { color: var(--forest); border-bottom-color: var(--forest); font-weight: 800; }
+
+  /* ===== CONTENT ===== */
+  .content { padding: 24px 36px 48px; }
+
+  .card { background: var(--card); border: 1px solid var(--rule); overflow: hidden; box-shadow: var(--shadow-card); margin-bottom: 16px; }
+  .card-header { padding: 16px 24px 12px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-family: var(--font-sans); font-size: 13px; font-weight: 800; letter-spacing: -0.02em; }
+  .card-subtitle { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 3px; letter-spacing: 0.05em; }
+  .card-body { padding: 22px 24px; }
+
+  /* ===== WEEK HEADER ===== */
+  .week-header { background: var(--card); border: 1px solid var(--rule); padding: 22px 28px; margin-bottom: 20px; }
+  .wh-title { font-family: var(--font-sans); font-size: 19px; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.03em; }
+  .wh-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--forest); }
+  .wh-date { font-family: var(--font-mono); font-size: 11px; color: var(--mid); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .wh-direction { margin-top: 14px; padding: 14px 16px; background: var(--forest-dim); border-left: 3px solid var(--forest); font-family: var(--font-sans); font-size: 12.5px; font-weight: 500; color: var(--ink); line-height: 1.65; letter-spacing: -0.005em; }
+  .wh-direction strong { font-weight: 700; }
+  .wh-direction strong.fw-weak { color: var(--amber); }
+  .wh-direction strong.fw-strong { color: var(--forest); }
+  .wh-direction-head { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: var(--forest); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+
+  .approval-flow { display: flex; gap: 0; align-items: center; margin: 18px 0 0; flex-wrap: wrap; }
+  .af-step { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 6px 13px; border: 1px solid var(--rule); background: var(--bg-subtle); letter-spacing: 0.05em; text-transform: uppercase; }
+  .af-done { border-color: var(--forest); color: var(--forest); background: var(--forest-dim); }
+  .af-current { border-color: var(--ink); color: var(--ink); background: var(--bg); font-weight: 800; }
+  .af-pending { color: var(--light); }
+  .af-arrow { color: var(--light); font-family: var(--font-mono); font-size: 13px; margin: 0 6px; }
+
+  /* ===== TACTIC CARD ===== */
+  .tactic { background: var(--card); border: 1px solid var(--rule); overflow: hidden; box-shadow: var(--shadow-card); margin-bottom: 14px; }
+  .tc-top { padding: 14px 22px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 14px; }
+  .tc-num { font-family: var(--font-display); font-size: 14px; font-weight: 800; width: 34px; height: 34px; background: var(--ink); color: var(--card); display: flex; align-items: center; justify-content: center; letter-spacing: -0.03em; }
+  .tc-name { font-family: var(--font-sans); font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+  .tc-eng { font-family: var(--font-mono); font-size: 10px; color: var(--mid); font-weight: 600; margin-top: 2px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .tc-link-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 4px 10px; margin-left: auto; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; }
+  .tc-badge-strength { background: var(--forest-dim); color: var(--forest); border-color: var(--forest); }
+  .tc-badge-weak { background: var(--amber-dim); color: var(--amber); border-color: var(--amber); }
+  .tc-badge-danger { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+
+  .tc-body { padding: 18px 22px; }
+  .tc-data { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink); font-weight: 600; margin-bottom: 10px; padding: 9px 13px; background: var(--bg-subtle); border: 1px solid var(--rule); letter-spacing: 0.02em; }
+  .tc-data-head { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; color: var(--mid); letter-spacing: 0.15em; text-transform: uppercase; margin-right: 8px; }
+
+  .tc-drill { margin-bottom: 12px; }
+  .tc-drill-name { font-family: var(--font-sans); font-size: 13px; font-weight: 700; margin-bottom: 3px; letter-spacing: -0.01em; }
+  .tc-drill-desc { font-family: var(--font-sans); font-size: 11.5px; color: var(--mid); letter-spacing: -0.005em; line-height: 1.55; }
+  .tc-drill-freq { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--forest); margin-top: 5px; letter-spacing: 0.05em; }
+
+  .tc-why { padding: 11px 14px; background: var(--forest-dim); border: 1px solid var(--forest); margin-top: 10px; font-family: var(--font-sans); font-size: 11.5px; font-weight: 500; letter-spacing: -0.005em; line-height: 1.55; }
+  .tc-why strong { font-weight: 700; color: var(--forest); }
+  .tc-why em { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
+
+  .tc-warn { padding: 9px 13px; background: var(--red-dim); border: 1px solid var(--red); margin-top: 8px; font-family: var(--font-sans); font-size: 10.5px; font-weight: 600; color: var(--red); letter-spacing: -0.005em; line-height: 1.5; }
+
+  .tc-basis { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .basis-tag { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 8px; background: var(--bg-subtle); border: 1px solid var(--rule); color: var(--mid); letter-spacing: 0.05em; }
+
+  /* ===== SCHEDULE TABLE ===== */
+  .sched-table { width: 100%; border-collapse: collapse; font-family: var(--font-sans); font-size: 11px; margin-bottom: 12px; }
+  .sched-table th { background: var(--ink); color: var(--card); padding: 8px 11px; text-align: left; font-family: var(--font-mono); font-weight: 700; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .sched-table td { padding: 8px 11px; border-bottom: 1px solid var(--rule); letter-spacing: -0.005em; }
+  .sched-table tr:nth-child(even) { background: var(--bg-subtle); }
+
+  /* ===== MEMO ===== */
+  .memo-box { background: var(--bg-subtle); border: 1px dashed var(--ink); padding: 16px; margin-top: 16px; }
+  .memo-title { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--ink); margin-bottom: 8px; letter-spacing: 0.15em; text-transform: uppercase; }
+  .memo-text { font-family: var(--font-serif); font-style: italic; font-size: 13px; color: var(--ink); font-weight: 400; line-height: 1.6; letter-spacing: -0.005em; }
+
+  @media print {
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sidebar { display: none !important; }
+    .main { margin-left: 0 !important; }
+    .topbar { position: relative !important; background: var(--bg-subtle) !important; backdrop-filter: none !important; }
+    .no-print { display: none !important; }
+    .card, .tactic, .week-header { box-shadow: none !important; break-inside: avoid; }
+  }
+
+  .sidebar-role { padding: 12px 22px; border-bottom: 1px solid var(--rule); }
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
+  .sidebar-footer { padding: 18px 22px 20px; border-top: 1px solid var(--rule); }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+    <div class="sb-ko">마이페이보릿리커버리</div>
+    <div class="sb-sub-line"></div>
+    <div class="sb-program">K리그 유소년<br>측정·분석 시스템</div>
+    <div class="sb-caption">2026 시즌 &nbsp;·&nbsp; v1.2</div>
+  </div>
+  <div class="sidebar-role">
+    <span class="role-badge">Coaching Staff</span>
+    <span class="role-team">신평고등학교 U18</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a href="홈_코칭스태프_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">00</span>코칭스태프 홈</a>
+    <a href="선수목록_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">00a</span>선수 목록</a>
+    <a href="2_팀대시보드_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">02</span>팀 대시보드</a>
+
+    <div class="nav-section">Analysis</div>
+    <a href="3_점프착지방향전환_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">03</span>점프·착지·방향전환<span class="ni-tag">3D-Deltas</span></a>
+    <a href="4_달리기가속감속_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">04</span>달리기·가속·감속<span class="ni-tag">K-Power</span></a>
+    <a href="근력좌우균형_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">05</span>근력·좌우 균형<span class="ni-tag">K-TDM · Ronfic</span></a>
+    <a href="5_부상위험도_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">06</span>부상 위험도<span class="ni-tag">Integrated</span></a>
+    <a href="6_플레이어유형_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">07</span>플레이어 유형<span class="ni-tag">Integrated</span></a>
+    <a href="7_컨디션피로도_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">08</span>컨디션·피로도<span class="ni-tag">K-Grip · Catapult</span></a>
+
+    <div class="nav-section">Operations</div>
+    <a href="8_훈련플래너_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">09</span>훈련 플래너</a>
+    <a href="14_전술훈련설계_MFRC_v1_2.html" class="nav-item active"><span class="ni-mark">14</span>전술 훈련 설계</a>
+    <a href="9_월별캘린더_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">10</span>캘린더</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sb-footer-logo">
+      <svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+      </svg>
+    </div>
+    <div class="sb-copy">© 2026 My Favorite Recovery<br>마이페이보릿리커버리</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb">훈련 플래너 &gt; <span>전술 훈련 설계 · 신평고 U18 · 18주차</span></div>
+    <div class="tb-right">
+      <button class="print-btn no-print" onclick="window.print()">● PDF 출력</button>
+    </div>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <a href="8_훈련플래너_MFRC_v1_2.html" class="tab">개인 보강 훈련</a>
+    <a href="14_전술훈련설계_MFRC_v1_2.html" class="tab active">전술 훈련 설계</a>
+    <a href="15_상대전술분석_MFRC_v1_2.html" class="tab">상대 전술 분석</a>
+  </div>
+
+  <div class="content">
+
+    <!-- Week header -->
+    <div class="week-header">
+      <div class="wh-title">● 18주차 <em>전술 훈련 설계</em></div>
+      <div class="wh-date">2026.04.27 (월) ~ 2026.05.03 (일)</div>
+      <div class="wh-direction">
+        <div class="wh-direction-head">● 팀 데이터 기반 이번 주 방향</div>
+        팀 전체 감속이 하위 30%이고 내전근 미달이 32%이므로, <strong class="fw-weak">수비 전환 훈련에 급정지 요소를 반드시 포함</strong>하세요. 반면 직선 가속은 상위 22%이므로 <strong class="fw-strong">역습·측면 공격에서 강점을 최대한 활용</strong>하세요.
+      </div>
+
+      <div class="approval-flow">
+        <div class="af-step af-done">● AI 초안</div>
+        <div class="af-arrow">→</div>
+        <div class="af-step af-done">● AT 검수 · 이슬기</div>
+        <div class="af-arrow">→</div>
+        <div class="af-step af-done">● 학술 감수 · SIS</div>
+        <div class="af-arrow">→</div>
+        <div class="af-step af-current">▲ 감독 승인 대기</div>
+        <div class="af-arrow">→</div>
+        <div class="af-step af-pending">○ 코치진 공유</div>
+      </div>
+    </div>
+
+    <!-- Tactic 1: 수비 전환 -->
+    <div class="tactic">
+      <div class="tc-top">
+        <div class="tc-num">1</div>
+        <div><div class="tc-name">수비 전환</div><div class="tc-eng">Defensive Transition</div></div>
+        <span class="tc-link-badge tc-badge-weak">▲ 팀 약점 연결</span>
+      </div>
+      <div class="tc-body">
+        <div class="tc-data"><span class="tc-data-head">● 근거</span>감속 효율 리그 하위 30% · 급정지 능력(COD) 2.58s (리그 평균 2.46s) · 피로 후 감속 -62%</div>
+        <div class="tc-drill">
+          <div class="tc-drill-name">역습 상황 수비 복귀 훈련</div>
+          <div class="tc-drill-desc">전속력 전진 → 신호 시 급정지 → 후방 추격 · 4v3 역습 상황 시뮬레이션</div>
+          <div class="tc-drill-freq">강도: 중상 · 15분 · 주 2회</div>
+        </div>
+        <div class="tc-why">● <strong>왜 이 훈련인가:</strong> 팀 전체가 멈추는 게 <em>느려서</em> 역습 시 공간을 내줍니다. 급정지 요소를 넣어 실전에서 바로 쓸 수 있게 합니다.</div>
+        <div class="tc-warn">■ RED 2명(강민준·박정민) 고강도 제외 · CAUT 4명 감속 구간 모니터링</div>
+        <div class="tc-basis">
+          <span class="basis-tag">K-Power 감속 효율</span>
+          <span class="basis-tag">3D-Deltas Y축 제동력</span>
+          <span class="basis-tag">피로 후 감속 -62%</span>
+          <span class="basis-tag">Catapult HSR</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tactic 2: 빌드업 -->
+    <div class="tactic">
+      <div class="tc-top">
+        <div class="tc-num">2</div>
+        <div><div class="tc-name">빌드업</div><div class="tc-eng">Build-up Play</div></div>
+        <span class="tc-link-badge tc-badge-weak">▲ 팀 약점 보강</span>
+      </div>
+      <div class="tc-body">
+        <div class="tc-data"><span class="tc-data-head">● 근거</span>MF 반복 전환 효율 0.62 (리그 평균 0.74) · 하위 30%</div>
+        <div class="tc-drill">
+          <div class="tc-drill-name">좁은 공간 빌드업 훈련</div>
+          <div class="tc-drill-desc">10×15m 그리드 · 5v3 · 짧은 패스 + 방향전환 반복</div>
+          <div class="tc-drill-freq">강도: 중 · 12분 · 주 2회</div>
+        </div>
+        <div class="tc-why">● <strong>왜 이 훈련인가:</strong> MF진의 가감속 전환이 약해서 좁은 공간에서 볼 로스트가 나올 수 있습니다. 반복 전환을 훈련에 녹여서 보강합니다. 주장 <strong>윤희서 #21</strong>이 MF 센터로서 리딩합니다.</div>
+        <div class="tc-basis">
+          <span class="basis-tag">K-Power 전환 효율</span>
+          <span class="basis-tag">MF 반복 가감속</span>
+          <span class="basis-tag">윤희서 Safe A 리딩</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tactic 3: 측면 공격 -->
+    <div class="tactic">
+      <div class="tc-top">
+        <div class="tc-num">3</div>
+        <div><div class="tc-name">측면 공격</div><div class="tc-eng">Wide Attack</div></div>
+        <span class="tc-link-badge tc-badge-strength">● 팀 강점 활용</span>
+      </div>
+      <div class="tc-body">
+        <div class="tc-data"><span class="tc-data-head">● 근거</span>FB 직선 가속 상위 22% · 탑스피드(Vmax) 8.72 (리그 상위 25%)</div>
+        <div class="tc-drill">
+          <div class="tc-drill-name">FB 오버래핑 → 크로스 연결</div>
+          <div class="tc-drill-desc">하프라인→터치라인 전속력 스프린트 → 크로스 정확도 + FW 마무리</div>
+          <div class="tc-drill-freq">강도: 상 · 20분 · 주 2회</div>
+        </div>
+        <div class="tc-why">● <strong>왜 이 훈련인가:</strong> FB들의 직선 가속이 리그 <em>탑클래스</em>라 이걸 살리는 전술이 가장 효율적입니다. 측면 돌파→크로스를 팀 전술로 굳히세요.</div>
+        <div class="tc-basis">
+          <span class="basis-tag">K-Power 0-10m 가속</span>
+          <span class="basis-tag">FB 탑스피드(Vmax) 상위</span>
+          <span class="basis-tag">Catapult Peak Speed</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tactic 4: 프레싱 -->
+    <div class="tactic">
+      <div class="tc-top">
+        <div class="tc-num">4</div>
+        <div><div class="tc-name">프레싱</div><div class="tc-eng">High Press</div></div>
+        <span class="tc-link-badge tc-badge-danger">■ 시간 제한 주의</span>
+      </div>
+      <div class="tc-body">
+        <div class="tc-data"><span class="tc-data-head">● 근거</span>반복 스프린트 시 감속력 -62% 급감 · 후반 20분 피로 임계점 · K-Grip 유지력 -38%</div>
+        <div class="tc-drill">
+          <div class="tc-drill-name">전방 프레싱 훈련 (시간 제한)</div>
+          <div class="tc-drill-desc">6v6 하프코트 · 15초 내 볼 탈취 · 프레싱 실패 시 즉시 수비 전환</div>
+          <div class="tc-drill-freq">강도: 상 · 10분 이내 · 주 1회</div>
+        </div>
+        <div class="tc-why">● <strong>왜 이 훈련인가:</strong> 전반에는 프레싱이 되지만 후반에 급정지 능력이 떨어져서 프레싱이 무너집니다. <em>짧고 강하게</em> 반복해서 피로 내성을 키웁니다.</div>
+        <div class="tc-warn">■ 10분 이내 · 피로 시 부상 위험 증가 · RED 2명(강민준·박정민) 제외</div>
+        <div class="tc-basis">
+          <span class="basis-tag">K-Power 피로 후 감속</span>
+          <span class="basis-tag">K-Grip 유지력</span>
+          <span class="basis-tag">3D-Deltas Y축 감소</span>
+          <span class="basis-tag">Catapult PlayerLoad</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tactic 5: 세트피스 -->
+    <div class="tactic">
+      <div class="tc-top">
+        <div class="tc-num">5</div>
+        <div><div class="tc-name">세트피스</div><div class="tc-eng">Set Piece</div></div>
+        <span class="tc-link-badge tc-badge-strength">● 팀 강점 활용</span>
+      </div>
+      <div class="tc-body">
+        <div class="tc-data"><span class="tc-data-head">● 근거</span>점프(CMJ) 팀 평균 34.8cm (리그 상위 22%) · 공중볼 우위</div>
+        <div class="tc-drill">
+          <div class="tc-drill-name">코너킥 공격 + 프리킥 수비</div>
+          <div class="tc-drill-desc">공중볼 경합 포지셔닝 · 헤딩 타이밍 + 착지 안정성</div>
+          <div class="tc-drill-freq">강도: 중 · 10분 · 주 1회</div>
+        </div>
+        <div class="tc-why">● <strong>왜 이 훈련인가:</strong> 팀 점프력이 리그 상위권이라 코너킥 공격에서 <em>득점 가능성</em>이 높습니다. 이 강점을 세트피스에서 살리세요.</div>
+        <div class="tc-basis">
+          <span class="basis-tag">3D-Deltas 점프(CMJ)</span>
+          <span class="basis-tag">팀 평균 34.8cm</span>
+          <span class="basis-tag">SLCMJ 착지 안정성</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly schedule -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">● 주간 전술 훈련 시간표</div>
+          <div class="card-subtitle">Weekly Training Schedule · 개인 보강(탭1)과 전술 훈련 통합 배치</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding: 0;">
+        <table class="sched-table">
+          <tr>
+            <th>요일</th>
+            <th>전술 훈련</th>
+            <th>시간</th>
+            <th>개인 보강 (탭1 연동)</th>
+            <th>비고</th>
+          </tr>
+          <tr><td style="font-weight:700;color:var(--ink)">월</td><td>수비 전환 (15분) + 빌드업 (12분)</td><td class="mono">27분</td><td>Copenhagen 전체</td><td>—</td></tr>
+          <tr><td style="font-weight:700;color:var(--ink)">화</td><td>—</td><td>—</td><td>포지션별 보강 (탭1)</td><td>전술 훈련 없음</td></tr>
+          <tr><td style="font-weight:700;color:var(--ink)">수</td><td>측면 공격 (20분) + 세트피스 (10분)</td><td class="mono">30분</td><td>Copenhagen 전체 + Nordic</td><td>—</td></tr>
+          <tr><td style="font-weight:700;color:var(--ink)">목</td><td>—</td><td>—</td><td>포지션별 보강 (탭1)</td><td>전술 훈련 없음</td></tr>
+          <tr><td style="font-weight:700;color:var(--ink)">금</td><td>프레싱 (10분)</td><td class="mono">10분</td><td>경기 준비 루틴</td><td>피로 관리</td></tr>
+          <tr><td style="font-weight:700;color:var(--forest)">토</td><td colspan="3" style="color:var(--forest);font-weight:700">● 경기 (Catapult 착용)</td><td>—</td></tr>
+          <tr><td style="font-weight:700;color:var(--mid)">일</td><td colspan="3" style="color:var(--mid)">회복</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Manager memo -->
+    <div class="memo-box">
+      <div class="memo-title">● 감독 메모 · 직접 수정 가능</div>
+      <div class="memo-text">"이번 주 토요일 상대가 역습이 빠른 팀이라 수비 전환 훈련을 수→월로 옮기자. 프레싱은 금요일에 짧게만. 주장 윤희서 우측 햄 Player Voice 나왔으니 Nordic 우측은 5% 감량해서 진행."</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

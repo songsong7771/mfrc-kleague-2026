@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K리그 유소년 · 연맹 리그 기준값 · Normative DB · MFRC</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  a { text-decoration: none; color: inherit; }
+
+  :root {
+    --bg: #F5F3EE; --bg-subtle: #FAF8F3; --bg-sidebar: #EFECE4; --card: #FFFFFF;
+    --ink: #1A1A1A; --mid: #6B6B6B; --light: #A8A8A8; --rule: #E5E3DE;
+    --red: #E63946; --amber: #C77A1E; --forest: #006A3A;
+    --red-dim: rgba(230,57,70,0.06); --amber-dim: rgba(199,122,30,0.07); --forest-dim: rgba(0,106,58,0.06);
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Pretendard', 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-serif: 'Fraunces', serif;
+    --shadow-card: 0 1px 4px rgba(26,26,26,0.04);
+  }
+
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  .sidebar-logo { padding: 24px 20px 18px; border-bottom: 1px solid var(--rule); }
+  .sb-logo-mark { margin-bottom: 12px; }
+  .sb-logo-mark svg { width: 42px; height: auto; display: block; }
+  .sidebar-logo h1 { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--ink); text-transform: uppercase; }
+  .sidebar-logo p { font-family: var(--font-sans); font-size: 11px; color: var(--mid); margin-top: 6px; line-height: 1.55; letter-spacing: -0.005em; }
+  .sidebar-logo p strong { color: var(--ink); font-weight: 700; }
+  .sidebar-logo p .tag { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-top: 3px; }
+
+  .sidebar-role { padding: 14px 22px; border-bottom: 1px solid var(--rule); background: var(--bg-subtle); }
+  .role-badge { display: inline-block; font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 4px 10px; background: var(--ink); color: var(--card); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+  
+
+  .view-switch { display: block; margin: 12px 20px; padding: 8px 14px; border: 1px solid var(--forest); background: var(--forest-dim); color: var(--forest); font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-align: center; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.15s; }
+  .view-switch:hover { background: var(--forest); color: var(--card); }
+
+  .sidebar-nav { flex: 1; padding: 16px 0; overflow-y: auto; }
+  .nav-section { padding: 16px 20px 6px; font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.15em; color: var(--light); text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 11px 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; cursor: pointer; letter-spacing: -0.01em; transition: all 0.15s; }
+  .nav-item:hover { color: var(--ink); background: rgba(26,26,26,0.03); }
+  .nav-item.active { background: var(--forest-dim); color: var(--forest); border-left-color: var(--forest); font-weight: 700; }
+  .nav-item .ni-mark { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--light); margin-right: 4px; letter-spacing: 0.05em; }
+
+  .sidebar-footer { padding: 14px 20px; border-top: 1px solid var(--rule); font-family: var(--font-mono); font-size: 9px; color: var(--light); line-height: 1.6; letter-spacing: 0.05em; }
+
+  /* ===== MAIN ===== */
+  .main { margin-left: 240px; min-height: 100vh; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245,243,238,0.82); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-sans); font-size: 12px; color: var(--mid); letter-spacing: -0.005em; }
+  .breadcrumb span { color: var(--ink); font-weight: 700; }
+  .tb-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--mid); font-weight: 600; letter-spacing: 0.08em; }
+
+  .content { padding: 24px 36px 48px; }
+
+  /* ===== SUMMARY LINE ===== */
+  .summary-line { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--ink); padding: 16px 22px; margin-bottom: 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--ink); letter-spacing: -0.005em; line-height: 1.6; }
+  .summary-line .head { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--ink); letter-spacing: 0.15em; text-transform: uppercase; margin-right: 8px; }
+  .summary-line strong { font-weight: 700; color: var(--forest); }
+
+  /* ===== CARD ===== */
+  .card { background: var(--card); border: 1px solid var(--rule); overflow: hidden; box-shadow: var(--shadow-card); margin-bottom: 18px; }
+  .card-header { padding: 16px 24px 12px; border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-family: var(--font-sans); font-size: 14px; font-weight: 800; letter-spacing: -0.02em; }
+  .card-subtitle { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 3px; letter-spacing: 0.05em; }
+  .card-body { padding: 22px 24px; }
+
+  /* ===== TABLE ===== */
+  .norm-table { width: 100%; border-collapse: collapse; font-family: var(--font-sans); font-size: 11px; }
+  .norm-table th { background: var(--ink); color: var(--card); padding: 10px 12px; text-align: left; font-family: var(--font-mono); font-weight: 700; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--ink); }
+  .norm-table th.center { text-align: center; }
+  .norm-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); letter-spacing: -0.005em; }
+  .norm-table td.center { text-align: center; }
+  .norm-table tr:nth-child(even) td { background: var(--bg-subtle); }
+  .norm-table tr:hover td { background: var(--forest-dim); }
+  .norm-table .label-col { font-weight: 700; color: var(--ink); }
+  .norm-table .unit-col { font-family: var(--font-mono); font-size: 10px; color: var(--mid); font-weight: 600; letter-spacing: 0.05em; }
+
+  .mono { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0; }
+  .tg { color: var(--forest); font-weight: 700; }
+  .tw { color: var(--amber); font-weight: 700; }
+  .td-red { color: var(--red); font-weight: 700; }
+
+  .table-footer { text-align: center; color: var(--mid); font-family: var(--font-mono); font-size: 10.5px; padding: 14px; letter-spacing: 0.05em; background: var(--bg-subtle); }
+  .note { font-family: var(--font-mono); font-size: 10px; color: var(--mid); margin-top: 10px; letter-spacing: 0.03em; line-height: 1.6; }
+  .note strong { color: var(--ink); font-weight: 700; }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-title { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--ink); margin: 0 0 14px; letter-spacing: 0.15em; text-transform: uppercase; padding: 10px 14px; background: var(--ink); color: var(--card); display: inline-block; }
+
+  @media print {
+    body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sidebar { display: none !important; }
+    .main { margin-left: 0 !important; }
+    .topbar { position: relative !important; background: var(--bg-subtle) !important; backdrop-filter: none !important; }
+    .card { box-shadow: none !important; break-inside: avoid; }
+  }
+
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sb-ko">마이페이보릿리커버리</div>
+    <div class="sb-sub-line"></div>
+    <div class="sb-program">K리그 유소년<br>측정·분석 시스템</div>
+    <div class="sb-caption">2026 시즌 &nbsp;·&nbsp; v1.2</div>
+  </div>
+
+  <div class="sidebar-role">
+    <span class="role-badge">Federation Admin</span>
+    <span class="role-team">한국프로축구연맹</span>
+  </div>
+
+  <a href="2_팀대시보드_MFRC_v1_2.html" class="view-switch">↩ 코칭스태프 뷰</a>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">Federation</div>
+    <a href="연맹관리자대시보드_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">F1</span>전체 현황</a>
+    <a href="연맹_측정일정_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">F2</span>측정 일정</a>
+    <a href="연맹_보고서현황_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">F3</span>보고서 현황</a>
+    <a href="연맹_리그기준값_MFRC_v1_2.html" class="nav-item active"><span class="ni-mark">F4</span>리그 기준값</a>
+    <a href="연맹_지연관리_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">F5</span>지연 관리</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sb-footer-logo">
+      <svg viewBox="0 0 1120 103" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M42.24 99.968H31.616L19.712 50.688L16.896 36.608H16.128L16.896 50.688V99.968H1.71661e-05V1.40801H21.76L35.072 56.32L36.48 70.4H37.248L38.656 56.32L52.096 1.40801H73.856V99.968H56.96V50.688L57.728 36.608H56.96L54.144 50.688L42.24 99.968ZM118.175 65.536V99.968H101.279V65.536L81.567 1.40801H99.103L109.343 43.648H110.111L120.223 1.40801H137.887L118.175 65.536ZM188.771 99.968H171.875V1.40801H214.755V16.256H188.771V44.288H206.947V59.136H188.771V99.968ZM247.142 68.224L242.278 33.792L240.87 17.664H240.102L238.694 33.792L233.702 68.224H247.142ZM249.19 82.432H231.654L229.478 99.968H212.582L228.838 1.40801H252.006L268.262 99.968H251.366L249.19 82.432ZM296.561 67.584L304.881 1.40801H322.545L306.289 99.968H283.121L266.865 1.40801H284.529L292.977 67.584L294.385 83.072H295.153L296.561 67.584ZM380.405 26.752V74.624C380.405 92.928 371.957 101.376 355.061 101.376C338.165 101.376 329.717 92.928 329.717 74.624V26.752C329.717 8.44801 338.165 1.52588e-05 355.061 1.52588e-05C371.957 1.52588e-05 380.405 8.44801 380.405 26.752ZM363.381 74.624V26.752C363.381 17.664 360.565 14.848 355.061 14.848C349.429 14.848 346.613 17.664 346.613 26.752V74.624C346.613 83.712 349.429 86.528 355.061 86.528C360.565 86.528 363.381 83.712 363.381 74.624ZM411.396 45.696H416.26C423.3 45.696 426.756 42.24 426.756 33.152V28.928C426.756 19.712 423.3 16.256 416.26 16.256H411.396V45.696ZM443.78 28.928V33.152C443.78 50.688 430.98 52.736 430.98 52.736V53.504C430.98 53.504 441.604 55.68 441.604 67.584V85.888C441.604 92.16 444.42 95.104 447.236 95.104V99.968H435.332C428.932 99.968 424.708 95.744 424.708 85.888V68.224C424.708 62.72 422.532 60.544 416.26 60.544H411.396V99.968H394.5V1.40801H416.26C434.564 1.40801 443.78 10.624 443.78 28.928ZM474.146 1.40801V99.968H457.25V1.40801H474.146ZM483.225 16.256V1.40801H532.505V16.256H516.249V99.968H499.353V16.256H483.225ZM586.038 99.968H541.75V1.40801H584.63V16.256H558.646V41.472H576.822V56.32H558.646V85.12H586.038V99.968ZM643.896 45.696H648.76C655.8 45.696 659.256 42.24 659.256 33.152V28.928C659.256 19.712 655.8 16.256 648.76 16.256H643.896V45.696ZM676.28 28.928V33.152C676.28 50.688 663.48 52.736 663.48 52.736V53.504C663.48 53.504 674.104 55.68 674.104 67.584V85.888C674.104 92.16 676.92 95.104 679.736 95.104V99.968H667.832C661.432 99.968 657.208 95.744 657.208 85.888V68.224C657.208 62.72 655.032 60.544 648.76 60.544H643.896V99.968H627V1.40801H648.76C667.064 1.40801 676.28 10.624 676.28 28.928ZM734.038 99.968H689.75V1.40801H732.63V16.256H706.646V41.472H724.822V56.32H706.646V85.12H734.038V99.968ZM775.506 59.904H790.354C790.354 59.904 791.762 68.224 791.762 76.672C791.762 92.928 783.314 101.376 767.186 101.376C750.29 101.376 741.842 92.928 741.842 74.624V26.752C741.842 8.44801 750.29 1.52588e-05 767.186 1.52588e-05C782.674 1.52588e-05 791.762 9.08801 791.762 24.704C791.762 32.384 790.354 40.064 790.354 40.064H775.506V26.752C775.506 17.664 772.69 14.848 767.186 14.848C761.554 14.848 758.738 17.664 758.738 26.752V74.624C758.738 83.712 761.554 86.528 767.186 86.528C772.69 86.528 775.506 83.712 775.506 74.624V59.904ZM853.78 26.752V74.624C853.78 92.928 845.332 101.376 828.436 101.376C811.54 101.376 803.092 92.928 803.092 74.624V26.752C803.092 8.44801 811.54 1.52588e-05 828.436 1.52588e-05C845.332 1.52588e-05 853.78 8.44801 853.78 26.752ZM836.756 74.624V26.752C836.756 17.664 833.94 14.848 828.436 14.848C822.804 14.848 819.988 17.664 819.988 26.752V74.624C819.988 83.712 822.804 86.528 828.436 86.528C833.94 86.528 836.756 83.712 836.756 74.624ZM890.436 67.584L898.756 1.40801H916.42L900.164 99.968H876.996L860.74 1.40801H878.404L886.852 67.584L888.26 83.072H889.028L890.436 67.584ZM970.663 99.968H926.375V1.40801H969.255V16.256H943.271V41.472H961.447V56.32H943.271V85.12H970.663V99.968ZM998.146 45.696H1003.01C1010.05 45.696 1013.51 42.24 1013.51 33.152V28.928C1013.51 19.712 1010.05 16.256 1003.01 16.256H998.146V45.696ZM1030.53 28.928V33.152C1030.53 50.688 1017.73 52.736 1017.73 52.736V53.504C1017.73 53.504 1028.35 55.68 1028.35 67.584V85.888C1028.35 92.16 1031.17 95.104 1033.99 95.104V99.968H1022.08C1015.68 99.968 1011.46 95.744 1011.46 85.888V68.224C1011.46 62.72 1009.28 60.544 1003.01 60.544H998.146V99.968H981.25V1.40801H1003.01C1021.31 1.40801 1030.53 10.624 1030.53 28.928ZM1071.43 65.536V99.968H1054.53V65.536L1034.82 1.40801H1052.35L1062.59 43.648H1063.36L1073.47 1.40801H1091.14L1071.43 65.536ZM1106.52 95.498C1104.5 95.498 1103.01 94.928 1102.05 93.788C1101.11 92.648 1100.64 91.138 1100.64 89.258C1100.64 87.358 1101.16 85.828 1102.2 84.668C1103.26 83.508 1104.73 82.928 1106.61 82.928C1107.23 82.928 1107.85 82.998 1108.47 83.138C1109.11 83.278 1109.72 83.488 1110.3 83.768L1109.4 85.868C1108.98 85.668 1108.53 85.508 1108.05 85.388C1107.59 85.248 1107.1 85.178 1106.58 85.178C1105.62 85.178 1104.86 85.538 1104.3 86.258C1103.74 86.978 1103.46 87.988 1103.46 89.288C1103.46 91.948 1104.56 93.278 1106.76 93.278C1107.3 93.278 1107.82 93.218 1108.32 93.098C1108.82 92.978 1109.31 92.828 1109.79 92.648V94.898C1109.29 95.098 1108.77 95.248 1108.23 95.348C1107.71 95.448 1107.14 95.498 1106.52 95.498ZM1106.19 102.248C1104.39 102.248 1102.7 101.908 1101.12 101.228C1099.56 100.568 1098.18 99.648 1096.98 98.468C1095.8 97.268 1094.87 95.888 1094.19 94.328C1093.53 92.748 1093.2 91.058 1093.2 89.258C1093.2 87.458 1093.53 85.778 1094.19 84.218C1094.87 82.638 1095.8 81.258 1096.98 80.078C1098.18 78.878 1099.56 77.948 1101.12 77.288C1102.7 76.608 1104.39 76.268 1106.19 76.268C1107.99 76.268 1109.67 76.608 1111.23 77.288C1112.81 77.948 1114.19 78.878 1115.37 80.078C1116.57 81.258 1117.5 82.638 1118.16 84.218C1118.84 85.778 1119.18 87.458 1119.18 89.258C1119.18 91.058 1118.84 92.748 1118.16 94.328C1117.5 95.888 1116.57 97.268 1115.37 98.468C1114.19 99.648 1112.81 100.568 1111.23 101.228C1109.67 101.908 1107.99 102.248 1106.19 102.248ZM1106.19 99.578C1107.63 99.578 1108.97 99.318 1110.21 98.798C1111.45 98.258 1112.54 97.518 1113.48 96.578C1114.44 95.618 1115.18 94.518 1115.7 93.278C1116.24 92.018 1116.51 90.678 1116.51 89.258C1116.51 87.818 1116.24 86.478 1115.7 85.238C1115.18 83.998 1114.44 82.908 1113.48 81.968C1112.54 81.008 1111.44 80.268 1110.18 79.748C1108.94 79.208 1107.61 78.938 1106.19 78.938C1104.75 78.938 1103.41 79.208 1102.17 79.748C1100.93 80.268 1099.83 81.008 1098.87 81.968C1097.93 82.908 1097.19 84.008 1096.65 85.268C1096.13 86.508 1095.87 87.838 1095.87 89.258C1095.87 90.698 1096.13 92.038 1096.65 93.278C1097.19 94.518 1097.93 95.618 1098.87 96.578C1099.83 97.518 1100.93 98.258 1102.17 98.798C1103.43 99.318 1104.77 99.578 1106.19 99.578Z" fill="#1A1A1A"/>
+      </svg>
+    </div>
+    <div class="sb-copy">© 2026 My Favorite Recovery<br>마이페이보릿리커버리</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="breadcrumb"><span>연맹 관리자 &gt; 리그 기준값 (Normative DB)</span></div>
+    <div class="tb-meta">● Kinvent · Ronfic · Catapult 통합</div>
+  </div>
+
+  <div class="content">
+
+    <div class="summary-line">
+      <span class="head">● Normative DB</span>K리그 유소년 <strong>Normative Data · 2026년 1차 측정 기준</strong> · 18구단 1,847명 · 포지션별 · 연령별 · 성숙도별 백분위 자동 산출
+    </div>
+
+    <!-- U18 Positional -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">● U18 포지션별 기준값 (백분위 50%)</div>
+          <div class="card-subtitle">U18 Positional Normative · 측정 완료 18구단 기준 · 매 측정 시 자동 업데이트</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding: 0; overflow-x: auto;">
+        <table class="norm-table">
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th class="center">단위</th>
+              <th class="center">GK (n=54)</th>
+              <th class="center">CB (n=88)</th>
+              <th class="center">FB (n=72)</th>
+              <th class="center">MF (n=148)</th>
+              <th class="center">FW (n=92)</th>
+              <th class="center">전체 평균</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label-col">점프 (CMJ)</td>
+              <td class="unit-col center">cm</td>
+              <td class="mono center">31.2</td>
+              <td class="mono center">33.4</td>
+              <td class="mono center">32.8</td>
+              <td class="mono center">33.8</td>
+              <td class="mono center">34.5</td>
+              <td class="mono center">33.2</td>
+            </tr>
+            <tr>
+              <td class="label-col">30m 스프린트</td>
+              <td class="unit-col center">초</td>
+              <td class="mono center">4.52</td>
+              <td class="mono center">4.38</td>
+              <td class="mono center">4.30</td>
+              <td class="mono center">4.32</td>
+              <td class="mono center">4.25</td>
+              <td class="mono center">4.35</td>
+            </tr>
+            <tr>
+              <td class="label-col">몸싸움 (IMTP)</td>
+              <td class="unit-col center">N/kg</td>
+              <td class="mono center">2.38</td>
+              <td class="mono center">2.62</td>
+              <td class="mono center">2.48</td>
+              <td class="mono center">2.52</td>
+              <td class="mono center">2.45</td>
+              <td class="mono center">2.55</td>
+            </tr>
+            <tr>
+              <td class="label-col">급정지 (COD)</td>
+              <td class="unit-col center">초</td>
+              <td class="mono center">2.62</td>
+              <td class="mono center">2.48</td>
+              <td class="mono center">2.42</td>
+              <td class="mono center">2.45</td>
+              <td class="mono center">2.50</td>
+              <td class="mono center">2.46</td>
+            </tr>
+            <tr>
+              <td class="label-col">탑스피드 (Vmax) · Catapult</td>
+              <td class="unit-col center">m/s</td>
+              <td class="mono center">7.92</td>
+              <td class="mono center">8.28</td>
+              <td class="mono center">8.45</td>
+              <td class="mono center">8.38</td>
+              <td class="mono center">8.55</td>
+              <td class="mono center">8.34</td>
+            </tr>
+            <tr>
+              <td class="label-col">내전:외전 · Kinvent K-TDM</td>
+              <td class="unit-col center">ratio</td>
+              <td class="mono center">0.92</td>
+              <td class="mono center">0.95</td>
+              <td class="mono center">0.93</td>
+              <td class="mono center">0.95</td>
+              <td class="mono center">0.92</td>
+              <td class="mono center">0.94</td>
+            </tr>
+            <tr>
+              <td class="label-col">뒷허벅지 보호력 (H:Q) · Croisier</td>
+              <td class="unit-col center">ratio</td>
+              <td class="mono center">0.62</td>
+              <td class="mono center">0.64</td>
+              <td class="mono center">0.61</td>
+              <td class="mono center">0.63</td>
+              <td class="mono center">0.60</td>
+              <td class="mono center">0.62</td>
+            </tr>
+            <tr>
+              <td class="label-col">Ronfic 편심 H:Q</td>
+              <td class="unit-col center">ratio</td>
+              <td class="mono center">0.68</td>
+              <td class="mono center">0.71</td>
+              <td class="mono center">0.68</td>
+              <td class="mono center">0.70</td>
+              <td class="mono center">0.66</td>
+              <td class="mono center">0.69</td>
+            </tr>
+            <tr>
+              <td class="label-col">주간 부하 (PlayerLoad) · Catapult</td>
+              <td class="unit-col center">AU/wk</td>
+              <td class="mono center">1,820</td>
+              <td class="mono center">2,340</td>
+              <td class="mono center">2,580</td>
+              <td class="mono center">2,620</td>
+              <td class="mono center">2,420</td>
+              <td class="mono center">2,380</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- U15 Positional -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">● U15 포지션별 기준값 (백분위 50%)</div>
+          <div class="card-subtitle">U15 Positional Normative · 측정 완료 구단 기준 · 데이터 축적 중</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding: 0; overflow-x: auto;">
+        <table class="norm-table">
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th class="center">단위</th>
+              <th class="center">GK</th>
+              <th class="center">CB</th>
+              <th class="center">FB</th>
+              <th class="center">MF</th>
+              <th class="center">FW</th>
+              <th class="center">전체</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label-col">점프 (CMJ)</td>
+              <td class="unit-col center">cm</td>
+              <td class="mono center">26.8</td>
+              <td class="mono center">28.2</td>
+              <td class="mono center">27.5</td>
+              <td class="mono center">28.0</td>
+              <td class="mono center">28.8</td>
+              <td class="mono center">27.9</td>
+            </tr>
+            <tr>
+              <td class="label-col">30m 스프린트</td>
+              <td class="unit-col center">초</td>
+              <td class="mono center">4.82</td>
+              <td class="mono center">4.68</td>
+              <td class="mono center">4.58</td>
+              <td class="mono center">4.62</td>
+              <td class="mono center">4.52</td>
+              <td class="mono center">4.64</td>
+            </tr>
+            <tr>
+              <td class="label-col">성숙도 (Mirwald)</td>
+              <td class="unit-col center">PHV</td>
+              <td class="mono center">-0.4</td>
+              <td class="mono center">-0.2</td>
+              <td class="mono center">-0.3</td>
+              <td class="mono center">-0.4</td>
+              <td class="mono center">-0.1</td>
+              <td class="mono center">-0.3</td>
+            </tr>
+            <tr>
+              <td colspan="8" class="table-footer">● 데이터 축적 중 · 전 구단 완료 시 전체 기준값 확정 예정</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Annual Trend -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">● 연도별 추이 · 2022 → 2026</div>
+          <div class="card-subtitle">Annual Trend · 전체 리그 평균 변화 · A/B 분류 직접 비교 가능 항목만</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding: 0;">
+        <table class="norm-table">
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th class="center">2022</th>
+              <th class="center">2023</th>
+              <th class="center">2024</th>
+              <th class="center">2025</th>
+              <th class="center">2026</th>
+              <th class="center">추세</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label-col">점프 (CMJ) · 전체</td>
+              <td class="mono center">30.1</td>
+              <td class="mono center">30.8</td>
+              <td class="mono center">31.5</td>
+              <td class="mono center">32.4</td>
+              <td class="mono center tg">33.2</td>
+              <td class="tg center">▲ 매년 상승</td>
+            </tr>
+            <tr>
+              <td class="label-col">30m · 전체</td>
+              <td class="mono center">4.52</td>
+              <td class="mono center">4.48</td>
+              <td class="mono center">4.44</td>
+              <td class="mono center">4.40</td>
+              <td class="mono center tg">4.35</td>
+              <td class="tg center">▲ 매년 개선</td>
+            </tr>
+            <tr>
+              <td class="label-col">몸싸움 (IMTP) · 전체</td>
+              <td class="mono center">2.38</td>
+              <td class="mono center">2.42</td>
+              <td class="mono center">2.46</td>
+              <td class="mono center">2.50</td>
+              <td class="mono center tg">2.55</td>
+              <td class="tg center">▲ 꾸준히 상승</td>
+            </tr>
+            <tr>
+              <td class="label-col">H:Q · 전체</td>
+              <td class="mono center">0.58</td>
+              <td class="mono center">0.59</td>
+              <td class="mono center">0.60</td>
+              <td class="mono center">0.61</td>
+              <td class="mono center tg">0.62</td>
+              <td class="tg center">▲ 점진 개선</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="padding: 14px 24px;">
+          <div class="note">※ <strong>2026년부터 3축 전용 항목</strong>(COD 전단력, CoP, DSI 방향별, Ronfic 편심 H:Q, Catapult HSR) 추가 축적 시작 — 2028년부터 정규 Normative DB 편입 예정</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Maturity-Adjusted Norms -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">● 성숙도별 조정 기준값 · Mirwald 기준</div>
+          <div class="card-subtitle">Maturity-Adjusted Normative · Pre-PHV / Circa-PHV / Post-PHV · 편차 보정 반영</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding: 0; overflow-x: auto;">
+        <table class="norm-table">
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th class="center">단위</th>
+              <th class="center">Pre-PHV</th>
+              <th class="center">Circa-PHV</th>
+              <th class="center">Post-PHV</th>
+              <th class="center">조정 적용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label-col">점프 (CMJ)</td>
+              <td class="unit-col center">cm</td>
+              <td class="mono center">26.8</td>
+              <td class="mono center">30.4</td>
+              <td class="mono center">33.8</td>
+              <td class="tg center">● 자동 보정</td>
+            </tr>
+            <tr>
+              <td class="label-col">30m</td>
+              <td class="unit-col center">초</td>
+              <td class="mono center">4.82</td>
+              <td class="mono center">4.58</td>
+              <td class="mono center">4.34</td>
+              <td class="tg center">● 자동 보정</td>
+            </tr>
+            <tr>
+              <td class="label-col">IMTP</td>
+              <td class="unit-col center">N/kg</td>
+              <td class="mono center">2.18</td>
+              <td class="mono center">2.38</td>
+              <td class="mono center">2.58</td>
+              <td class="tg center">● 자동 보정</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="padding: 14px 24px;">
+          <div class="note">※ Pre-PHV 선수의 "상대적 약함"은 <strong>성숙도 지연</strong>에서 기인 — 해당 기간엔 <strong>절대 수치가 아닌 성장 궤적</strong>으로 평가합니다</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
