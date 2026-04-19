@@ -34,7 +34,10 @@
   .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
   .sidebar-nav { flex: 1; padding: 14px 0; overflow-y: auto; }
   .nav-section { padding: 18px 22px 8px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: var(--light); text-transform: uppercase; }
-  .nav-item { display: flex; align-items: center; padding: 9px 22px; font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; transition: all 0.15s; letter-spacing: -0.01em; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; transition: all 0.15s; letter-spacing: -0.01em; word-break: keep-all; }
+
+  .nav-item > span:not(.nav-num):not(.nav-sub) { flex: 1; word-break: keep-all; line-height: 1.35; }
+  .nav-item .nav-sub { flex-shrink: 0; margin-left: auto; word-break: keep-all; }
   .nav-item:hover { color: var(--ink); background: var(--bg); }
   .nav-item.active { color: var(--ink); background: var(--bg); border-left-color: var(--ink); font-weight: 700; }
   .nav-num { font-family: var(--font-mono); font-size: 10px; color: var(--light); margin-right: 10px; letter-spacing: 0.05em; min-width: 16px; }
