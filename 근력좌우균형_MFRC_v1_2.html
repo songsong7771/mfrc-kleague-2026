@@ -24,28 +24,30 @@
 
   body { background: var(--bg); color: var(--ink); font-family: var(--font-sans); min-height: 100vh; font-size: 14px; line-height: 1.55; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; }
 
-  /* ===== SIDEBAR ===== */
-  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
+  /* ===== SIDEBAR v1.2 ===== */
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: #EFECE4; border-right: 1px solid var(--rule); z-index: 100; display: flex; flex-direction: column; }
   .sidebar-logo { padding: 24px 22px 20px; border-bottom: 1px solid var(--rule); }
-  .sb-logo-mark { margin-bottom: 12px; }
-  .sb-logo-mark svg { width: 42px; height: auto; display: block; }
-  .sidebar-logo h1 { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--ink); text-transform: uppercase; }
-  .sidebar-logo p { font-family: var(--font-sans); font-size: 11px; color: var(--mid); margin-top: 6px; letter-spacing: -0.005em; line-height: 1.55; }
-  .sidebar-logo p strong { color: var(--ink); font-weight: 700; }
-  .sidebar-logo p .tag { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-top: 3px; }
-
+  .sidebar-role { padding: 12px 22px; border-bottom: 1px solid var(--rule); }
   .sidebar-nav { flex: 1; padding: 14px 0; overflow-y: auto; }
   .nav-section { padding: 18px 22px 8px; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: var(--light); text-transform: uppercase; }
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; cursor: pointer; letter-spacing: -0.01em; transition: all 0.15s; word-break: keep-all; }
-  .nav-item:hover { color: var(--ink); background: rgba(26,26,26,0.03); }
-
-  .nav-item > span:not(.ni-mark):not(.ni-tag) { flex: 1; word-break: keep-all; line-height: 1.35; }
-  .nav-item .ni-tag { flex-shrink: 0; margin-left: auto; word-break: keep-all; }
-  .nav-item.active { background: var(--bg); color: var(--ink); border-left-color: var(--ink); font-weight: 700; }
-  .nav-item .ni-mark { font-family: var(--font-mono); font-size: 9px; font-weight: 700; color: var(--light); margin-right: 4px; letter-spacing: 0.05em; }
-  .nav-item .ni-tag { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-left: auto; letter-spacing: 0.05em; }
-
-  .sidebar-footer { padding: 14px 20px; border-top: 1px solid var(--rule); font-family: var(--font-mono); font-size: 9px; color: var(--light); line-height: 1.6; letter-spacing: 0.05em; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; font-size: 13px; font-weight: 500; color: var(--mid); border-left: 2px solid transparent; transition: all 0.15s; letter-spacing: -0.01em; word-break: keep-all; }
+  .nav-item > span:not(.nav-num):not(.nav-sub) { flex: 1; word-break: keep-all; line-height: 1.35; }
+  .nav-item .nav-sub { flex-shrink: 0; margin-left: auto; word-break: keep-all; }
+  .nav-item:hover { color: var(--ink); background: var(--bg-subtle); }
+  .nav-item.active { color: var(--ink); background: var(--bg); border-left-color: var(--ink); font-weight: 700; }
+  .nav-num { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-right: 4px; letter-spacing: 0.05em; }
+  .nav-item.active .nav-num { color: var(--ink); font-weight: 700; }
+  .nav-sub { font-family: var(--font-mono); font-size: 9px; color: var(--light); margin-left: auto; letter-spacing: 0.05em; }
+  .sidebar-footer { padding: 18px 22px 20px; border-top: 1px solid var(--rule); background: var(--bg-subtle); }
+  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
+  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
+  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
+  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
+  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
+  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
+  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
+  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
+  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
 
   /* ===== MAIN ===== */
   .main { margin-left: 240px; min-height: 100vh; }
@@ -219,19 +221,6 @@
     .card { box-shadow: none !important; break-inside: avoid; }
     .popup-overlay, .popup-action { display: none !important; }
   }
-
-  .sidebar-role { padding: 12px 22px; border-bottom: 1px solid var(--rule); }
-  .role-badge { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 3px 9px; letter-spacing: 0.15em; text-transform: uppercase; background: var(--ink); color: var(--card); display: inline-block; }
-  .role-team { font-family: var(--font-sans); font-size: 11px; color: var(--red); font-weight: 700; margin-top: 7px; display: block; letter-spacing: -0.01em; }
-
-  .sb-ko { font-family: var(--font-sans); font-size: 16.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.035em; line-height: 1.15; margin-bottom: 12px; }
-  .sb-sub-line { width: 20px; height: 1.5px; background: var(--ink); margin: 0 0 10px; }
-  .sb-program { font-family: var(--font-sans); font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; line-height: 1.4; margin-bottom: 4px; }
-  .sb-caption { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.15em; text-transform: uppercase; }
-  .sb-footer-logo { width: 160px; height: auto; display: block; margin-bottom: 12px; opacity: 0.85; }
-  .sb-footer-logo svg { width: 100%; height: auto; display: block; }
-  .sb-copy { font-family: var(--font-mono); font-size: 9px; color: var(--light); letter-spacing: 0.06em; line-height: 1.3; text-transform: uppercase; }
-  .sidebar-footer { padding: 18px 22px 20px; border-top: 1px solid var(--rule); }
 </style>
 </head>
 <body>
@@ -250,22 +239,20 @@
 
   <nav class="sidebar-nav">
     <div class="nav-section">Main</div>
-    <a href="홈_코칭스태프_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">00</span>홈</a>
-    <a href="선수목록_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">—</span>선수 목록</a>
-    <a href="1_개인선수대시보드_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">01</span>개인 선수</a>
-    <a href="2_팀대시보드_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">02</span>팀 대시보드</a>
-
+    <a href="홈_코칭스태프_MFRC_v1_2.html" class="nav-item"><span class="nav-num">00</span><span>홈</span></a>
+    <a href="선수목록_MFRC_v1_2.html" class="nav-item"><span class="nav-num">—</span><span>선수 목록</span></a>
+    <a href="1_개인선수대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">01</span><span>개인 선수</span></a>
+    <a href="2_팀대시보드_MFRC_v1_2.html" class="nav-item"><span class="nav-num">02</span><span>팀 대시보드</span></a>
     <div class="nav-section">Analysis</div>
-    <a href="3_점프착지방향전환_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">03</span>점프·착지·방향전환<span class="ni-tag">3D-Deltas</span></a>
-    <a href="4_달리기가속감속_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">04</span>달리기·가속·감속<span class="ni-tag">K-Power</span></a>
-    <a href="근력좌우균형_MFRC_v1_2.html" class="nav-item active"><span class="ni-mark">05</span>근력·좌우 균형<span class="ni-tag">K-TDM · Ronfic</span></a>
-    <a href="5_부상위험도_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">06</span>부상 위험도<span class="ni-tag">통합</span></a>
-    <a href="6_플레이어유형_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">07</span>플레이어 유형<span class="ni-tag">통합</span></a>
-    <a href="7_컨디션피로도_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">08</span>컨디션·피로도<span class="ni-tag">K-Grip</span></a>
-
+    <a href="3_점프착지방향전환_MFRC_v1_2.html" class="nav-item"><span class="nav-num">03</span><span>점프·착지·방향전환</span><span class="nav-sub">3D-Deltas</span></a>
+    <a href="4_달리기가속감속_MFRC_v1_2.html" class="nav-item"><span class="nav-num">04</span><span>달리기·가속·감속</span><span class="nav-sub">K-Power</span></a>
+    <a href="근력좌우균형_MFRC_v1_2.html" class="nav-item active"><span class="nav-num">05</span><span>근력·좌우 균형</span><span class="nav-sub">K-TDM · Ronfic</span></a>
+    <a href="5_부상위험도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">06</span><span>부상 위험도</span><span class="nav-sub">통합</span></a>
+    <a href="6_플레이어유형_MFRC_v1_2.html" class="nav-item"><span class="nav-num">07</span><span>플레이어 유형</span><span class="nav-sub">통합</span></a>
+    <a href="7_컨디션피로도_MFRC_v1_2.html" class="nav-item"><span class="nav-num">08</span><span>컨디션·피로도</span><span class="nav-sub">K-Grip</span></a>
     <div class="nav-section">Operations</div>
-    <a href="8_훈련플래너_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">09</span>훈련 플래너</a>
-    <a href="9_월별캘린더_MFRC_v1_2.html" class="nav-item"><span class="ni-mark">10</span>캘린더</a>
+    <a href="8_훈련플래너_MFRC_v1_2.html" class="nav-item"><span class="nav-num">09</span><span>훈련 플래너</span></a>
+    <a href="9_월별캘린더_MFRC_v1_2.html" class="nav-item"><span class="nav-num">10</span><span>캘린더</span></a>
   </nav>
 
   <div class="sidebar-footer">
