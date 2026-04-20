@@ -50,18 +50,19 @@
   /* ===== MAIN ===== */
   .main { margin-left: 240px; min-height: 100vh; }
 
-  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245,243,238,0.82); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
-  .breadcrumb { font-family: var(--font-sans); font-size: 12px; color: var(--mid); letter-spacing: -0.005em; }
-  .breadcrumb span { color: var(--ink); font-weight: 700; }
-  .tb-right { display: flex; gap: 10px; align-items: center; }
-  .print-btn { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 14px; background: var(--ink); color: var(--card); border: 1px solid var(--ink); cursor: pointer; transition: all 0.15s; }
-  .print-btn:hover { background: var(--mid); }
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(245, 243, 238, 0.88); backdrop-filter: saturate(180%) blur(16px); -webkit-backdrop-filter: saturate(180%) blur(16px); border-bottom: 1px solid var(--rule); padding: 0 36px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); }
+  .breadcrumb .current { font-family: var(--font-sans); text-transform: none; letter-spacing: -0.01em; font-size: 13px; font-weight: 700; color: var(--ink); margin-left: 4px; }
+  .breadcrumb .sep { color: var(--light); margin: 0 8px; }
+  .topbar-right { display: flex; align-items: center; gap: 8px; }
+  .t-btn { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 11px; border: 1px solid var(--rule); background: var(--card); color: var(--mid); cursor: pointer; transition: all 0.15s; }
+  .t-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .t-btn.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
 
-  /* ===== TAB BAR ===== */
-  .tab-bar { display: flex; border-bottom: 1px solid var(--rule); padding: 0 36px; background: var(--card); }
-  .tab { padding: 12px 20px; font-family: var(--font-sans); font-size: 12.5px; font-weight: 600; color: var(--mid); cursor: pointer; border-bottom: 2px solid transparent; letter-spacing: -0.01em; transition: all 0.15s; }
+  .tab-bar { padding: 0 36px; border-bottom: 1px solid var(--rule); background: var(--card); display: flex; gap: 0; }
+  .tab { padding: 14px 18px; font-family: var(--font-sans); font-size: 12.5px; font-weight: 600; color: var(--mid); letter-spacing: -0.01em; border-bottom: 2px solid transparent; transition: all 0.15s; cursor: pointer; }
   .tab:hover { color: var(--ink); }
-  .tab.active { color: var(--forest); border-bottom-color: var(--forest); font-weight: 800; }
+  .tab.active { color: var(--ink); font-weight: 700; border-bottom-color: var(--ink); }
 
   /* ===== CONTENT ===== */
   .content { padding: 24px 36px 48px; }
@@ -200,9 +201,11 @@
 
 <div class="main">
   <div class="topbar">
-    <div class="breadcrumb">훈련 플래너 &gt; <span>전술 훈련 설계 · 신평고 U18 · 18주차</span></div>
-    <div class="tb-right">
-      <button class="print-btn no-print" onclick="window.print()">● PDF 출력</button>
+    <div class="breadcrumb">운영 <span class="sep">›</span> 09 훈련 플래너 <span class="sep">›</span> <span class="current">신평고 U18 · 2026 18주차</span></div>
+    <div class="topbar-right">
+      <button class="t-btn">◀ 이전 주</button>
+      <button class="t-btn">다음 주 ▶</button>
+      <button class="t-btn primary no-print" onclick="window.print()">PDF 출력</button>
     </div>
   </div>
 
